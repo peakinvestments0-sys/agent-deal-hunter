@@ -255,17 +255,19 @@ class LaurenEngine:
         if has_cash_only or has_as_is or has_repairs_needed:
             # Listing remarks already mention condition/repairs - acknowledge once and ask for anything else major
             angles = [
+                f"{intro} Looking to write a cash offer on {addr}. Outside of what is already listed, is there anything else I should know before I pencil it out?",
+                f"{intro} Want to make a clean cash offer on {addr}. Beyond what is noted in the listing, anything major I should know before I pencil it out?",
                 f"{intro} Had a quick question on {addr}. Beyond what is noted in the listing, does it need any other heavy work to reach {retail_target}?",
                 f"{intro} Checked out {addr}. Outside of what you have in the listing remarks, are there any other big ticket repairs needed to hit {retail_target}?",
-                f"{intro} Reaching out regarding {addr}. Other than what is disclosed online, is there anything else major needed to bring it to {retail_target}?",
-                f"{intro} Taking a look at {addr}. Besides what is already noted in your listing, does it need any other major updates to get to {retail_target}?"
+                f"{intro} Reaching out regarding {addr}. Other than what is disclosed online, is there anything else major needed before I pencil out an offer?"
             ]
         else:
             # Clean / Standard listing remarks
             angles = [
+                f"{intro} Looking to put together a cash offer on {addr}. Other than what is listed online, anything I should know before I pencil it out?",
+                f"{intro} Want to write an offer on {addr}. Besides what you have in the listing remarks, anything I should know before I pencil it out?",
                 f"{intro} Had a quick question on {addr}. Other than what is noted in the listing, are there any big ticket repairs needed to get it to {retail_target}?",
-                f"{intro} Reaching out about {addr}. Outside of what is listed online, does the house need any major work to hit {retail_target}?",
-                f"{intro} Checked out {addr}. Beyond what is in your listing remarks, is there anything major needed to bring it to {retail_target}?",
+                f"{intro} Reaching out about {addr}. Outside of what is listed online, does the house need any major work before I pencil out an offer?",
                 f"{intro} Quick question on {addr}. Besides what you have listed, does it need any heavy mechanical or structural updates to reach {retail_target}?"
             ]
 
