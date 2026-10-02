@@ -1,0 +1,9 @@
+{
+  "mode": "cloud",
+  "base_url": "https://api.sms-gate.app/3rdparty/v1",
+  "username": "YOUR_SMS_GATEWAY_USERNAME",
+  "password": "YOUR_SMS_GATEWAY_PASSWORD",
+  "device_id": "",
+  "sim_number": 1,
+  "default_template": "Hey {Agent_FirstName}, saw your listing over at {Listing_Address}. I'm an active local cash buyer closing deals in {City}. Do you have any off-market fixers or upcoming pocket listings coming down the pipeline before they hit MLS? Happy to have you represent us."
+}

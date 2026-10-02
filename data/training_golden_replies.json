@@ -1,0 +1,257 @@
+[
+  {
+    "id": "golden_001",
+    "timestamp": "2026-09-28 10:00:00",
+    "node": "ENTRY_HOOK_AWAITING_REPLY",
+    "agent_inbound": "Hey Johnathan, I have a property at 123 Main St in Melbourne.",
+    "suggested_template": "Amazing, what can you share with me about this one?",
+    "final_approved_text": "Awesome, thanks for reaching out with 123 Main St! What can you share with me about the property?",
+    "was_edited": true,
+    "tags": [
+      "Initial Contact",
+      "ENTRY_HOOK_AWAITING_REPLY"
+    ],
+    "notes": "Natural address acknowledgment",
+    "agent_desk": "BROOKE"
+  },
+  {
+    "id": "golden_002",
+    "timestamp": "2026-09-28 10:05:00",
+    "node": "OFF_MARKET_CONDITION",
+    "agent_inbound": "Hey Johnathan, I have an off-market 3/2 fixer at 789 Ocean Breeze Ave in Melbourne, seller asking $180k cash.",
+    "suggested_template": "What can you tell me about the condition? What kind of shape are the roof, AC, and interior in?",
+    "final_approved_text": "Hey, thanks for thinking of us on 789 Ocean Breeze! What can you tell me about the condition? What kind of shape are the roof, A/C, and interior in?",
+    "was_edited": true,
+    "tags": [
+      "Condition Vetting",
+      "OFF_MARKET_CONDITION"
+    ],
+    "notes": "Acknowledge address and ask specific condition details (roof, AC, interior)",
+    "agent_desk": "BROOKE"
+  },
+  {
+    "id": "golden_003",
+    "timestamp": "2026-09-28 10:10:00",
+    "node": "OFF_MARKET_PHOTOS",
+    "agent_inbound": "Roof is about 12 years old, AC works fine. Needs complete kitchen and bath remodel, flooring, and paint throughout.",
+    "suggested_template": "Perfect, do you have any photos, a walkthrough link, or lockbox code by chance?",
+    "final_approved_text": "Got it, that helps a ton. Do you have any photos, a walkthrough link, or lockbox code by chance?",
+    "was_edited": true,
+    "tags": [
+      "Property Access",
+      "OFF_MARKET_PHOTOS"
+    ],
+    "notes": "Casual photo request with link or lockbox option",
+    "agent_desk": "BROOKE"
+  },
+  {
+    "id": "golden_004",
+    "timestamp": "2026-09-28 10:12:00",
+    "node": "OFF_MARKET_PRICE",
+    "agent_inbound": "Here is the drive link with 25 photos: drive.google.com/test123",
+    "suggested_template": "Thank you for that. What are the sellers looking to get for it?",
+    "final_approved_text": "Awesome, going through these photos now. What number do the sellers have in mind for a quick, as is cash close?",
+    "was_edited": true,
+    "tags": [
+      "Pricing & Valuation",
+      "OFF_MARKET_PRICE"
+    ],
+    "notes": "Inquiring asking price casually for quick cash close",
+    "agent_desk": "BROOKE"
+  },
+  {
+    "id": "golden_005",
+    "timestamp": "2026-09-28 10:15:00",
+    "node": "OFF_MARKET_GOLD_TIMELINE",
+    "agent_inbound": "Photos are attached, asking $180k cash.",
+    "suggested_template": "Great, thank you for sharing this with me. How soon are the sellers looking to make a decision?",
+    "final_approved_text": "Awesome, going through these photos now. How soon are the sellers looking to make a decision and close?",
+    "was_edited": true,
+    "tags": [
+      "Seller Motivation",
+      "OFF_MARKET_GOLD_TIMELINE"
+    ],
+    "notes": "Validates photos received and asks seller decision timeline",
+    "agent_desk": "BROOKE"
+  },
+  {
+    "id": "golden_006",
+    "timestamp": "2026-09-28 10:18:00",
+    "node": "OFF_MARKET_UPDATED_CREATIVE",
+    "agent_inbound": "It is in pristine move-in condition, sellers want $410,000 cash firm.",
+    "suggested_template": "Amazing. Well the house sounds incredible. For this one, the only way I can pay their retail price would have to be on creative terms. Are they open to that discussion?",
+    "final_approved_text": "House looks sharp! Since it\u2019s fully turnkey, we couldn't get there as a straight cash deal, but we could pay their number on creative terms. Would the sellers be open to exploring terms or seller financing?",
+    "was_edited": true,
+    "tags": [
+      "Creative Financing",
+      "OFF_MARKET_UPDATED_CREATIVE"
+    ],
+    "notes": "Compliment home and pivot to creative terms when seller wants retail",
+    "agent_desk": "BROOKE"
+  },
+  {
+    "id": "golden_007",
+    "timestamp": "2026-09-28 10:20:00",
+    "node": "MATT_APPOINTMENT_REQUEST",
+    "agent_inbound": "Seller wants to close within the next 2-3 weeks, needs cash fast.",
+    "suggested_template": "Great. I will go ahead and set you up with my partner John who does all of our deal evaluations and see if we can get you a competitive offer. Would later today or tomorrow morning work better for a quick 5-minute call?",
+    "final_approved_text": "Great, sounds like a good fit for us. I'll have my partner John review our numbers and give you a quick call so we can put together a clean cash offer. Would later today or tomorrow morning work better?",
+    "was_edited": true,
+    "tags": [
+      "Appointment Booking",
+      "MATT_APPOINTMENT_REQUEST"
+    ],
+    "notes": "Handoff to partner John with day/time option",
+    "agent_desk": "BROOKE"
+  },
+  {
+    "id": "golden_008",
+    "timestamp": "2026-09-28 10:25:00",
+    "node": "APPOINTMENT_CONFIRMED",
+    "agent_inbound": "Tomorrow at 2pm works great for us.",
+    "suggested_template": "Sounds great! I have scheduled John to call you tomorrow at 2pm. We look forward to connecting and seeing if we can make a deal work together.",
+    "final_approved_text": "Sounds great! John will call you tomorrow around 2:00 PM. Looking forward to putting a deal together with you!",
+    "was_edited": true,
+    "tags": [
+      "Appointment Booking",
+      "APPOINTMENT_CONFIRMED"
+    ],
+    "notes": "Friendly, direct appointment confirmation",
+    "agent_desk": "BROOKE"
+  },
+  {
+    "id": "golden_009",
+    "timestamp": "2026-09-28 10:30:00",
+    "node": "TIER_2_NURTURE_ASK",
+    "agent_inbound": "No, they will not do creative financing. Cash only.",
+    "suggested_template": "Perfect, I completely understand. We buy all types of properties in all kinds of situations. Do you know of anyone that may have a fixer upper coming soon?",
+    "final_approved_text": "Totally understand, no problem at all! Keep us in mind, do you have any other pocket listings or off market fixers coming down the pipeline before they hit MLS? Happy to have you represent us on the buy side.",
+    "was_edited": true,
+    "tags": [
+      "Nurture Lead",
+      "TIER_2_NURTURE_ASK"
+    ],
+    "notes": "Polite pivot to capture upcoming pocket listings and preserve agent commission",
+    "agent_desk": "BROOKE"
+  },
+  {
+    "id": "golden_010",
+    "timestamp": "2026-10-01 06:50:00",
+    "node": "IDENTITY_EXPLAINED",
+    "agent_inbound": "Who is this? What company are you with?",
+    "suggested_template": "Hey Candace, this is Brooke with 407 Flips! Following up on 123 Main St for John. Are you still working with the sellers on this one?",
+    "final_approved_text": "Hey Candace, this is Brooke with 407 Flips! Following up on 123 Main St for John. Are you still working with the sellers on this one?",
+    "was_edited": true,
+    "tags": [
+      "Identity & Tone",
+      "IDENTITY_EXPLAINED"
+    ],
+    "notes": "Friendly, casual introduction for Brooke at 407 Flips connecting to John and listing address",
+    "agent_desk": "BROOKE"
+  },
+  {
+    "id": "golden_lauren_001",
+    "timestamp": "2026-10-01 10:20:00",
+    "agent_desk": "LAUREN",
+    "node": "LAUREN_OPENING_HOOK",
+    "agent_inbound": "[New Redfin Fixer Scraped: 456 Palm Breeze Rd. Remarks: Handyman special, cash only, needs roof.]",
+    "suggested_template": "Hey Sarah, Lauren here with 407 Flips! Great listing over on Palm Breeze Rd, love that pocket of Melbourne. Saw your notes about the property and condition. Other than what is already noted in the listing, is there anything else major the home needs to get it to top of market condition?",
+    "final_approved_text": "Hey Sarah, Lauren here with 407 Flips! Great listing over on Palm Breeze Rd, love that pocket of Melbourne. Saw your notes about the property and condition. Other than what is already noted in the listing, is there anything else major the home needs to get it to top of market condition?",
+    "was_edited": false,
+    "tags": [
+      "Trojan Horse Step 1",
+      "LAUREN_OPENING_HOOK"
+    ],
+    "notes": "Flattery and unlisted condition inquiry with zero hyphens"
+  },
+  {
+    "id": "golden_lauren_002",
+    "timestamp": "2026-10-01 10:21:00",
+    "agent_desk": "LAUREN",
+    "node": "LAUREN_ASK_REPAIR_SCOPE",
+    "agent_inbound": "Yes the sellers are very negotiable, they just want it sold this month.",
+    "suggested_template": "Awesome, thanks for getting back to me Sarah. In your opinion, what shape are the major mechanicals in (roof, AC, plumbing, electrical), and what kind of rehab do you think it needs?",
+    "final_approved_text": "Awesome, thanks for getting back to me Sarah. In your opinion, what shape are the major mechanicals in (roof, AC, plumbing, electrical), and what kind of rehab do you think it needs?",
+    "was_edited": false,
+    "tags": [
+      "Trojan Horse Step 2",
+      "LAUREN_ASK_REPAIR_SCOPE"
+    ],
+    "notes": "Inquire on major mechanicals directly from listing agent"
+  },
+  {
+    "id": "golden_lauren_003",
+    "timestamp": "2026-10-01 10:22:00",
+    "agent_desk": "LAUREN",
+    "node": "LAUREN_ASK_REPAIR_COST",
+    "agent_inbound": "Needs a full roof, AC is ancient, and the whole inside is 1980s original.",
+    "suggested_template": "Got it, that helps a ton. When you walk through it, what dollar amount do you think a buyer needs to sink into it to get it to top of market condition?",
+    "final_approved_text": "Got it, that helps a ton. When you walk through it, what dollar amount do you think a buyer needs to sink into it to get it to top of market condition?",
+    "was_edited": false,
+    "tags": [
+      "Trojan Horse Step 3",
+      "LAUREN_ASK_REPAIR_COST"
+    ],
+    "notes": "Getting the agent to state the rehab dollar figure"
+  },
+  {
+    "id": "golden_lauren_004",
+    "timestamp": "2026-10-01 10:23:00",
+    "agent_desk": "LAUREN",
+    "node": "LAUREN_ASK_AGENT_ARV",
+    "agent_inbound": "A flipper is probably looking at 50k to 60k in work.",
+    "suggested_template": "Makes total sense. If our crew comes in and does all that work to make it pristine, what do you think you could realistically list and sell it for on the back end?",
+    "final_approved_text": "Makes total sense. If our crew comes in and does all that work to make it pristine, what do you think you could realistically list and sell it for on the back end?",
+    "was_edited": false,
+    "tags": [
+      "Trojan Horse Step 4",
+      "LAUREN_ASK_AGENT_ARV"
+    ],
+    "notes": "Getting the agent to state their resale ARV"
+  },
+  {
+    "id": "golden_lauren_005",
+    "timestamp": "2026-10-01 10:24:00",
+    "agent_desk": "LAUREN",
+    "node": "LAUREN_MATH_DROP",
+    "agent_inbound": "If it is completely remodeled like new, maybe 260k max in this pocket.",
+    "suggested_template": "Sarah, running your numbers through our flip calculator: based on your ,000 resale number, minus ~50k in repairs, 9 percent in holding and commission fees, and our crew's standard 15 percent margin puts John right around ,600 cash with zero inspection contingencies. That is why we are coming in way under that one. Would it make sense to send over an offer and have John do a follow up for any questions?",
+    "final_approved_text": "Sarah, running your numbers through our flip calculator: based on your ,000 resale number, minus ~50k in repairs, 9 percent in holding and commission fees, and our crew's standard 15 percent margin puts John right around ,600 cash with zero inspection contingencies. That is why we are coming in way under that one. Would it make sense to send over an offer and have John do a follow up for any questions?",
+    "was_edited": false,
+    "tags": [
+      "Trojan Horse Step 5A",
+      "LAUREN_MATH_DROP"
+    ],
+    "notes": "Low ARV Arbitrage: Accept comp and run math from their low number"
+  },
+  {
+    "id": "golden_lauren_006",
+    "timestamp": "2026-10-01 10:25:00",
+    "agent_desk": "LAUREN",
+    "node": "LAUREN_HIGH_ARV_ANCHOR",
+    "agent_inbound": "Comps are easily at ,000 all day long.",
+    "suggested_template": "Sarah, we looked closely at those comps, but recent conservative neighborhood sales are sitting lower around ,500. Running that through our flip calculator, minus ~50k in repairs, 9 percent in holding and commission fees, and our crew's standard 15 percent margin puts John right around ,940 cash with zero inspection contingencies. That is why we are coming in way under that one. Would it make sense to send over an offer and have John do a follow up for any questions?",
+    "final_approved_text": "Sarah, we looked closely at those comps, but recent conservative neighborhood sales are sitting lower around ,500. Running that through our flip calculator, minus ~50k in repairs, 9 percent in holding and commission fees, and our crew's standard 15 percent margin puts John right around ,940 cash with zero inspection contingencies. That is why we are coming in way under that one. Would it make sense to send over an offer and have John do a follow up for any questions?",
+    "was_edited": false,
+    "tags": [
+      "Trojan Horse Step 5B",
+      "LAUREN_HIGH_ARV_ANCHOR"
+    ],
+    "notes": "High ARV Anchor: Anchor down with conservative comps"
+  },
+  {
+    "id": "golden_lauren_007",
+    "timestamp": "2026-10-01 10:26:00",
+    "agent_desk": "LAUREN",
+    "node": "LAUREN_STANDING_LOI",
+    "agent_inbound": "No way in hell my seller takes anything under 180k. We already turned down 170k.",
+    "suggested_template": "Totally understand we have a gap right now, Sarah! I just shot our formal written terms to your email as well as a standing cash offer at ,940 just in case the seller's circumstances or timeline change down the road, or if anything falls through with another buyer. Our offer stands for 30 days. If anything shifts, John and I are ready to close clean in 14 days!",
+    "final_approved_text": "Totally understand we have a gap right now, Sarah! I just shot our formal written terms to your email as well as a standing cash offer at ,940 just in case the seller's circumstances or timeline change down the road, or if anything falls through with another buyer. Our offer stands for 30 days. If anything shifts, John and I are ready to close clean in 14 days!",
+    "was_edited": false,
+    "tags": [
+      "Standing Paper Trail",
+      "LAUREN_STANDING_LOI"
+    ],
+    "notes": "Standing Written LOI: Leave official paper trail for 30 days"
+  }
+]

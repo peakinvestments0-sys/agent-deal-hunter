@@ -1,0 +1,43 @@
+{
+  "custom_4078155043": {
+    "agent_id": "custom_4078155043",
+    "full_name": "Johnathan Roberts (Test Agent)",
+    "first_name": "Johnathan",
+    "last_name": "Roberts (Test Agent)",
+    "phone": "(407) 815-5043",
+    "phone_raw": "4078155043",
+    "email": "ddealrei@gmail.com",
+    "brokerage": "Peak Realty Partners (Test)",
+    "county": "BREVARD",
+    "listings": [
+      {
+        "address": "123 Sandbox Blvd",
+        "city": "Melbourne",
+        "county": "BREVARD",
+        "zip": "32901",
+        "listing_price": 275000.0,
+        "estimated_value": 302500.0,
+        "beds": 3,
+        "baths": 2.0,
+        "sqft": 1600,
+        "year_built": 1995,
+        "days_on_market": 15,
+        "apn": "TEST-001-APN",
+        "owner_name": "Test Property Owner",
+        "legal_description": "LOT 1 TEST SUBDIVISION"
+      }
+    ],
+    "pipeline_stage": "New Ingest",
+    "notes": "Sandbox test agent for verifying SMS, Email, HUD & PandaDoc",
+    "pocket_deals": [],
+    "listing_count": 1,
+    "total_volume": 275000.0,
+    "avg_price": 275000.0,
+    "tier": "\ud83e\uddea Test Agent",
+    "primary_address": "123 Sandbox Blvd",
+    "primary_city": "Melbourne",
+    "primary_price": 275000.0,
+    "primary_dom": 15,
+    "is_custom": true
+  }
+}

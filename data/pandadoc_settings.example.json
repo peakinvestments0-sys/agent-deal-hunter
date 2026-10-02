@@ -1,0 +1,16 @@
+{
+  "mode": "production",
+  "sandbox_key": "YOUR_PANDADOC_SANDBOX_KEY",
+  "production_key": "YOUR_PANDADOC_PRODUCTION_KEY",
+  "buyer_name": "Peak Investments LLC",
+  "buyer_signer_name": "Johnathan Roberts",
+  "sender_email": "john@407flips.com",
+  "default_title_company": "Title Insights",
+  "title_company_phone": "(813) 336-4699",
+  "title_company_email": "Team@yourtitlesource.com",
+  "title_company_address": "13057 W Linebaugh Ave # 101, Tampa, FL 33626",
+  "default_inspection_days": 5,
+  "default_closing_days": 21,
+  "default_deposit": 2500,
+  "farbar_template_id": "YOUR_PANDADOC_TEMPLATE_ID"
+}

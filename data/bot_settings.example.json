@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "mode": "copilot",
+  "bot_name": "Brooke",
+  "partner_name": "John",
+  "office_phone": "(407) 815-5043",
+  "call_window_hours": 3,
+  "zestimate_gold_threshold": 0.8,
+  "auto_send_delay_seconds": 30,
+  "campaign_followup_1_days": 3,
+  "campaign_followup_2_days": 7,
+  "campaign_coldcall_days": 14,
+  "gemini_api_key": "YOUR_GEMINI_API_KEY",
+  "gemini_model": "gemini-3.8-flash",
+  "use_gemini_enhancer": true,
+  "auto_cadence_followup_enabled": true,
+  "cadence_send_time": "09:00",
+  "cadence_throttle_seconds": 6
+}

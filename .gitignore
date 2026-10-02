@@ -1,0 +1,29 @@
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pytest_cache/
+.pytest_cache/
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+
+# Private Credentials & Live Settings (DO NOT COMMIT)
+data/email_settings.json
+data/pandadoc_settings.json
+data/sms_settings.json
+data/bot_settings.json
+data/agent_pipeline_state.json
+data/outreach_history.json
+data/scheduler_history.json
+data/test_merged_farbar.pdf
+*.env
+*.env.local
+
+# Logs & OS artifacts
+*.log
+.DS_Store
+Thumbs.db

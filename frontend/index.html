@@ -1,0 +1,1904 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Deal Hunter | Florida Off-Market Pocket Finder</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0b1120; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+  </style>
+</head>
+<body class="bg-[#0b1120] text-slate-100 min-h-screen antialiased flex flex-col selection:bg-indigo-500/30 selection:text-indigo-200">
+
+  <!-- TOP HEADER -->
+  <header class="border-b border-slate-800/80 bg-[#0f172a]/90 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-[1720px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand & County Selector -->
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/25 font-black text-white text-base">
+            DH
+          </div>
+          <div>
+            <div class="text-sm font-extrabold tracking-tight text-white flex items-center gap-2">
+              AGENT DEAL HUNTER
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">PROFIT OS</span>
+            </div>
+            <div class="text-[11px] text-slate-400 font-medium">Realtor Pocket Listings &bull; Florida Cash Desk</div>
+          </div>
+        </div>
+
+        <div class="h-6 w-px bg-slate-800"></div>
+
+        <!-- County Dropdown -->
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-slate-400 font-medium">County:</span>
+          <select id="countySelect" onchange="handleCountyChange(this.value)" class="bg-slate-900 border border-slate-700/80 rounded-xl px-3 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-indigo-500 cursor-pointer">
+            <option value="ALL">All Florida Counties</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Action Tools & Settings -->
+      <div class="flex items-center gap-2.5">
+        <!-- Inbound Feed -->
+        <button type="button" onclick="openInboxModal()" class="px-3 py-1.5 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer">
+          <span>📬 Inbound Feed</span>
+          <span id="headerUnreadBadge" class="hidden text-[10px] px-1.5 py-0.2 rounded-full bg-indigo-500 text-white font-bold">0</span>
+        </button>
+
+        <!-- Upload CSV -->
+        <label class="px-3.5 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-700/80 text-xs font-semibold text-slate-200 transition flex items-center gap-2 cursor-pointer">
+          <span>📁 Import CSV</span>
+          <input type="file" id="csvFileInput" accept=".csv" class="hidden" onchange="handleCsvUpload(event)">
+        </label>
+
+        <!-- Add Test Agent -->
+        <button type="button" onclick="openAddAgentModal()" class="px-3.5 py-1.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-violet-600/20 cursor-pointer" title="Add a Sandbox Test Agent with your own phone/email to test without messaging live realtors">
+          <span>➕ Add Test Agent</span>
+        </button>
+
+        <!-- Bot Copilot & Vetting Engine -->
+        <button type="button" onclick="openBotSettingsModal()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600/30 to-purple-600/30 hover:from-indigo-600/50 hover:to-purple-600/50 border border-indigo-500/40 text-indigo-300 text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-md">
+          <span>🤖 Lead Vetting Bot</span>
+          <span id="headerBotModeBadge" class="text-[9px] uppercase px-1.5 py-0.5 rounded bg-indigo-500/30 text-indigo-200 font-mono font-bold">COPILOT</span>
+        </button>
+
+        <!-- Golden Training Studio -->
+        <button type="button" onclick="openBotTrainingModal()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600/30 via-indigo-600/30 to-amber-600/30 hover:from-amber-600/50 hover:to-indigo-600/50 border border-amber-500/40 text-amber-300 text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-md" title="Critique and teach Gemini your authentic investor voice for Brooke and Lauren">
+          <span>🎓 Golden Training Studio</span>
+          <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-900/90 border border-slate-700 font-mono font-bold flex items-center gap-1.5">
+            <span class="text-indigo-300">🌿 Brooke (<span id="headerBrookeCountBadge">10</span>)</span>
+            <span class="text-slate-500">•</span>
+            <span class="text-amber-300">🔨 Lauren (<span id="headerLaurenCountBadge">7</span>)</span>
+          </span>
+        </button>
+
+        <!-- SMS Settings -->
+        <button type="button" onclick="openModal('smsSettingsModal')" class="px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-semibold transition flex items-center gap-1.5">
+          <span>📱 SMS Gateway</span>
+        </button>
+
+        <!-- Email Settings -->
+        <button type="button" onclick="openModal('emailSettingsModal')" class="px-3 py-1.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 text-xs font-semibold transition flex items-center gap-1.5">
+          <span>✉️ SMTP2GO</span>
+        </button>
+
+        <!-- PandaDoc Settings -->
+        <button type="button" onclick="openModal('pandadocSettingsModal')" class="px-3 py-1.5 rounded-xl bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 text-purple-300 text-xs font-semibold transition flex items-center gap-1.5">
+          <span>🖋️ PandaDoc</span>
+          <span id="headerPandadocMode" class="text-[9px] uppercase px-1.5 py-0.5 rounded bg-purple-500/20 font-bold">SANDBOX</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="max-w-[1720px] mx-auto px-4 sm:px-6 py-6 space-y-6 flex-1 w-full">
+
+    <!-- DUAL-DESK SWITCHER (BROOKE OFF-MARKET VS. LAUREN ON-MARKET REDFIN) -->
+    <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900/80 border border-slate-800 p-2 rounded-2xl shadow-md">
+      <div class="flex items-center gap-2">
+        <button type="button" id="btnDeskBrooke" onclick="switchDesk('BROOKE')" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 cursor-pointer">
+          <span>🌿 Brooke's Off-Market Desk</span>
+          <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-white/20 font-mono">B2B Outreach</span>
+        </button>
+        <button type="button" id="btnDeskLauren" onclick="switchDesk('LAUREN')" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 text-slate-400 hover:text-white cursor-pointer">
+          <span>🔨 Lauren's Redfin Fixers</span>
+          <span id="headerLaurenBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono font-bold">0</span>
+        </button>
+      </div>
+      <div class="flex items-center gap-3 text-xs">
+        <button type="button" onclick="openModal('chromeExtensionModal')" class="px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition">
+          <span>🧩 Redfin Plugin Setup</span>
+        </button>
+        <span id="activePersonaBadge" class="px-3 py-1 rounded-xl bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 text-xs font-bold flex items-center gap-1.5">
+          <span>🌿 Brooke</span>
+          <span class="text-slate-400 font-normal">&bull; Off-Market Lead Scout</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- BROOKE'S DESK VIEW (EXISTING CRM & UNDERDOG PIPELINE) -->
+    <div id="brookeDeskView" class="space-y-6">
+
+    <!-- METRICS RIBBON (UNDERDOG MODEL & CRM FUNNEL) -->
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 shadow-sm">
+        <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Total Agents</div>
+        <div class="text-xl font-black text-white mt-1" id="statTotalAgents">-</div>
+        <div class="text-[10px] text-slate-500 mt-0.5" id="statCountiesCount">Active in database</div>
+      </div>
+
+      <div class="bg-gradient-to-br from-rose-950/30 to-slate-900/90 border border-rose-500/30 rounded-2xl p-3.5 shadow-sm">
+        <div class="text-[10px] font-bold text-rose-300 uppercase tracking-wider flex items-center gap-1">
+          <span>🔥 Tier 1: Hot Deals</span>
+        </div>
+        <div class="text-xl font-black text-rose-400 mt-1" id="statTier1Hot">0</div>
+        <div class="text-[10px] text-rose-300/70 mt-0.5">Matt Call w/n 3-6 hrs</div>
+      </div>
+
+      <div class="bg-gradient-to-br from-amber-950/30 to-slate-900/90 border border-amber-500/40 rounded-2xl p-3.5 shadow-sm">
+        <div class="text-[10px] font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1">
+          <span>⭐ The GOLD (≤80%)</span>
+        </div>
+        <div class="text-xl font-black text-amber-300 mt-1" id="statGoldDeals">0</div>
+        <div class="text-[10px] text-amber-300/70 mt-0.5">Off-Market &amp; Fixer</div>
+      </div>
+
+      <div class="bg-gradient-to-br from-emerald-950/30 to-slate-900/90 border border-emerald-500/30 rounded-2xl p-3.5 shadow-sm">
+        <div class="text-[10px] font-bold text-emerald-300 uppercase tracking-wider flex items-center gap-1">
+          <span>🌱 Tier 2: Pocket</span>
+        </div>
+        <div class="text-xl font-black text-emerald-400 mt-1" id="statTier2Pocket">0</div>
+        <div class="text-[10px] text-emerald-300/70 mt-0.5">30-Day Nurture Loop</div>
+      </div>
+
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 shadow-sm">
+        <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">🟡 Follow-Ups Due</div>
+        <div class="text-xl font-black text-amber-400 mt-1" id="statFollowupsDue">0</div>
+        <div class="text-[10px] text-slate-500 mt-0.5" id="statFollowupsDetail">Campaign #1 &amp; #2</div>
+      </div>
+
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 shadow-sm">
+        <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">📞 Cold Call Queue</div>
+        <div class="text-xl font-black text-purple-400 mt-1" id="statColdCall">0</div>
+        <div class="text-[10px] text-slate-500 mt-0.5">Unanswered Drips</div>
+      </div>
+
+      <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 shadow-sm">
+        <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Active Listings</div>
+        <div class="text-xl font-black text-indigo-400 mt-1" id="statTotalListings">-</div>
+        <div class="text-[10px] text-slate-500 mt-0.5" id="statTotalVolume">$0 Volume</div>
+      </div>
+    </div>
+
+    <!-- PIPELINE TABS & FILTER BAR (FLOWCHART & UNDERDOG FUNNEL) -->
+    <div class="space-y-4">
+      <!-- Tabs -->
+      <div class="flex items-center gap-2 border-b border-slate-800 pb-2 overflow-x-auto text-xs">
+        <button type="button" onclick="setPipelineTab('ALL')" id="tab_ALL" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 bg-indigo-600 text-white shadow-lg shadow-indigo-600/25">
+          <span>All Agents</span>
+          <span id="tabCount_ALL" class="px-1.5 py-0.5 rounded-full text-[10px] bg-white/20">0</span>
+        </button>
+        <button type="button" onclick="setPipelineTab('chatted')" id="tab_chatted" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-cyan-400 hover:text-white transition flex items-center gap-1.5" title="Agents you have texted or who have replied">
+          <span>💬 Chatted &amp; Replied</span>
+          <span id="tabCount_chatted" class="hidden px-1.5 py-0.5 rounded-full text-[10px] bg-cyan-500/20 text-cyan-300">0</span>
+        </button>
+        <button type="button" onclick="setPipelineTab('TIER_1')" id="tab_TIER_1" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-rose-400 hover:text-white transition flex items-center gap-1.5">
+          <span>🔥 Tier 1: Hot Deals</span>
+          <span id="tabCount_TIER_1" class="hidden px-1.5 py-0.5 rounded-full text-[10px] bg-rose-500/20 text-rose-300">0</span>
+        </button>
+        <button type="button" onclick="setPipelineTab('GOLD')" id="tab_GOLD" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-amber-300 hover:text-white transition flex items-center gap-1.5">
+          <span>⭐ The GOLD (≤80%)</span>
+          <span id="tabCount_GOLD" class="hidden px-1.5 py-0.5 rounded-full text-[10px] bg-amber-500/20 text-amber-200">0</span>
+        </button>
+        <button type="button" onclick="setPipelineTab('TIER_2')" id="tab_TIER_2" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-bold text-emerald-400 hover:text-white transition flex items-center gap-1.5">
+          <span>🌱 Tier 2: Pocket</span>
+        </button>
+        <button type="button" onclick="setPipelineTab('FOLLOWUP_1')" id="tab_FOLLOWUP_1" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-yellow-300 hover:text-white transition flex items-center gap-1.5">
+          <span>🟡 Follow-Up #1 Due</span>
+        </button>
+        <button type="button" onclick="setPipelineTab('FOLLOWUP_2')" id="tab_FOLLOWUP_2" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-amber-300 hover:text-white transition flex items-center gap-1.5">
+          <span>🟠 Follow-Up #2 Due</span>
+        </button>
+        <button type="button" onclick="setPipelineTab('COLDCALL')" id="tab_COLDCALL" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-purple-300 hover:text-white transition flex items-center gap-1.5">
+          <span>📞 Cold Call Queue</span>
+        </button>
+        <button type="button" onclick="setPipelineTab('DEAD')" id="tab_DEAD" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-red-400 hover:text-white transition flex items-center gap-1.5">
+          <span>🛑 Opt-Out / Dead</span>
+        </button>
+        <button type="button" onclick="setPipelineTab('whales')" id="tab_whales" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition flex items-center gap-1.5">
+          <span>🐋 Whales</span>
+        </button>
+        <button type="button" onclick="setPipelineTab('stale_dom')" id="tab_stale_dom" class="tab-btn px-3.5 py-2 rounded-xl text-xs font-semibold text-rose-300 hover:text-white transition flex items-center gap-1.5" title="Listings on market 90+ days">
+          <span>⏳ Stale DOM (90d+)</span>
+        </button>
+      </div>
+
+      <!-- Search & Controls -->
+      <div class="bg-slate-900/70 border border-slate-800/80 rounded-2xl p-3.5 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3 flex-1 min-w-[280px]">
+          <div class="relative w-full max-w-sm">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-sm">🔍</span>
+            <input type="text" id="searchInput" placeholder="Search agent, brokerage, city, address..." oninput="handleSearch(this.value)" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500">
+          </div>
+
+          <!-- Pipeline Stage Filter Dropdown -->
+          <div class="flex items-center gap-1.5">
+            <span class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider hidden sm:inline">Stage:</span>
+            <select id="stageFilterSelect" onchange="handleStageFilter(this.value)" class="bg-[#0b1220] border border-slate-700/80 rounded-xl px-2.5 py-2 text-xs text-indigo-300 focus:outline-none focus:border-indigo-500 font-semibold cursor-pointer">
+              <option value="ALL">All Pipeline Stages</option>
+              <option value="New Ingest">★ New Ingest</option>
+              <option value="Contacted">💬 Contacted</option>
+              <option value="Warm / In Discussion">🔥 Warm / In Discussion</option>
+              <option value="Appointment Pending">📅 Appt Pending</option>
+              <option value="Appointment Confirmed">✅ Appt Booked</option>
+              <option value="Pocket Deal Review">💼 Pocket Deal Review</option>
+              <option value="Contract Sent">🖋️ Contract Sent</option>
+              <option value="Tier 2 Nurture">🌱 Tier 2 Nurture</option>
+              <option value="Follow-up 30 Days">🔄 Follow-up 30d</option>
+              <option value="DND">🚫 DND</option>
+            </select>
+          </div>
+
+          <span class="text-xs text-slate-400 font-medium" id="agentCountDisplay">Loading agents...</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="refreshData()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition flex items-center gap-1.5 cursor-pointer">
+            <span>🔄 Reload Data</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AGENT LIST GRID / TABLE -->
+    <div class="bg-slate-900/90 border border-slate-800/90 rounded-2xl shadow-xl overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="border-b border-slate-800 bg-slate-950/60 text-[11px] uppercase tracking-wider text-slate-400 font-bold">
+              <th class="py-3 px-4">Agent &amp; Brokerage</th>
+              <th class="py-3 px-4">Direct Contact</th>
+              <th class="py-3 px-4">Active Listings</th>
+              <th class="py-3 px-4">Primary Listing Reference</th>
+              <th class="py-3 px-4">Pipeline Stage</th>
+              <th class="py-3 px-4 text-right">Quick Deal Actions</th>
+            </tr>
+          </thead>
+          <tbody id="agentTableBody" class="divide-y divide-slate-800/60 font-medium">
+            <tr>
+              <td colspan="6" class="text-center py-12 text-slate-500">Loading agent network...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div><!-- END BROOKE'S DESK VIEW -->
+
+    <!-- LAUREN'S ON-MARKET REDFIN FIXER DESK VIEW -->
+    <div id="laurenDeskView" class="hidden space-y-6">
+
+      <!-- LAUREN'S METRICS RIBBON -->
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        <div class="bg-gradient-to-br from-amber-950/30 to-slate-900/90 border border-amber-500/40 rounded-2xl p-3.5 shadow-sm">
+          <div class="text-[10px] font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1">
+            <span>🔨 Scraped Redfin Fixers</span>
+          </div>
+          <div class="text-xl font-black text-amber-300 mt-1" id="statFixersCount">0</div>
+          <div class="text-[10px] text-amber-300/70 mt-0.5">Ready for Trojan Horse Math</div>
+        </div>
+
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 shadow-sm">
+          <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Average Resale ARV</div>
+          <div class="text-xl font-black text-white mt-1" id="statFixersAvgArv">$0</div>
+          <div class="text-[10px] text-slate-500 mt-0.5">Top of market ceiling</div>
+        </div>
+
+        <div class="bg-gradient-to-br from-emerald-950/30 to-slate-900/90 border border-emerald-500/30 rounded-2xl p-3.5 shadow-sm">
+          <div class="text-[10px] font-bold text-emerald-300 uppercase tracking-wider flex items-center gap-1">
+            <span>💰 Average Cash Target</span>
+          </div>
+          <div class="text-xl font-black text-emerald-400 mt-1" id="statFixersAvgMao">$0</div>
+          <div class="text-[10px] text-emerald-300/70 mt-0.5">Formula MAO (15% Margin)</div>
+        </div>
+
+        <div class="bg-gradient-to-br from-cyan-950/30 to-slate-900/90 border border-cyan-500/30 rounded-2xl p-3.5 shadow-sm">
+          <div class="text-[10px] font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1">
+            <span>📄 Standing LOIs Sent</span>
+          </div>
+          <div class="text-xl font-black text-cyan-400 mt-1" id="statFixersLoiSent">0</div>
+          <div class="text-[10px] text-cyan-300/70 mt-0.5">30 Day Paper Trail Active</div>
+        </div>
+
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 shadow-sm">
+          <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Chrome Extension</div>
+          <div class="text-xs font-bold text-emerald-400 mt-2 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+            <span>Connected (:8001)</span>
+          </div>
+          <button type="button" onclick="openModal('chromeExtensionModal')" class="text-[10px] text-amber-400 hover:underline mt-1 block cursor-pointer">Setup Instructions &rarr;</button>
+        </div>
+      </div>
+
+      <!-- FILTER & ACTIONS BAR FOR FIXERS -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 shadow-md">
+        <div class="flex items-center gap-3 flex-1">
+          <div class="relative w-full max-w-sm">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-sm">🔍</span>
+            <input type="text" id="fixerSearchInput" placeholder="Search fixer address, city, agent..." oninput="filterFixersList()" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500">
+          </div>
+          <span class="text-xs text-slate-400 font-medium" id="fixerCountDisplay">Loading fixers...</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" id="btnToggleAllFixers" onclick="toggleAllFixerCards()" class="px-3.5 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-amber-300 text-xs font-semibold border border-slate-700 transition flex items-center gap-1.5 cursor-pointer" title="Expand or collapse all fixer cards">
+            <span>⛶ Expand All</span>
+          </button>
+          <button type="button" onclick="loadFixers()" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition flex items-center gap-1.5 cursor-pointer">
+            <span>🔄 Reload Fixers</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- FIXERS LIST / CARDS CONTAINER -->
+      <div id="fixersContainer" class="space-y-4">
+        <!-- Injected dynamically by app.js -->
+      </div>
+
+    </div><!-- END LAUREN'S DESK VIEW -->
+
+  </main>
+
+  <!-- AGENT DETAIL DRAWER -->
+  <div id="agentDrawer" class="fixed inset-y-0 right-0 w-full max-w-2xl bg-[#0f172a] border-l border-slate-800 shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-950/40">
+      <div>
+        <div class="flex items-center gap-2">
+          <h2 id="drawerAgentName" class="text-lg font-bold text-white">Agent Details</h2>
+          <span id="drawerAgentTierBadge" class="hidden px-2 py-0.5 rounded-full text-[10px] font-bold"></span>
+        </div>
+        <p id="drawerAgentBrokerage" class="text-xs text-slate-400 mt-0.5">Brokerage info</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" id="btnDrawerEditAgent" onclick="editAgentFromDrawer()" class="px-3 py-1.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/30 text-xs font-bold transition flex items-center gap-1 cursor-pointer">
+          <span>✏️ Edit Agent</span>
+        </button>
+        <button type="button" onclick="closeAgentDrawer()" class="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800 transition">✕</button>
+      </div>
+    </div>
+
+    <div class="p-6 overflow-y-auto flex-1 space-y-6" id="drawerBody">
+      <!-- Injected by JavaScript -->
+    </div>
+  </div>
+
+  <!-- SETUP CALL NEGOTIATION COPILOT MODAL (HUD) -->
+  <div id="negotiationModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0f172a] border border-slate-700/80 rounded-2xl max-w-3xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-300 font-bold flex items-center justify-center text-sm border border-amber-500/30">📞</div>
+          <div>
+            <h3 class="text-sm font-bold text-white">Setup Call &bull; Negotiation Copilot HUD</h3>
+            <p class="text-[11px] text-slate-400">Dynamic 5-step script &amp; live investor math helper</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('negotiationModal')" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800">✕</button>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-6 flex-1 text-xs">
+        <!-- Target Numbers Bar -->
+        <div class="grid grid-cols-4 gap-3 bg-slate-900 border border-slate-800 rounded-xl p-3.5 text-center font-mono">
+          <div>
+            <div class="text-[10px] text-slate-400 font-sans uppercase">Est. ARV</div>
+            <div class="text-sm font-bold text-white mt-0.5" id="hudArv">$0</div>
+          </div>
+          <div>
+            <div class="text-[10px] text-slate-400 font-sans uppercase">Rehab Est.</div>
+            <div class="text-sm font-bold text-amber-400 mt-0.5" id="hudRehab">$0</div>
+          </div>
+          <div>
+            <div class="text-[10px] text-slate-400 font-sans uppercase">Target Cash Range</div>
+            <div class="text-sm font-bold text-emerald-400 mt-0.5" id="hudRange">$0 - $0</div>
+          </div>
+          <div>
+            <div class="text-[10px] text-slate-400 font-sans uppercase">Formula MAO</div>
+            <div class="text-sm font-bold text-indigo-400 mt-0.5" id="hudMao">$0</div>
+          </div>
+        </div>
+
+        <!-- 5-Step Call Script -->
+        <div class="space-y-3.5" id="hudStepsContainer">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-slate-800 bg-slate-950/80 flex items-center justify-between">
+        <button type="button" onclick="openPocketDealPrompt()" class="px-4 py-2 rounded-xl text-xs font-bold bg-fuchsia-600/20 text-fuchsia-300 border border-fuchsia-500/40 hover:bg-fuchsia-600/30 transition">
+          + Log Pocket Deal
+        </button>
+
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="closeModal('negotiationModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white">Close</button>
+          <button type="button" onclick="launchContractFromHud()" class="px-5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-600/30 flex items-center gap-2">
+            <span>🖋️ Agreed! Launch FAR/BAR</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROPERTY DEAL ANALYZER & LOI GENERATOR MODAL -->
+  <div id="loiAnalyzerModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0f172a] border border-slate-700/80 rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden">
+      <!-- Modal Header -->
+      <div class="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-300 font-bold flex items-center justify-center text-sm border border-indigo-500/30">📊</div>
+          <div>
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              Property Deal Analyzer &amp; LOI Calculator
+              <span class="px-2 py-0.5 rounded text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-bold">LOI HOOK PHASE</span>
+            </h3>
+            <p class="text-[11px] text-slate-400" id="loiPropertySubtitle">Comp analysis &amp; instant offer calculation</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('loiAnalyzerModal')" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800">✕</button>
+      </div>
+
+      <div class="p-6 space-y-4 text-xs max-h-[85vh] overflow-y-auto">
+        <input type="hidden" id="loiAgentId">
+        <input type="hidden" id="loiPropertyAddress">
+        <input type="hidden" id="loiAgentEmail">
+        <input type="hidden" id="loiAgentPhone">
+
+        <!-- Property Summary Pill -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 flex items-center justify-between">
+          <div>
+            <div class="font-bold text-white text-xs flex items-center gap-1.5" id="loiDisplayAddress">📍 123 Sunshine Blvd</div>
+            <div class="text-[11px] text-slate-400 mt-0.5" id="loiDisplaySpecs">3 Beds &bull; 2 Baths &bull; 1,500 sqft &bull; Built 1980</div>
+          </div>
+          <div class="text-right">
+            <div class="text-[10px] text-slate-400 uppercase">MLS List Price</div>
+            <div class="text-xs font-mono font-bold text-indigo-300" id="loiDisplayListPrice">$0</div>
+          </div>
+        </div>
+
+        <!-- ARV & SqFt Inputs -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[10px] text-slate-400 font-semibold block mb-1">Estimated After Repair Value (ARV $)</label>
+            <input type="number" id="loiArvInput" oninput="recalculateLoiDeal()" step="1000" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono font-bold text-cyan-300 focus:outline-none focus:border-cyan-500">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 font-semibold block mb-1">Property Square Footage</label>
+            <input type="number" id="loiSqftInput" oninput="recalculateLoiDeal()" step="50" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-white focus:outline-none focus:border-cyan-500">
+          </div>
+        </div>
+
+        <!-- Rehab Budget Builder -->
+        <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+              <span>🛠️</span> Rehab Estimate Level
+            </span>
+            <span class="text-xs font-mono font-bold text-amber-400" id="loiRehabRateDisplay">$35 / sqft</span>
+          </div>
+
+          <!-- Quick Rehab Toggles -->
+          <div class="grid grid-cols-3 gap-2">
+            <button type="button" id="btnRehabLight" onclick="setRehabTier('light')" class="py-2 px-2.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 hover:border-emerald-500/50 transition text-center cursor-pointer">
+              <div class="font-bold text-emerald-400">🟢 Light</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">$20 / sqft</div>
+            </button>
+            <button type="button" id="btnRehabMedium" onclick="setRehabTier('medium')" class="py-2 px-2.5 rounded-lg text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 transition text-center cursor-pointer shadow">
+              <div class="font-bold text-amber-400">🟡 Medium</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">$35 / sqft</div>
+            </button>
+            <button type="button" id="btnRehabHeavy" onclick="setRehabTier('heavy')" class="py-2 px-2.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700 hover:border-rose-500/50 transition text-center cursor-pointer">
+              <div class="font-bold text-rose-400">🔴 Heavy Gut</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">$55 / sqft</div>
+            </button>
+          </div>
+
+          <!-- Slider -->
+          <div class="space-y-1">
+            <div class="flex justify-between text-[10px] text-slate-500">
+              <span>$10/sqft (Cosmetic)</span>
+              <span>$45/sqft (Moderate)</span>
+              <span>$80/sqft (Full Gut)</span>
+            </div>
+            <input type="range" id="loiRehabSlider" min="10" max="80" step="5" value="35" oninput="handleRehabSliderChange(this.value)" class="w-full accent-amber-500 cursor-pointer">
+          </div>
+
+          <!-- Total Rehab Dollar Amount Box -->
+          <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+            <span class="text-[11px] text-slate-400">Estimated Total Rehab Cost:</span>
+            <div class="flex items-center gap-1.5">
+              <span class="text-xs text-slate-400 font-mono">$</span>
+              <input type="number" id="loiTotalRehabInput" oninput="handleRehabTotalChange(this.value)" step="500" class="w-28 bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1 text-xs font-mono font-bold text-amber-300 text-right">
+            </div>
+          </div>
+        </div>
+
+        <!-- Buy Box Rule Selector -->
+        <div class="space-y-2">
+          <label class="text-[10px] text-slate-400 font-semibold uppercase tracking-wider block">Target Acquisition Formula</label>
+          <div class="grid grid-cols-3 gap-2 bg-slate-900 p-1 rounded-xl border border-slate-800 text-center">
+            <button type="button" id="btnRule70" onclick="setLoiRule('70')" class="py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition cursor-pointer">
+              70% Rule
+            </button>
+            <button type="button" id="btnRule75" onclick="setLoiRule('75')" class="py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white transition cursor-pointer shadow">
+              75% Rule (Standard)
+            </button>
+            <button type="button" id="btnRuleMargin" onclick="setLoiRule('margin')" class="py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition cursor-pointer">
+              15% Net Margin
+            </button>
+          </div>
+        </div>
+
+        <!-- Calculated Target Offer Box -->
+        <div class="bg-gradient-to-r from-emerald-950/40 via-slate-900 to-indigo-950/40 border border-emerald-500/30 rounded-2xl p-4 text-center space-y-1 shadow-lg">
+          <div class="text-[10px] text-emerald-400 uppercase font-bold tracking-wider">Target Cash LOI Offer</div>
+          <div class="text-2xl font-black font-mono text-emerald-300" id="loiCalculatedOffer">$0</div>
+          <div class="text-[11px] text-slate-400 font-medium" id="loiOfferExplanation">Based on $0 ARV &bull; $0 Repairs</div>
+        </div>
+
+        <!-- Live Script Preview -->
+        <div class="bg-[#0b1220] border border-slate-800 rounded-xl p-3 space-y-1">
+          <span class="text-[10px] text-slate-400 font-semibold block uppercase tracking-wider">Proposal Message Preview</span>
+          <p class="text-slate-200 text-xs italic font-medium leading-relaxed" id="loiScriptPreview">
+            "With fully renovated comps around $0 and roughly $0 in needed work, I’m at $0 cash, as-is."
+          </p>
+        </div>
+
+        <!-- 1-Click Action Buttons -->
+        <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+          <button type="button" onclick="downloadLoiPdfFromAnalyzer()" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1.5 cursor-pointer">
+            <span>📄 Download 1-Page LOI PDF</span>
+          </button>
+
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="dispatchLoiSmsFromAnalyzer()" class="px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/30 flex items-center gap-1.5 cursor-pointer">
+              <span>📱 Send LOI via SMS</span>
+            </button>
+            <button type="button" onclick="dispatchLoiEmailFromAnalyzer()" class="px-4 py-2 rounded-xl text-xs font-bold bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg shadow-cyan-600/30 flex items-center gap-1.5 cursor-pointer">
+              <span>✉️ Send LOI via Email</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SMS OUTREACH MODAL (ANDROID GATEWAY) -->
+  <div id="smsModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0f172a] border border-slate-700/80 rounded-2xl max-w-xl w-full shadow-2xl overflow-hidden">
+      <div class="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 font-bold flex items-center justify-center text-sm border border-emerald-500/30">📱</div>
+          <div>
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              Dispatch Cellular SMS
+              <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Free Android Gateway</span>
+            </h3>
+            <p class="text-[11px] text-slate-400" id="smsModalSubtitle">Sending to Listing Agent</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('smsModal')" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800">✕</button>
+      </div>
+
+      <form onsubmit="handleSendSmsSubmit(event)" class="p-6 space-y-4 text-xs">
+        <input type="hidden" id="smsAgentId">
+        <input type="hidden" id="smsListingAddress">
+        <input type="hidden" id="smsCity">
+
+        <div class="flex items-center justify-between gap-3 bg-slate-900 border border-slate-800 rounded-xl p-3">
+          <div>
+            <div class="text-[10px] text-slate-400 uppercase">Agent &amp; Listing</div>
+            <div class="font-bold text-white text-xs mt-0.5" id="smsAgentNameDisplay">Agent Name</div>
+            <div class="text-[11px] text-slate-400" id="smsListingDisplay">Listing Address</div>
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-0.5">Recipient Cell Phone</label>
+            <input type="tel" id="smsPhoneInput" required class="bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1 text-xs font-mono font-bold text-emerald-300 focus:outline-none focus:border-emerald-500 text-right w-36">
+          </div>
+        </div>
+
+        <!-- PREVIOUS SMS HISTORY SECTION -->
+        <div id="smsModalHistorySection" class="hidden space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-bold text-slate-300 flex items-center gap-1.5">
+              <span>💬 SMS Conversation History</span>
+              <span id="smsModalHistoryBadge" class="text-[10px] px-1.5 py-0.2 rounded bg-indigo-500/20 text-indigo-300 font-mono">0 msgs</span>
+            </span>
+            <button type="button" onclick="toggleSmsModalHistory()" class="text-[10px] text-indigo-400 hover:text-indigo-300 font-semibold cursor-pointer">
+              <span id="smsModalHistoryToggleText">Hide ▲</span>
+            </button>
+          </div>
+          <div id="smsModalChatThread" class="bg-[#0b1220] border border-slate-800 rounded-xl p-3 max-h-40 overflow-y-auto space-y-2 flex flex-col">
+            <!-- Dynamic Chat Bubbles -->
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="font-bold text-slate-300">Realtor Outreach Template</label>
+            <button type="button" onclick="spinBrookeSmsVariation()" class="text-[11px] text-amber-400 hover:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 px-2 py-0.5 rounded-lg flex items-center gap-1 font-bold cursor-pointer transition shadow-sm" title="Spin a fresh icebreaker variation">
+              <span>🎲 Mix It Up</span>
+            </button>
+          </div>
+          <select id="smsTemplateSelect" onchange="applySmsTemplate(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500 cursor-pointer">
+            <option value="icebreaker">1. 🎯 Active Listing Icebreaker (Off Market Fixer Hunt)</option>
+            <option value="double_comm">2. 💰 Double Dip Commission Hook (Top Producer)</option>
+            <option value="checkin">3. 🔄 30 Day Periodic Check In (Drip Cadence)</option>
+            <option value="backup_offer">4. ⚡ Direct As Is Cash Backup Offer on Listing</option>
+            <option value="loi_offer">5. 📝 Direct Cash LOI Offer (ARV &amp; Rehab Breakdown)</option>
+          </select>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="font-bold text-slate-300">Message Content</label>
+            <span class="text-[10px] text-slate-400 font-mono" id="smsCharCount">0 characters</span>
+          </div>
+          <textarea id="smsMessageText" rows="4" required oninput="updateCharCount()" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-emerald-500"></textarea>
+        </div>
+
+        <div id="smsModalAlert" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('smsModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white">Cancel</button>
+          <button type="submit" id="btnDispatchSms" class="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/30 flex items-center gap-1.5 cursor-pointer">
+            <span>🚀 Send Cellular SMS</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- EMAIL OUTREACH MODAL (SMTP2GO) -->
+  <div id="emailModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0f172a] border border-slate-700/80 rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden">
+      <div class="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-300 font-bold flex items-center justify-center text-sm border border-cyan-500/30">✉️</div>
+          <div>
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              Dispatch Professional Email Offer
+              <span class="px-2 py-0.5 rounded text-[10px] bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">SMTP2GO Relay</span>
+            </h3>
+            <p class="text-[11px] text-slate-400" id="emailModalSubtitle">Direct to Agent Inbox</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('emailModal')" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800">✕</button>
+      </div>
+
+      <form onsubmit="handleSendEmailSubmit(event)" class="p-6 space-y-4 text-xs">
+        <input type="hidden" id="emailAgentId">
+        <input type="hidden" id="emailListingAddress">
+        <input type="hidden" id="emailCity">
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Agent Email Address</label>
+            <input type="email" id="emailRecipientInput" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-cyan-300 focus:outline-none focus:border-cyan-500">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Email Template</label>
+            <select id="emailTemplateSelect" onchange="applyEmailTemplate(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500 cursor-pointer">
+              <option value="pocket_hunt">1. 💼 Off-Market &amp; Pre-MLS Inventory Inquiry</option>
+              <option value="backup_offer">2. ⚡ Direct As-Is Cash Backup Offer</option>
+              <option value="loi_offer">3. 📝 Official Cash LOI Proposal (ARV &amp; Rehab Breakdown)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="font-bold text-slate-300 block mb-1">Subject Line</label>
+          <input type="text" id="emailSubjectInput" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-white focus:outline-none focus:border-cyan-500">
+        </div>
+
+        <div>
+          <label class="font-bold text-slate-300 block mb-1">Email Content (HTML Supported)</label>
+          <textarea id="emailBodyText" rows="6" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-cyan-500 font-mono"></textarea>
+        </div>
+
+        <div id="emailModalAlert" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('emailModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white">Cancel</button>
+          <button type="submit" id="btnDispatchEmail" class="px-5 py-2 rounded-xl text-xs font-bold bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg shadow-cyan-600/30 flex items-center gap-1.5 cursor-pointer">
+            <span>🚀 Send Email Offer</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- PANDADOC CONTRACT & LOI MODAL -->
+  <div id="contractModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0f172a] border border-slate-700/80 rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden">
+      <div class="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-300 font-bold flex items-center justify-center text-sm border border-purple-500/30">🖋️</div>
+          <div>
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              Dispatch Pre-Filled Florida Contract
+              <span id="contractPandadocBadge" class="px-2 py-0.5 rounded text-[10px] bg-purple-500/20 text-purple-300 border border-purple-500/30 font-bold">PANDADOC API</span>
+            </h3>
+            <p class="text-[11px] text-slate-400">Pre-filled for Peak Investments LLC &bull; Direct to Listing Agent</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('contractModal')" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800">✕</button>
+      </div>
+
+      <form onsubmit="handleSendContractSubmit(event)" class="p-6 space-y-4 text-xs max-h-[85vh] overflow-y-auto">
+        <input type="hidden" id="contractAgentId">
+        <input type="hidden" id="contractModalMode" value="sandbox">
+
+        <!-- Environment Mode Switcher for this Contract -->
+        <div id="contractEnvSwitcher" class="flex items-center justify-between bg-slate-900/90 px-3.5 py-2 rounded-xl border border-slate-800 text-[11px]">
+          <div class="flex items-center gap-1.5">
+            <span class="text-slate-400 font-medium">E-Signature Mode:</span>
+            <span id="contractModeExplain" class="text-[10px] text-purple-300 font-mono">(Watermarked Test Invite)</span>
+          </div>
+          <div class="flex gap-1.5">
+            <button type="button" id="btnContractModeSandbox" onclick="setContractModalMode('sandbox')" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-purple-600 text-white cursor-pointer transition">
+              🟣 Sandbox (Test)
+            </button>
+            <button type="button" id="btnContractModeProd" onclick="setContractModalMode('production')" class="px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-400 hover:text-white cursor-pointer transition">
+              🟢 Live Production
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Property Address</label>
+            <input type="text" id="contractPropertyAddress" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Listing Agent Email (Signer / Presenter)</label>
+            <input type="email" id="contractAgentEmail" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-purple-300">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-4 gap-3">
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Agreed Purchase Price ($)</label>
+            <input type="number" id="contractPrice" oninput="handleContractPriceChange()" required step="500" placeholder="Enter Offer Price" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono font-bold text-emerald-400">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Escrow Deposit ($ - 1%)</label>
+            <input type="number" id="contractEscrow" step="100" placeholder="1% of Price" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-white">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Inspection Days</label>
+            <input type="number" id="contractInspection" value="5" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Close Timeline (Days)</label>
+            <input type="number" id="contractClosing" value="21" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+          </div>
+        </div>
+
+        <!-- Full FAR/BAR & LOI Form Fields (Expandable) -->
+        <details id="contractAdvancedDetails" class="bg-slate-900/80 border border-slate-800 rounded-xl p-3 text-xs" open>
+          <summary class="font-bold text-slate-300 cursor-pointer flex items-center justify-between select-none">
+            <span class="flex items-center gap-1.5">
+              <span>📋</span> Complete FAR/BAR &amp; LOI Form Fields
+            </span>
+            <span class="text-[10px] text-purple-400 font-normal">Click to edit legal details ▾</span>
+          </summary>
+          <div class="mt-3 pt-3 border-t border-slate-800 space-y-3">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-[10px] text-slate-400 block mb-1">Seller Name of Record</label>
+                <input type="text" id="contractSellerName" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+              </div>
+              <div>
+                <label class="text-[10px] text-slate-400 block mb-1">Parcel ID / Tax ID (APN)</label>
+                <input type="text" id="contractApn" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-mono text-purple-300">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3">
+              <div>
+                <label class="text-[10px] text-slate-400 block mb-1">City</label>
+                <input type="text" id="contractCity" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+              </div>
+              <div>
+                <label class="text-[10px] text-slate-400 block mb-1">County</label>
+                <input type="text" id="contractCounty" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+              </div>
+              <div>
+                <label class="text-[10px] text-slate-400 block mb-1">Zip Code</label>
+                <input type="text" id="contractZip" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-mono text-white">
+              </div>
+            </div>
+
+            <div>
+              <label class="text-[10px] text-slate-400 block mb-1">Legal Description (Lot / Block / Plat)</label>
+              <input type="text" id="contractLegalDescription" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-[10px] text-slate-400 block mb-1">Title &amp; Escrow Closing Company</label>
+                <input type="text" id="contractTitleCompany" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
+              </div>
+              <div>
+                <label class="text-[10px] text-slate-400 block mb-1">Buyer Entity Name</label>
+                <input type="text" id="contractBuyerName" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-[10px] text-slate-400 block mb-1">Buyer Signer Name</label>
+                <input type="text" id="contractBuyerSignerName" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
+              </div>
+              <div>
+                <label class="text-[10px] text-slate-400 block mb-1">Offer Acceptance Deadline (Days)</label>
+                <input type="number" id="contractAcceptanceDays" value="3" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-mono text-white">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="text-[10px] text-slate-400 block mb-1">Listing Agent Name (Page 14 Commission Box)</label>
+                <input type="text" id="contractAgentNameInput" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
+              </div>
+              <div>
+                <label class="text-[10px] text-slate-400 block mb-1">Listing Brokerage Name (Page 14 Commission Box)</label>
+                <input type="text" id="contractBrokerageInput" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200">
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <div id="contractInvestorProtections" class="bg-purple-950/20 border border-purple-500/20 rounded-xl p-3 text-[11px] text-purple-300/90 space-y-1.5">
+          <div class="font-bold text-purple-200">✓ Florida Investor Protections Pre-Filled</div>
+          <div class="flex items-center gap-2">
+            <span class="text-emerald-400 font-bold">✓ Par 7:</span> <span>May assign &amp; thereby be released from liability</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-emerald-400 font-bold">✓ Par 9(c):</span> <span>Buyer designates Closing Agent &amp; pays Owner's Policy and fees</span>
+          </div>
+          <div class="flex items-center gap-2 text-slate-400">
+            <span class="text-purple-300 font-bold">✓ Page 14:</span> <span>Agent (<span id="contractAgentDisplay">-</span>) &amp; Brokerage (<span id="contractBrokerageDisplay">-</span>) commission protected</span>
+          </div>
+        </div>
+
+        <div id="contractModalAlert" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+
+        <!-- FAR/BAR Actions (PandaDoc E-Sign or Official 14-Page PDF) -->
+        <div id="contractFarbarActions" class="flex items-center justify-between pt-2">
+          <button type="button" onclick="downloadContractPdf()" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition flex items-center gap-1.5 cursor-pointer">
+            <span>📄 Download FAR/BAR PDF (14-Page)</span>
+          </button>
+
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="closeModal('contractModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white">Cancel</button>
+            <button type="submit" id="btnDispatchContract" class="px-5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-600/30 flex items-center gap-1.5 cursor-pointer">
+              <span>🖋️ Send for E-Sign via PandaDoc</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- PANDADOC SETTINGS MODAL -->
+  <div id="pandadocSettingsModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0f172a] border border-slate-700/80 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="text-sm font-bold text-white">PandaDoc E-Sign Settings</h3>
+        <button type="button" onclick="closeModal('pandadocSettingsModal')" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <div class="flex items-center justify-between bg-slate-900 p-2 rounded-xl border border-slate-800">
+        <span class="font-bold text-slate-300">Environment Mode:</span>
+        <div class="flex gap-1.5">
+          <button type="button" id="btnPandaModeSandbox" onclick="setPandaDocMode('sandbox')" class="px-3 py-1 rounded-lg text-xs font-bold bg-purple-600 text-white">Sandbox</button>
+          <button type="button" id="btnPandaModeProduction" onclick="setPandaDocMode('production')" class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-400">Production</button>
+        </div>
+      </div>
+
+      <div>
+        <label class="text-[10px] text-slate-400 block mb-1">Sandbox API Key</label>
+        <input type="password" id="pandaSandboxKey" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-purple-300">
+      </div>
+
+      <div>
+        <label class="text-[10px] text-slate-400 block mb-1">Production API Key</label>
+        <input type="password" id="pandaProdKey" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-purple-300">
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">Buyer LLC Name</label>
+          <input type="text" id="pandaBuyerName" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+        </div>
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">Primary Signer</label>
+          <input type="text" id="pandaSignerName" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+        </div>
+      </div>
+
+      <div>
+        <label class="text-[10px] text-slate-400 block mb-1">Official Florida FAR/BAR ASIS-7x Template ID</label>
+        <input type="text" id="pandaFarbarTemplateId" placeholder="e.g. 6dCNMVqv5wBQ6gF5UoUjun" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-purple-300">
+      </div>
+
+      <div id="pandadocSettingsAlert" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+
+      <div class="flex items-center justify-between pt-2">
+        <button type="button" id="btnTestPandadoc" onclick="testPandaDocConnection()" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-purple-300 border border-purple-500/30 transition flex items-center gap-1.5 cursor-pointer">
+          <span>⚡ Test API Key</span>
+        </button>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="closeModal('pandadocSettingsModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white">Cancel</button>
+          <button type="button" onclick="savePandaDocSettings()" class="px-5 py-2 rounded-xl text-xs font-bold bg-purple-600 hover:bg-purple-500 text-white cursor-pointer">Save Settings</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SMS SETTINGS MODAL -->
+  <div id="smsSettingsModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0f172a] border border-slate-700/80 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="text-sm font-bold text-white">Android SMS Gateway Configuration</h3>
+        <button type="button" onclick="closeModal('smsSettingsModal')" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <div class="flex items-center justify-between bg-slate-900 p-2 rounded-xl border border-slate-800">
+        <span class="font-bold text-slate-300">Gateway Mode:</span>
+        <div class="flex gap-1.5">
+          <button type="button" id="btnSmsModeCloud" onclick="setSmsMode('cloud')" class="px-3 py-1 rounded-lg text-xs font-bold bg-emerald-600 text-white">Cloud Relay</button>
+          <button type="button" id="btnSmsModeLocal" onclick="setSmsMode('local')" class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-400">Local Wi-Fi IP</button>
+        </div>
+      </div>
+
+      <div>
+        <label class="text-[10px] text-slate-400 block mb-1">Gateway Endpoint / URL</label>
+        <input type="text" id="smsBaseUrl" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-emerald-300">
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">Username / Login</label>
+          <input type="text" id="smsUser" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+        </div>
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">Password / Token</label>
+          <input type="password" id="smsPass" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-2">
+        <button type="button" onclick="testSmsGatewayConnection()" class="px-3 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">Ping Gateway</button>
+        <div class="flex gap-2">
+          <button type="button" onclick="closeModal('smsSettingsModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white">Cancel</button>
+          <button type="button" onclick="saveSmsSettings()" class="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white">Save</button>
+        </div>
+      </div>
+
+      <!-- Outbound SMS Live Test Tool -->
+      <div class="border-t border-slate-800 pt-3 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-white text-xs flex items-center gap-1.5">
+            <span>🧪</span>
+            <span>Live Outbound SMS Dispatch Test</span>
+          </span>
+          <span class="text-[10px] text-slate-500">Sends real text to your phone</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-0.5">Test Cell Phone</label>
+            <input type="tel" id="smsTestPhone" placeholder="(407) 815-5043" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-mono text-emerald-300">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-0.5">Test Message</label>
+            <input type="text" id="smsTestMessage" value="Agent Deal Hunter SMS Gateway connection verified! 🚀" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+          </div>
+        </div>
+        <button type="button" onclick="sendTestSms()" id="btnSendTestSms" class="w-full py-2 rounded-xl text-xs font-bold bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-300 border border-emerald-500/30 transition flex items-center justify-center gap-1.5 cursor-pointer">
+          <span>🚀 Dispatch Test SMS to My Phone</span>
+        </button>
+        <div id="smsTestAlert" class="hidden p-2.5 rounded-lg text-[11px] font-semibold"></div>
+      </div>
+
+      <!-- Inbound SMS Webhook Setup Card -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-white text-xs flex items-center gap-1.5">
+            <span>📥</span>
+            <span>How Inbound Replies Reach This App</span>
+          </span>
+          <span class="text-[9px] uppercase px-1.5 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-bold font-mono">WEBHOOK</span>
+        </div>
+        <p class="text-[11px] text-slate-400 leading-relaxed">
+          When an agent replies, your phone receives the text. To forward it into this app automatically, open the <strong>Android SMS Gateway app</strong> on your phone &rarr; <strong>Webhooks</strong> &rarr; Add Webhook:
+        </p>
+        <div class="flex items-center gap-2">
+          <input type="text" readonly value="http://192.168.1.224:8001/api/sms/inbound" id="inboundWebhookUrl" class="w-full bg-[#0b1220] border border-indigo-500/30 rounded-lg px-2.5 py-1.5 text-[11px] font-mono text-indigo-300 select-all">
+          <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('inboundWebhookUrl').value); alert('✓ Webhook URL copied!');" class="px-2.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[10px] whitespace-nowrap cursor-pointer">
+            Copy URL
+          </button>
+        </div>
+        <div class="text-[10px] text-slate-500">
+          💡 Make sure your phone is connected to the same Wi-Fi network as this PC (<code class="text-slate-400">192.168.1.224</code>).
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EMAIL SETTINGS MODAL -->
+  <div id="emailSettingsModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0f172a] border border-slate-700/80 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="text-sm font-bold text-white">SMTP2GO Email Relay Settings</h3>
+        <button type="button" onclick="closeModal('emailSettingsModal')" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">SMTP Server Host</label>
+          <input type="text" id="emailHost" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-cyan-300">
+        </div>
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">SMTP Port</label>
+          <input type="number" id="emailPort" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-cyan-300">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">SMTP Username</label>
+          <input type="text" id="emailUser" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+        </div>
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">SMTP Password</label>
+          <input type="password" id="emailPass" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">Sender Email</label>
+          <input type="email" id="emailSender" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+        </div>
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">Reply-To Address</label>
+          <input type="email" id="emailReplyTo" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-2">
+        <button type="button" onclick="testEmailConnection()" class="px-3 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">Test Auth</button>
+        <div class="flex gap-2">
+          <button type="button" onclick="closeModal('emailSettingsModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white">Cancel</button>
+          <button type="button" onclick="saveEmailSettings()" class="px-5 py-2 rounded-xl text-xs font-bold bg-cyan-600 hover:bg-cyan-500 text-white">Save</button>
+        </div>
+      </div>
+
+      <!-- SMTP2GO Email Dispatch Live Test Tool -->
+      <div class="border-t border-slate-800 pt-3 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-white text-xs flex items-center gap-1.5">
+            <span>🧪</span>
+            <span>Live SMTP2GO Email Dispatch Test</span>
+          </span>
+          <span class="text-[10px] text-slate-500">Sends test email to your inbox</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-0.5">Test Recipient Email</label>
+            <input type="email" id="emailTestRecipient" placeholder="john@407flips.com" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs font-mono text-cyan-300">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-0.5">Subject</label>
+            <input type="text" id="emailTestSubject" value="SMTP2GO Relay Test - Agent Deal Hunter" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+          </div>
+        </div>
+        <button type="button" onclick="sendTestEmail()" id="btnSendTestEmail" class="w-full py-2 rounded-xl text-xs font-bold bg-cyan-600/20 hover:bg-cyan-600/40 text-cyan-300 border border-cyan-500/30 transition flex items-center justify-center gap-1.5 cursor-pointer">
+          <span>🚀 Dispatch Test Email to My Inbox</span>
+        </button>
+        <div id="emailTestAlert" class="hidden p-2.5 rounded-lg text-[11px] font-semibold"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INBOUND MESSAGES & CONVERSATION FEED MODAL -->
+  <div id="inboxModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0f172a] border border-slate-700/80 rounded-2xl max-w-2xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+      <div class="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-300 font-bold flex items-center justify-center text-sm border border-indigo-500/30">📬</div>
+          <div>
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              Inbound Replies &amp; Agent Feed
+              <span id="inboxUnreadPill" class="px-2 py-0.5 rounded text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-bold">0 Unread</span>
+            </h3>
+            <p class="text-[11px] text-slate-400">Incoming texts captured via Android SMS Gateway Webhook</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" id="btnClearSpamInbox" onclick="confirmClearSpamInbox()" class="px-2.5 py-1.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition shadow-sm" title="Delete all bank 2FA codes, store promos, and non-agent SMS">
+            <span>🧹 Clear Spam / Non-Agent</span>
+          </button>
+          <button type="button" onclick="closeModal('inboxModal')" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800">✕</button>
+        </div>
+      </div>
+
+      <div id="inboxModalAlert" class="hidden px-4 py-2 mx-6 mt-3 rounded-xl text-xs font-semibold transition-all"></div>
+
+      <div class="p-6 overflow-y-auto flex-1 space-y-3" id="inboxFeedContainer">
+        <div class="text-center py-8 text-slate-500 text-xs">Loading inbound messages...</div>
+      </div>
+
+      <div class="p-4 border-t border-slate-800 bg-slate-950/80 flex items-center justify-between text-xs">
+        <span class="text-[11px] text-slate-400">Webhook URL: <code class="text-indigo-300 bg-slate-900 px-1.5 py-0.5 rounded font-mono">/api/sms/inbound</code></span>
+        <button type="button" onclick="closeModal('inboxModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIMULATE INBOUND SMS MODAL -->
+  <div id="simulateInboundModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0f172a] border border-slate-700/80 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-bold">🧪</div>
+          <div>
+            <h3 class="text-sm font-bold text-white">Simulate Inbound SMS Reply</h3>
+            <p class="text-[11px] text-slate-400">Test incoming text capture, stage updating, and notification feed</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('simulateInboundModal')" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <form onsubmit="handleSimulateInboundSubmit(event)" class="space-y-3">
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">Pick Agent to Simulate Text From</label>
+          <select id="simInboundAgentSelect" onchange="handleSimAgentSelectChange(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+            <!-- Dynamically populated -->
+          </select>
+        </div>
+
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">Sender Phone Number (Digits or +1)</label>
+          <input type="tel" id="simInboundPhone" required placeholder="(321) 544-5860" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-emerald-300 focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">Incoming Message Body</label>
+          <textarea id="simInboundMessage" rows="3" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-indigo-500">Hey Johnathan! Yes, I actually have an upcoming 3/2 fixer in Palm Bay before MLS. Seller wants $210K cash quick close. Give me a call!</textarea>
+        </div>
+
+        <div id="simInboundAlert" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('simulateInboundModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white">Cancel</button>
+          <button type="submit" id="btnSimulateInbound" class="px-5 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 flex items-center gap-1.5 cursor-pointer">
+            <span>⚡ Trigger Inbound Text</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADD TEST AGENT / SANDBOX AGENT MODAL -->
+  <div id="addAgentModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0f172a] border border-slate-700/80 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-violet-500/20 text-violet-300 flex items-center justify-center font-bold">➕</div>
+          <div>
+            <h3 class="text-sm font-bold text-white">Add Sandbox Test Agent</h3>
+            <p class="text-[11px] text-slate-400">Create a test realtor using your own phone/email to practice safely</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('addAgentModal')" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <form onsubmit="handleCreateAgentSubmit(event)" class="space-y-3.5">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Agent Full Name</label>
+            <input type="text" id="createAgentName" value="Johnathan Roberts (Test Agent)" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white focus:outline-none focus:border-violet-500">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Brokerage</label>
+            <input type="text" id="createAgentBrokerage" value="Peak Realty Partners (Test)" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-violet-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Direct Phone (Your Cell Phone)</label>
+            <input type="tel" id="createAgentPhone" value="(407) 815-5043" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono font-bold text-emerald-400 focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Direct Email (Your Email)</label>
+            <input type="email" id="createAgentEmail" value="john@407flips.com" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono font-bold text-cyan-400 focus:outline-none focus:border-cyan-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div class="col-span-2">
+            <label class="text-[10px] text-slate-400 block mb-1">Sample Listing Address</label>
+            <input type="text" id="createAgentAddress" value="123 Sandbox Blvd" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-violet-500">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">City</label>
+            <input type="text" id="createAgentCity" value="Melbourne" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-violet-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">County</label>
+            <input type="text" id="createAgentCounty" value="BREVARD" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-violet-500 uppercase">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Listing Price ($)</label>
+            <input type="number" id="createAgentPrice" value="275000" step="1000" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-emerald-400 focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Days on Market</label>
+            <input type="number" id="createAgentDom" value="15" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-violet-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">Notes</label>
+          <input type="text" id="createAgentNotes" value="Sandbox test agent for verifying SMS, Email, HUD & PandaDoc" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none focus:border-violet-500">
+        </div>
+
+        <div id="addAgentAlert" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('addAgentModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white">Cancel</button>
+          <button type="submit" id="btnCreateAgent" class="px-5 py-2 rounded-xl text-xs font-bold bg-violet-600 hover:bg-violet-500 text-white shadow-lg shadow-violet-600/30 flex items-center gap-1.5 cursor-pointer">
+            <span>➕ Create Test Agent</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT AGENT MODAL -->
+  <div id="editAgentModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0f172a] border border-slate-700/80 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 text-xs">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-300 flex items-center justify-center font-bold">✏️</div>
+          <div>
+            <h3 class="text-sm font-bold text-white">Edit Agent Profile</h3>
+            <p class="text-[11px] text-slate-400" id="editAgentSubtitle">Modify agent details or update contact info for testing</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('editAgentModal')" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <form onsubmit="handleEditAgentSubmit(event)" class="space-y-3.5">
+        <input type="hidden" id="editAgentId">
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Agent Full Name</label>
+            <input type="text" id="editAgentFullName" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Brokerage</label>
+            <input type="text" id="editAgentBrokerage" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Phone Number</label>
+            <input type="tel" id="editAgentPhone" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono font-bold text-emerald-400 focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Email Address</label>
+            <input type="email" id="editAgentEmail" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono font-bold text-cyan-400 focus:outline-none focus:border-cyan-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div class="col-span-2">
+            <label class="text-[10px] text-slate-400 block mb-1">Primary Listing Address</label>
+            <input type="text" id="editAgentAddress" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">City</label>
+            <input type="text" id="editAgentCity" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Listing Price ($)</label>
+            <input type="number" id="editAgentPrice" step="1000" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-emerald-400 focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Pipeline Stage</label>
+            <select id="editAgentStage" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 cursor-pointer">
+              <option value="New Ingest">⭐ New Ingest</option>
+              <option value="Contacted">💬 Contacted</option>
+              <option value="Warm / In Discussion">🔥 Warm / In Discussion</option>
+              <option value="Pocket Deal Review">💼 Pocket Deal Review</option>
+              <option value="Contract Sent">🖋️ Contract Sent</option>
+              <option value="Follow-up 30 Days">🔄 Follow-up 30 Days</option>
+              <option value="DND">🚫 DND</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1">Notes / Relationship Details</label>
+          <textarea id="editAgentNotes" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:border-indigo-500"></textarea>
+        </div>
+
+        <div id="editAgentAlert" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+
+        <div class="flex items-center justify-between pt-2">
+          <button type="button" id="btnDeleteCustomAgent" onclick="deleteCurrentAgent()" class="hidden px-3.5 py-2 rounded-xl text-xs font-semibold text-rose-400 hover:bg-rose-500/10 border border-rose-500/30 transition">
+            🗑️ Delete Agent
+          </button>
+          <div class="flex items-center gap-2 ml-auto">
+            <button type="button" onclick="closeModal('editAgentModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white">Cancel</button>
+            <button type="submit" id="btnSaveAgentEdit" class="px-5 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 flex items-center gap-1.5 cursor-pointer">
+              <span>✓ Save Agent</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- LEAD VETTING & UNDERDOG MODEL BOT SETTINGS MODAL -->
+  <div id="botSettingsModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[#0f172a] border border-slate-700/80 rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 text-xs max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white font-bold flex items-center justify-center text-sm shadow">🤖</div>
+          <div>
+            <h3 class="text-sm font-bold text-white">Lead Vetting &amp; Underdog Bot Engine</h3>
+            <p class="text-[11px] text-slate-400">Flowchart Script Automation &amp; Macro Acquisition Funnel</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('botSettingsModal')" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800">✕</button>
+      </div>
+
+      <!-- Mode Selector -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-3 space-y-2">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="font-bold text-white block">Operating Mode</span>
+            <span class="text-[11px] text-slate-400">Choose how the bot interacts with inbound texts</span>
+          </div>
+          <div class="flex gap-1.5">
+            <button type="button" id="btnBotModeCopilot" onclick="setBotModeUI('copilot')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white transition cursor-pointer shadow">
+              🛡️ Copilot (Human-in-Loop)
+            </button>
+            <button type="button" id="btnBotModeAutopilot" onclick="setBotModeUI('autopilot')" class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-400 hover:text-white transition cursor-pointer">
+              ⚡ Auto-Pilot
+            </button>
+          </div>
+        </div>
+        <p class="text-[11px] text-indigo-300/80 bg-indigo-950/20 border border-indigo-500/20 rounded-lg p-2.5" id="botModeExplanation">
+          <strong>Copilot Mode:</strong> The bot evaluates incoming messages according to the flowchart, tags the tier, and drafts the exact script response in your inbox with a 1-click "Approve &amp; Send" button.
+        </p>
+      </div>
+
+      <!-- Core Deal & Partner Parameters -->
+      <div class="grid grid-cols-3 gap-3">
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1 font-semibold">Assistant / Bot Name</label>
+          <input type="text" id="botName" value="Emma" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white focus:outline-none focus:border-indigo-500">
+          <span class="text-[10px] text-slate-500 mt-0.5 block">Assistant who texts & introduces self</span>
+        </div>
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1 font-semibold">Underwriting Partner Name</label>
+          <input type="text" id="botPartnerName" value="John" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-bold text-white focus:outline-none focus:border-indigo-500">
+          <span class="text-[10px] text-slate-500 mt-0.5 block">Named in the flowchart handoff script</span>
+        </div>
+        <div>
+          <label class="text-[10px] text-slate-400 block mb-1 font-semibold">Callback Commitment (Hours)</label>
+          <input type="number" id="botCallWindow" value="3" min="1" max="24" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono font-bold text-amber-300 focus:outline-none focus:border-amber-500">
+          <span class="text-[10px] text-slate-500 mt-0.5 block">Flowchart standard: within 3 hours</span>
+        </div>
+      </div>
+
+      <!-- GOLD Threshold -->
+      <div class="bg-amber-950/20 border border-amber-500/30 rounded-xl p-3 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-amber-300 flex items-center gap-1.5">
+            <span>⭐</span>
+            <span>The GOLD Deal Ratio Threshold</span>
+          </span>
+          <span class="font-mono font-bold text-xs text-amber-200" id="botGoldDisplay">≤ 80% of Zestimate</span>
+        </div>
+        <p class="text-[11px] text-slate-300">
+          When an agent's asking price is at or below this percentage of the Zillow Zestimate, the bot flags the lead as <strong>⭐ THE GOLD</strong>, inquires about seller timeline, and books an underwriting call for Matt.
+        </p>
+        <div class="flex items-center gap-3 pt-1">
+          <input type="range" id="botGoldThreshold" min="50" max="95" value="80" oninput="document.getElementById('botGoldDisplay').innerText = `≤ ${this.value}% of Zestimate`" class="w-full accent-amber-500">
+        </div>
+      </div>
+
+      <!-- Natural Human Reply Delay -->
+      <div class="bg-indigo-950/20 border border-indigo-500/30 rounded-xl p-3 space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-indigo-300 flex items-center gap-1.5">
+            <span>⏱️</span>
+            <span>Natural Human Response Delay</span>
+          </span>
+          <span class="font-mono font-bold text-xs text-indigo-200" id="botDelayDisplay">30s (±5s natural jitter)</span>
+        </div>
+        <p class="text-[11px] text-slate-300">
+          In Autopilot mode, the bot introduces a realistic 25–45 second natural typing pause before dispatching cellular SMS, completely eliminating robotic instant replies.
+        </p>
+        <div class="flex items-center gap-3 pt-1">
+          <input type="range" id="botDelayInput" min="15" max="60" value="30" oninput="document.getElementById('botDelayDisplay').innerText = `${this.value}s (±5s natural jitter)`" class="w-full accent-indigo-500">
+        </div>
+      </div>
+
+      <!-- Google Gemini AI Copilot Integration -->
+      <div class="bg-gradient-to-br from-violet-950/30 to-slate-900 border border-violet-500/30 rounded-xl p-3 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-base">✨</span>
+            <div>
+              <span class="font-bold text-white block">Google Gemini AI Voice &amp; Learning Engine</span>
+              <span class="text-[10px] text-slate-400">Polishes flowchart scripts using few-shot examples learned from your approved texts</span>
+            </div>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="botGeminiEnabled" class="sr-only peer" checked>
+            <div class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-violet-600"></div>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5 pt-1">
+          <div class="col-span-2">
+            <label class="text-[10px] text-slate-400 block mb-1 font-semibold">Gemini API Key</label>
+            <div class="relative">
+              <input type="password" id="botGeminiApiKey" placeholder="AIzaSy..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-violet-500 pr-9">
+              <button type="button" onclick="togglePasswordVisibility('botGeminiApiKey', this)" class="absolute right-2.5 top-2 text-slate-400 hover:text-white text-xs">👁️</button>
+            </div>
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1 font-semibold">Model</label>
+            <select id="botGeminiModel" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-2 text-xs text-white focus:outline-none focus:border-violet-500">
+              <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash Lite (Fast &amp; Reliable)</option>
+              <option value="gemini-3.8-flash">Gemini 3.8 Flash (High Demand)</option>
+              <option value="gemini-3.5-flash">Gemini 3.5 Flash</option>
+              <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash Lite</option>
+              <option value="gemini-flash-latest">Gemini Flash Latest</option>
+              <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-1">
+          <button type="button" onclick="testGeminiConnectionFromModal()" class="px-3 py-1.5 rounded-xl bg-violet-600/20 hover:bg-violet-600/30 text-violet-300 border border-violet-500/30 text-xs font-semibold flex items-center gap-1.5 cursor-pointer transition">
+            <span>🧪</span>
+            <span>Test Gemini Key</span>
+          </button>
+          <div class="flex items-center gap-2">
+            <span class="text-[10px] text-slate-400 font-mono" id="goldenExamplesCountBadge">📚 7 Golden Examples Learned</span>
+            <button type="button" onclick="toggleGoldenExamplesViewer()" class="text-[10px] text-violet-400 hover:underline">View Examples</button>
+          </div>
+        </div>
+
+        <!-- Collapsible Golden Examples Preview -->
+        <div id="goldenExamplesViewer" class="hidden bg-slate-950/80 border border-slate-800 rounded-xl p-2.5 space-y-2 max-h-44 overflow-y-auto text-[11px]">
+          <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Recent Human-Approved Golden Examples:</div>
+          <div id="goldenExamplesList" class="space-y-1.5 text-slate-300">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Underdog Model Follow-up Sequence Cadence -->
+      <div class="space-y-2 border-t border-slate-800 pt-3">
+        <span class="font-bold text-slate-300 block">Underdog Macro Funnel Follow-Up Cadence</span>
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Follow-Up #1 (Days)</label>
+            <input type="number" id="botFu1Days" value="3" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-yellow-300">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Follow-Up #2 (Days)</label>
+            <input type="number" id="botFu2Days" value="7" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-amber-300">
+          </div>
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1">Cold Call Bucket (Days)</label>
+            <input type="number" id="botColdCallDays" value="14" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-purple-300">
+          </div>
+        </div>
+      </div>
+
+      <!-- 9:00 AM Automated Follow-Up Scheduler -->
+      <div class="bg-gradient-to-r from-yellow-950/30 via-slate-900 to-amber-950/30 border border-yellow-500/40 rounded-2xl p-4 space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span class="w-8 h-8 rounded-xl bg-yellow-500/20 text-yellow-300 font-bold flex items-center justify-center text-sm border border-yellow-500/30">⏰</span>
+            <div>
+              <span class="text-xs font-bold text-white block">9:00 AM Daily Autopilot Follow-Up Scheduler</span>
+              <span class="text-[10px] text-slate-400">Scans all silent agents daily at 9:00 AM and dispatches cadence follow-up SMS automatically</span>
+            </div>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="botAutoCadenceEnabled" class="sr-only peer" checked>
+            <div class="w-9 h-5 bg-slate-800 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-yellow-500"></div>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 text-xs pt-0.5">
+          <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 flex items-center justify-between">
+            <span class="text-[10px] text-slate-400 font-semibold uppercase">Daily Send Time</span>
+            <span class="font-mono text-yellow-300 font-bold text-xs" id="schedulerTimeDisplay">09:00 AM Daily</span>
+          </div>
+          <div class="bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 flex items-center justify-between">
+            <span class="text-[10px] text-slate-400 font-semibold uppercase">Cellular Throttle</span>
+            <span class="font-mono text-emerald-300 font-bold text-xs">6s pause / text</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-1 text-[11px]">
+          <div id="schedulerStatusSummary" class="text-slate-300 flex items-center gap-1.5 font-medium">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+            <span>Scheduler Active &bull; Next run: Today at 9:00 AM</span>
+          </div>
+          <button type="button" id="btnRunCadenceNow" onclick="triggerCadenceRunNow()" class="px-3 py-1.5 rounded-xl bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-bold text-xs shadow-md shadow-yellow-500/20 transition flex items-center gap-1 cursor-pointer" title="Trigger Follow-Up #1 & #2 dispatch right now">
+            <span>⚡ Run Cadence Now</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="botSettingsAlert" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
+
+      <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+        <button type="button" onclick="closeModal('botSettingsModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white">Cancel</button>
+        <button type="button" onclick="saveBotSettings()" class="px-5 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 cursor-pointer">Save Bot Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GOLDEN TRAINING STUDIO MODAL -->
+  <div id="botTrainingModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-amber-500/30 rounded-2xl w-full max-w-5xl shadow-2xl p-5 space-y-4 my-auto max-h-[92vh] flex flex-col">
+      
+      <!-- Modal Header: Unified Golden Training Studio with Both Desks -->
+      <div class="flex items-start justify-between border-b border-slate-800 pb-3 flex-shrink-0">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-xl shadow-inner text-amber-400">
+            🎓
+          </div>
+          <div>
+            <div class="flex items-center gap-2.5">
+              <h3 class="text-base font-bold text-white tracking-wide">Golden Training Studio</h3>
+              <div class="flex items-center gap-1.5 text-[10px] font-mono font-bold">
+                <span class="px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">🌿 Brooke (<span id="modalBrookeCountBadge">10</span>)</span>
+                <span class="text-slate-500">•</span>
+                <span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">🔨 Lauren (<span id="modalLaurenCountBadge">7</span>)</span>
+              </div>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">Review, test, and critique Gemini voice responses for Brooke (Off Market Leads) and Lauren (On Market Fixers).</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('botTrainingModal')" class="text-slate-400 hover:text-white text-lg p-1.5 rounded-lg hover:bg-slate-800 transition">✕</button>
+      </div>
+
+      <!-- Dedicated Desk Switcher Tabs -->
+      <div class="flex items-center gap-2 p-1.5 bg-slate-950 rounded-2xl border border-slate-800 flex-shrink-0">
+        <button type="button" id="btnDeskBrooke" onclick="setStudioDeskFilter('BROOKE')" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/30 border border-indigo-400 cursor-pointer transition">
+          <span>🌿 Brooke (Off Market Deals)</span>
+          <span id="deskBrookeCountBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-950 font-mono text-indigo-200 border border-indigo-400/30">10 Stages</span>
+        </button>
+        <button type="button" id="btnDeskLauren" onclick="setStudioDeskFilter('LAUREN')" class="flex-1 py-2 px-3 rounded-xl text-xs font-medium flex items-center justify-center gap-2 bg-slate-900/60 text-slate-400 hover:text-white border border-slate-800 cursor-pointer transition">
+          <span>🔨 Lauren (On Market Fixers)</span>
+          <span id="deskLaurenCountBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 font-mono text-amber-300 border border-amber-500/30">7 Stages</span>
+        </button>
+      </div>
+
+      <!-- Studio Navigation Tabs & Filter Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-3 flex-shrink-0 pt-1">
+        <div class="flex items-center gap-1.5 p-1 bg-slate-950/80 rounded-xl border border-slate-800">
+          <button type="button" id="btnTabScenarios" onclick="switchTrainingTab('scenarios')" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 transition cursor-pointer">
+            📋 Flowchart Scenarios (9 Stages)
+          </button>
+          <button type="button" id="btnTabDataset" onclick="switchTrainingTab('dataset')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition cursor-pointer">
+            📚 Active Golden Dataset (<span id="tabDatasetCount">0</span>)
+          </button>
+          <button type="button" id="btnTabCustom" onclick="switchTrainingTab('custom')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition cursor-pointer">
+            ➕ Add Custom Objection
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2 flex-1 max-w-xs">
+          <input type="text" id="trainingScenarioSearch" oninput="filterTrainingScenarios(this.value)" placeholder="Search stages, keywords..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500">
+        </div>
+      </div>
+
+      <!-- Tab Content Area (Scrollable) -->
+      <div class="overflow-y-auto pr-1 flex-1 space-y-4" id="trainingModalBody">
+        
+        <!-- TAB 1: FLOWCHART SCENARIOS -->
+        <div id="tabContentScenarios" class="space-y-4">
+          <!-- Category Quick Filter Chips -->
+          <div class="flex flex-wrap items-center gap-1.5 text-xs" id="scenarioCategoryChips">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- Scenario Cards Container -->
+          <div id="scenariosCardList" class="space-y-4">
+            <div class="text-center py-8 text-slate-500 text-xs">
+              <span class="inline-block animate-spin text-lg mr-2">⏳</span> Loading standard deal vetting scenarios...
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: ACTIVE GOLDEN DATASET -->
+        <div id="tabContentDataset" class="hidden space-y-3">
+          <div class="flex items-center justify-between bg-slate-950/60 p-3 rounded-xl border border-slate-800 text-xs">
+            <div class="text-slate-300">
+              <span class="font-bold text-amber-300">Active Few-Shot Memory:</span> Gemini uses these approved responses as golden training examples whenever it drafts or polishes SMS.
+            </div>
+            <button type="button" onclick="loadSavedGoldenDataset()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-[11px] font-semibold flex items-center gap-1 transition cursor-pointer">
+              🔄 Refresh List
+            </button>
+          </div>
+          <div id="goldenDatasetList" class="space-y-3">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- TAB 3: ADD CUSTOM OBJECTION -->
+        <div id="tabContentCustom" class="hidden space-y-4 bg-slate-950/60 border border-slate-800 p-4 rounded-xl">
+          <div class="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+            <span>💡 Teach Bot a Custom Objection or Unique Scenario</span>
+          </div>
+          <p class="text-xs text-slate-400">Add custom seller objections (e.g. "Needs 60-day leaseback", "Wants proof of funds", "Title issues") and critique how the bot should reply.</p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label class="text-[10px] text-slate-400 block mb-1 font-semibold uppercase">Stage / Objection Category</label>
+              <select id="customScenarioNode" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-500">
+                <option value="OFF_MARKET_CONDITION">Condition &amp; Repairs (OFF_MARKET_CONDITION)</option>
+                <option value="PHOTO_REQUEST">Photo / Link Request (PHOTO_REQUEST)</option>
+                <option value="OFF_MARKET_PRICE">Asking Price Inquiries (OFF_MARKET_PRICE)</option>
+                <option value="OFF_MARKET_TIMELINE">Timeline &amp; Urgency (OFF_MARKET_TIMELINE)</option>
+                <option value="CREATIVE_FINANCING_PIVOT">Creative Financing / Seller Finance Pivot</option>
+                <option value="PARTNER_CALL_HANDOFF">Partner Call Booking (PARTNER_CALL_HANDOFF)</option>
+                <option value="APPOINTMENT_CONFIRMED">Appointment Confirmation (APPOINTMENT_CONFIRMED)</option>
+                <option value="TIER_2_NURTURE_ASK">Pocket Inventory Nurture (TIER_2_NURTURE_ASK)</option>
+                <option value="OBJECTION_HANDLING">General Realtor / Seller Objection (CUSTOM)</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-[10px] text-slate-400 block mb-1 font-semibold uppercase">Tags (comma-separated)</label>
+              <input type="text" id="customScenarioTags" placeholder="e.g. proof of funds, cash buyer, quick close" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500">
+            </div>
+          </div>
+
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1 font-semibold uppercase">Agent Inbound Text (What they text you)</label>
+            <input type="text" id="customInboundText" placeholder="e.g. Can you show proof of funds before we submit an offer?" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500">
+          </div>
+
+          <div>
+            <label class="text-[10px] text-slate-400 block mb-1 font-semibold uppercase">Your Ideal Golden Reply (How Johnathan / your team answers)</label>
+            <textarea id="customGoldenReply" rows="3" placeholder="Write your exact natural investor response here..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-amber-200 placeholder-slate-500 focus:outline-none focus:border-amber-500 font-sans"></textarea>
+          </div>
+
+          <div id="customTestResultContainer" class="hidden p-3 rounded-xl bg-indigo-950/30 border border-indigo-500/30 text-xs space-y-1.5">
+            <div class="text-[10px] font-bold text-indigo-300 uppercase tracking-wider flex items-center gap-1.5">
+              <span>✨ Gemini AI Phrasing Test Result:</span>
+            </div>
+            <div id="customTestResultText" class="text-slate-100 font-medium leading-relaxed italic bg-slate-950/60 p-2.5 rounded-lg border border-slate-800"></div>
+          </div>
+
+          <div class="flex items-center justify-between pt-2">
+            <button type="button" onclick="testCustomScenarioAI()" class="px-4 py-2 rounded-xl bg-violet-600/20 hover:bg-violet-600/30 text-violet-300 border border-violet-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+              <span>✨ Test AI Phrasing</span>
+            </button>
+            <button type="button" onclick="saveCustomScenarioGolden()" class="px-5 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs shadow-lg shadow-amber-600/30 transition flex items-center gap-1.5 cursor-pointer">
+              <span>💾 Save to Golden Dataset</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="flex items-center justify-between border-t border-slate-800 pt-3 flex-shrink-0 text-xs text-slate-400">
+        <div class="flex items-center gap-2">
+          <span>💡 <strong>Tip:</strong> The more critiques you save, the more naturally Gemini speaks your language.</span>
+        </div>
+        <button type="button" onclick="closeModal('botTrainingModal')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold cursor-pointer transition">
+          Close Studio
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHROME EXTENSION SETUP GUIDE MODAL -->
+  <div id="chromeExtensionModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-amber-500/40 rounded-2xl w-full max-w-xl shadow-2xl p-6 space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-300 font-bold flex items-center justify-center text-sm border border-amber-500/30">🧩</div>
+          <div>
+            <h3 class="text-sm font-bold text-white">407 Flips &bull; Lauren's Redfin Chrome Plugin</h3>
+            <p class="text-[11px] text-slate-400">1 click property scraper &amp; Trojan Horse Underwriter</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('chromeExtensionModal')" class="text-slate-400 hover:text-white p-1 rounded-lg">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs text-slate-300">
+        <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 font-medium">
+          🚀 <strong>Ready to load!</strong> The extension folder has been created directly in your app directory.
+        </div>
+
+        <div class="space-y-2.5">
+          <div class="flex items-start gap-3 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+            <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 font-bold flex items-center justify-center text-xs flex-shrink-0">1</span>
+            <div>
+              <strong class="text-white block">Open Chrome Extensions</strong>
+              <p class="text-[11px] text-slate-400 mt-0.5">In your Google Chrome browser, type <code class="px-1.5 py-0.5 rounded bg-slate-900 text-amber-300 font-mono">chrome://extensions</code> in the address bar and press Enter.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+            <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 font-bold flex items-center justify-center text-xs flex-shrink-0">2</span>
+            <div>
+              <strong class="text-white block">Turn ON "Developer mode"</strong>
+              <p class="text-[11px] text-slate-400 mt-0.5">Toggle the switch in the top right corner of the Chrome Extensions page.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+            <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 font-bold flex items-center justify-center text-xs flex-shrink-0">3</span>
+            <div>
+              <strong class="text-white block">Click "Load unpacked"</strong>
+              <p class="text-[11px] text-slate-400 mt-0.5">Click the <strong>Load unpacked</strong> button in the top left and select this exact folder:</p>
+              <div class="mt-1.5 p-2 rounded-lg bg-slate-900 border border-slate-700 font-mono text-[10px] text-emerald-300 select-all">
+                C:\Projects\Apps\Agent-Deal-Hunter\chrome_extension
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-slate-400">
+          💡 <strong>How to use:</strong> Open any active property on Redfin.com, click the 🔨 extension icon, check the listing agent cell phone, and click <strong>"Push to Lauren's Desk"</strong>!
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end pt-2 border-t border-slate-800">
+        <button type="button" onclick="closeModal('chromeExtensionModal')" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 cursor-pointer">
+          Got It, Done!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIXER INBOUND AGENT REPLY SIMULATION MODAL -->
+  <div id="fixerInboundModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-indigo-500/40 rounded-2xl w-full max-w-xl shadow-2xl p-6 space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-indigo-500/20 text-indigo-300 font-bold flex items-center justify-center text-sm border border-indigo-500/30">💬</div>
+          <div>
+            <h3 class="text-sm font-bold text-white">Simulate Agent Inbound Reply</h3>
+            <p class="text-[11px] text-slate-400" id="fixerInboundSubtitle">Test Lauren's Socratic Trojan Horse Engine</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="resetFixerFlowFromModal()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 text-[11px] font-bold flex items-center gap-1 transition cursor-pointer" title="Reset this property back to Step 1 Hook">
+            <span>🔄 Reset to Step 1</span>
+          </button>
+          <button type="button" onclick="closeModal('fixerInboundModal')" class="text-slate-400 hover:text-white p-1 rounded-lg">✕</button>
+        </div>
+      </div>
+
+      <input type="hidden" id="fixerInboundFixerId">
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">What did the listing agent reply?</label>
+          <textarea id="fixerInboundMessage" rows="3" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500" placeholder="Type or click a preset below to test instantly..."></textarea>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Quick Inbound Presets (Click to Test Instantly):</label>
+          <div class="flex flex-wrap gap-1.5">
+            <button type="button" onclick="setInboundPreset('Needs a new roof, AC is ancient, and interior is completely dated. Probably 50k to 60k in repairs.', true)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-[11px] transition cursor-pointer">
+              🔨 Step 1: Repair Scope (~$55k)
+            </button>
+            <button type="button" onclick="setInboundPreset('Honestly in this neighborhood, if someone puts in high end finishes it will sell for $260k max.', true)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-[11px] transition cursor-pointer">
+              📉 Step 2: Agent Lower ARV ($260k Arbitrage)
+            </button>
+            <button type="button" onclick="setInboundPreset('Comps are easily at $380,000 all day long.', true)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-[11px] transition cursor-pointer">
+              📈 Step 2: Agent High ARV ($380k Anchor)
+            </button>
+            <button type="button" onclick="setInboundPreset('No way in hell my seller takes anything under 180k. We already turned down 170k.', true)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-[11px] transition cursor-pointer">
+              🛑 Step 3 Pushback: Trigger Standing LOI Rule
+            </button>
+            <button type="button" onclick="setInboundPreset('Who is this and what company are you with?', true)" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-[11px] transition cursor-pointer">
+              ❓ Identity Inquiry
+            </button>
+          </div>
+        </div>
+
+        <div id="fixerInboundResultBox" class="hidden p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
+          <div class="flex items-center justify-between text-[11px]">
+            <span class="font-bold text-amber-400">🤖 Lauren's Trojan Horse Analysis:</span>
+            <span id="fixerInboundNodeBadge" class="px-2 py-0.5 rounded text-[10px] font-mono bg-indigo-500/20 text-indigo-300">...</span>
+          </div>
+          <p id="fixerInboundReason" class="text-slate-400 text-[11px] italic"></p>
+          <div class="p-2.5 rounded-lg bg-indigo-950/40 border border-indigo-500/30 text-indigo-200">
+            <strong>Suggested SMS Reply:</strong>
+            <p id="fixerInboundSuggestedReply" class="mt-1 font-medium"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+        <button type="button" onclick="closeModal('fixerInboundModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white cursor-pointer">
+          Close
+        </button>
+        <button type="button" id="btnSubmitFixerInbound" onclick="submitFixerInbound()" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 cursor-pointer flex items-center gap-1.5">
+          <span>🧠 Analyze with Lauren Engine</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/app.js?v=20261001_18"></script>
+</body>
+</html>
