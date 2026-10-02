@@ -45,7 +45,8 @@ function extractRedfinData() {
   // 2. Listing Price
   const priceEl = document.querySelector('[data-rf-test-id="abp-price"] .statsValue') ||
                   document.querySelector('.statsValue') ||
-                  document.querySelector('.price');
+                  document.querySelector('.price') ||
+                  document.querySelector('[class*="Price"]');
   if (priceEl) {
     const pNum = parseFloat(priceEl.innerText.replace(/[^0-9.]/g, ''));
     if (!isNaN(pNum)) data.list_price = pNum;
@@ -62,16 +63,17 @@ function extractRedfinData() {
 
   // 4. SqFt
   const sqftEl = document.querySelector('[data-rf-test-id="abp-sqFt"] .statsValue') ||
-                 document.querySelector('.sqft .statsValue');
+                 document.querySelector('.sqft .statsValue') ||
+                 document.querySelector('[class*="sqFt"] .statsValue');
   if (sqftEl) {
     const sqNum = parseFloat(sqftEl.innerText.replace(/[^0-9.]/g, ''));
     if (!isNaN(sqNum)) data.sqft = sqNum;
   }
 
   // 5. Beds / Baths
-  const bedsEl = document.querySelector('[data-rf-test-id="abp-beds"] .statsValue');
+  const bedsEl = document.querySelector('[data-rf-test-id="abp-beds"] .statsValue') || document.querySelector('[class*="beds"] .statsValue');
   if (bedsEl) data.beds = bedsEl.innerText.trim();
-  const bathsEl = document.querySelector('[data-rf-test-id="abp-baths"] .statsValue');
+  const bathsEl = document.querySelector('[data-rf-test-id="abp-baths"] .statsValue') || document.querySelector('[class*="baths"] .statsValue');
   if (bathsEl) data.baths = bathsEl.innerText.trim();
 
   // 6. Days on Market (DOM)
@@ -93,7 +95,7 @@ function extractRedfinData() {
     data.remarks = remarksEl.innerText.trim();
   }
 
-  // 9. Photo URL (OpenGraph Meta or first img)
+  // 9. Photo URL
   const ogImg = document.querySelector('meta[property="og:image"]');
   if (ogImg && ogImg.content) {
     data.photo_url = ogImg.content;
@@ -127,10 +129,9 @@ function extractRedfinData() {
     data.county = "POLK";
   }
 
-  // 10. Extract Listing Agent Details directly from HTML / Embedded React state
+  // 10. Extract Listing Agent Details
   const html = document.documentElement.innerHTML;
   
-  // JSON payload pattern in reactServerState
   const mName = html.match(/\\?"listingAgentName\\?"\s*:\s*\\?"([^\\"]+)/i);
   if (mName && mName[1]) data.agent_name = mName[1].trim();
 
@@ -160,86 +161,129 @@ function extractRedfinData() {
     }
   }
 
-  // Fallback: check public remarks for direct agent phone
-  if (!data.agent_phone && data.remarks) {
-    const remarksPhone = data.remarks.match(/(?:call|text|cell|agent|contact)[:\s]*(\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4})/i);
-    if (remarksPhone) {
-      data.agent_phone = remarksPhone[1].trim();
-    }
-  }
-
-  // Strict check: if phone is Redfin corporate tour or call center number, discard it
-  if (isRedfinCorporateNumber(data.agent_phone)) {
-    data.agent_phone = "";
-  }
-
   return data;
 }
 
 function extractRedfinSearchResults() {
-  const cards = document.querySelectorAll('.HomeCardContainer, [data-rf-test-name="mapHomeCard"], .bp-HomeCard, .homecard, div[id^="MapHomeCard_"]');
+  // Find all property links on search page
+  const linkElements = document.querySelectorAll('a[href*="/home/"]');
   const results = [];
   const seenUrls = new Set();
 
-  cards.forEach((card, idx) => {
+  linkElements.forEach((linkEl, idx) => {
     try {
-      const linkEl = card.querySelector('a.link-and-anchor, a[href*="/home/"], a.bp-HomeCard__Address, a');
-      if (!linkEl) return;
-      let href = linkEl.getAttribute('href');
+      let href = linkEl.getAttribute('href') || "";
       if (!href || !href.includes('/home/')) return;
+      
+      // Clean query params
+      href = href.split('?')[0];
       if (!href.startsWith('http')) {
         href = 'https://www.redfin.com' + href;
       }
       if (seenUrls.has(href)) return;
       seenUrls.add(href);
 
-      // Address
-      let addr = linkEl.innerText.trim();
-      const addrEl = card.querySelector('.bp-HomeCard__Address, .street-address, [data-rf-test-name="homecard-address"]');
-      if (addrEl && addrEl.innerText) addr = addrEl.innerText.trim();
+      // Find surrounding card container
+      const card = linkEl.closest('[class*="Homecard"], [class*="homecard"], [class*="HomeCard"], [data-rf-test-name="mapHomeCard"], div.MapHomecardWrapper') || linkEl.parentElement;
 
-      // Price
-      let price = 0;
-      const priceEl = card.querySelector('.bp-HomeCard__Price--value, .homecardV2Price, .price');
-      if (priceEl) {
-        const pNum = parseFloat(priceEl.innerText.replace(/[^0-9.]/g, ''));
-        if (!isNaN(pNum)) price = pNum;
-      }
-
-      // Stats
-      let beds = "";
-      let baths = "";
-      let sqft = 1200;
-
-      const bedsEl = card.querySelector('.bp-HomeCard__Stats--beds, [data-rf-test-name="homecard-beds"]');
-      if (bedsEl) beds = bedsEl.innerText.replace(/[^0-9.]/g, '');
-
-      const bathsEl = card.querySelector('.bp-HomeCard__Stats--baths, [data-rf-test-name="homecard-baths"]');
-      if (bathsEl) baths = bathsEl.innerText.replace(/[^0-9.]/g, '');
-
-      const sqftEl = card.querySelector('.bp-HomeCard__Stats--sqft, [data-rf-test-name="homecard-sqft"]');
-      if (sqftEl) {
-        const sNum = parseInt(sqftEl.innerText.replace(/[^0-9]/g, ''), 10);
-        if (!isNaN(sNum)) sqft = sNum;
-      }
-
-      // Photo
-      let photoUrl = "";
-      const imgEl = card.querySelector('img.homecard-image, img.bp-HomeCard__Photo, img');
-      if (imgEl) {
-        photoUrl = imgEl.src || imgEl.getAttribute('data-src') || "";
-      }
-
-      // City & Zip derivation from URL
+      // Address & City Parsing from URL and card
+      let addr = "";
       let city = "Melbourne";
       let county = "BREVARD";
       let zip = "";
 
+      // Parse from URL: https://www.redfin.com/FL/Cocoa/2563-Terri-Ln-32926/home/120323468
       const urlParts = href.split('/');
       if (urlParts.length >= 6) {
         city = decodeURIComponent(urlParts[4]).replace(/-/g, ' ');
-        const zMatch = urlParts[5].match(/\b\d{5}\b/);
+        const segment = decodeURIComponent(urlParts[5]);
+        const zMatch = segment.match(/\b\d{5}\b/);
         if (zMatch) zip = zMatch[0];
+        addr = segment.replace(/-\d{5}$/, '').replace(/-/g, ' ');
+      }
+
+      if (card) {
+        const addrEl = card.querySelector('[class*="Address"], .street-address, [data-rf-test-name="homecard-address"]');
+        if (addrEl && addrEl.innerText && addrEl.innerText.trim().length > 3) {
+          addr = addrEl.innerText.trim();
+        }
+      }
+
+      // Price: Check specific price elements first, then card text regex
+      let price = 0;
+      if (card) {
+        const priceEl = card.querySelector('.bp-Homecard__Price--value, [data-rf-test-name="homecard-price"], .homecardV2Price, [class*="Price--value"], [class*="price"]');
+        if (priceEl && priceEl.innerText) {
+          const pNum = parseFloat(priceEl.innerText.replace(/[^0-9.]/g, ''));
+          if (!isNaN(pNum) && pNum > 1000) price = pNum;
+        }
+        if (price === 0 && card.innerText) {
+          const pMatch = card.innerText.match(/\$([0-9]{1,3}(?:,[0-9]{3})+)/);
+          if (pMatch && pMatch[1]) {
+            const pNum = parseFloat(pMatch[1].replace(/,/g, ''));
+            if (!isNaN(pNum) && pNum > 1000) price = pNum;
+          }
+        }
+      }
+
+      // Stats: Beds, Baths, Sqft
+      let beds = "";
+      let baths = "";
+      let sqft = 1200;
+
+      if (card) {
+        const bedsEl = card.querySelector('.bp-Homecard__Stats--beds, [class*="beds"], [data-rf-test-name="homecard-beds"]');
+        if (bedsEl && bedsEl.innerText) beds = bedsEl.innerText.replace(/[^0-9.]/g, '');
+
+        const bathsEl = card.querySelector('.bp-Homecard__Stats--baths, [class*="baths"], [data-rf-test-name="homecard-baths"]');
+        if (bathsEl && bathsEl.innerText) baths = bathsEl.innerText.replace(/[^0-9.]/g, '');
+
+        const sqftEl = card.querySelector('.bp-Homecard__Stats--sqft, [class*="sqft"], [data-rf-test-name="homecard-sqft"]');
+        if (sqftEl && sqftEl.innerText) {
+          const sNum = parseInt(sqftEl.innerText.replace(/[^0-9]/g, ''), 10);
+          if (!isNaN(sNum) && sNum > 200 && sNum < 50000) sqft = sNum;
+        }
+
+        // Fallbacks from card text
+        if (!beds && card.innerText) {
+          const bMatch = card.innerText.match(/(\d+)\s*(?:beds?|bd)/i);
+          if (bMatch) beds = bMatch[1];
+        }
+        if (!baths && card.innerText) {
+          const baMatch = card.innerText.match(/([\d\.]+)\s*(?:baths?|ba)/i);
+          if (baMatch) baths = baMatch[1];
+        }
+        if (sqft === 1200 && card.innerText) {
+          const sqMatch = card.innerText.match(/([0-9,]+)\s*(?:sq\s*ft|sqft)/i);
+          if (sqMatch) {
+            const sNum = parseInt(sqMatch[1].replace(/,/g, ''), 10);
+            if (!isNaN(sNum) && sNum > 200 && sNum < 50000) sqft = sNum;
+          }
+        }
+      }
+
+      // Photo URL
+      let photoUrl = "";
+      if (card) {
+        const imgEl = card.querySelector('img.bp-Homecard__Photo--image, img[class*="Photo"], img[data-rf-test-name="homecard-photo"], img');
+        if (imgEl) {
+          const rawSrc = imgEl.src || imgEl.getAttribute('data-src') || imgEl.dataset?.src || "";
+          const srcset = imgEl.srcset || imgEl.getAttribute('srcset') || "";
+          
+          if (rawSrc && !rawSrc.startsWith('data:') && !rawSrc.includes('redfin_logo')) {
+            photoUrl = rawSrc;
+          } else if (srcset) {
+            const parts = srcset.split(',');
+            if (parts.length > 0) {
+              const bestPart = parts[parts.length - 1].trim().split(' ')[0];
+              if (bestPart && !bestPart.startsWith('data:')) {
+                photoUrl = bestPart;
+              }
+            }
+          } else if (imgEl.getAttribute('data-src')) {
+            photoUrl = imgEl.getAttribute('data-src');
+          }
+        }
       }
 
       const cityUpper = city.toUpperCase();
@@ -259,14 +303,16 @@ function extractRedfinSearchResults() {
         county = "POLK";
       }
 
+      const est = price > 0 ? Math.round(price * 1.25) : 275000;
+
       results.push({
         id: `rf_card_${Date.now()}_${idx}`,
-        address: addr,
-        city: city,
+        address: addr.trim(),
+        city: city.trim(),
         county: county,
         zip: zip,
         list_price: price,
-        redfin_estimate: Math.round(price * 1.25),
+        redfin_estimate: est,
         dom: 1,
         sqft: sqft,
         beds: beds,
@@ -281,35 +327,11 @@ function extractRedfinSearchResults() {
         brokerage: ""
       });
     } catch (e) {
-      console.error("Error parsing card", e);
+      console.error("Error parsing link", e);
     }
   });
 
   return results;
-}
-
-function isRedfinCorporateNumber(phone) {
-  if (!phone) return false;
-  const digits = phone.replace(/\D/g, "");
-  if (digits.length < 10) return false;
-
-  const redfinKnown = [
-    "4075845076",
-    "3213334170",
-    "4075128121",
-    "8447597732",
-    "8779733346"
-  ];
-
-  if (redfinKnown.includes(digits) || digits.endsWith("5845076") || digits.endsWith("3334170") || digits.endsWith("5128121")) {
-    return true;
-  }
-
-  if (/^1?(800|844|855|866|877|888)/.test(digits)) {
-    return true;
-  }
-
-  return false;
 }
 
 // Listen for popup requests
