@@ -8,7 +8,7 @@ import threading
 import uuid
 from datetime import datetime
 from typing import Dict, List, Any, Optional
-from src.ingestion import parse_propwire_csv, raw_phone_digits, clean_phone
+from src.ingestion import parse_real_estate_csv, raw_phone_digits, clean_phone
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -44,7 +44,7 @@ class AgentDataManager:
 
         merged: Dict[str, Dict[str, Any]] = {}
         for path in all_csvs:
-            parsed = parse_propwire_csv(path)
+            parsed = parse_real_estate_csv(path)
             for agent in parsed:
                 aid = agent["agent_id"]
                 if aid not in merged:

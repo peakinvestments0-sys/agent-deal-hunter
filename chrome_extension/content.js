@@ -1,5 +1,5 @@
 /**
- * Content Script for Redfin Listing Pages
+ * Content Script for Redfin Pages (Single Listing + Bulk Search Results)
  * Scrapes property details, agent contacts, and remarks for Lauren's Trojan Horse Desk.
  */
 
@@ -58,8 +58,6 @@ function extractRedfinData() {
   if (estEl) {
     const eNum = parseFloat(estEl.innerText.replace(/[^0-9.]/g, ''));
     if (!isNaN(eNum)) data.redfin_estimate = eNum;
-  } else if (data.list_price > 0) {
-    data.redfin_estimate = data.list_price * 1.25; // baseline heuristic
   }
 
   // 4. SqFt
@@ -117,7 +115,7 @@ function extractRedfinData() {
     data.county = "ORANGE";
   } else if (cityUpper.includes("MELBOURNE") || cityUpper.includes("PALM BAY") || cityUpper.includes("TITUSVILLE") || cityUpper.includes("COCOA") || cityUpper.includes("ROCKLEDGE")) {
     data.county = "BREVARD";
-  } else if (cityUpper.includes("KISSIMMEE") || cityUpper.includes("ST CLOUD") || cityUpper.includes("SAINT CLOUD")) {
+  } else if (cityUpper.includes("KISSIMMEE") || cityUpper.includes("ST CLOUD")) {
     data.county = "OSCEOLA";
   } else if (cityUpper.includes("SANFORD") || cityUpper.includes("LAKE MARY") || cityUpper.includes("ALTAMONTE") || cityUpper.includes("OVIEDO")) {
     data.county = "SEMINOLE";
@@ -129,37 +127,40 @@ function extractRedfinData() {
     data.county = "POLK";
   }
 
-  // 10. Listing Agent, Brokerage & Direct Contact Phone
-  // Target the specific "Listed by" section to avoid picking up Redfin buyer agent / tour numbers
-  const listedByIdx = allText.search(/Listed\s+by\s+/i);
-  if (listedByIdx !== -1) {
-    const agentChunk = allText.slice(listedByIdx, listedByIdx + 350);
+  // 10. Extract Listing Agent Details directly from HTML / Embedded React state
+  const html = document.documentElement.innerHTML;
+  
+  // JSON payload pattern in reactServerState
+  const mName = html.match(/\\?"listingAgentName\\?"\s*:\s*\\?"([^\\"]+)/i);
+  if (mName && mName[1]) data.agent_name = mName[1].trim();
 
-    // Grab agent name and brokerage
-    const lineMatch = agentChunk.match(/Listed\s+by\s+([^•·\n\r]+)(?:[•·\-]\s*([^\n\r]+))?/i);
-    if (lineMatch) {
-      data.agent_name = lineMatch[1].trim();
-      if (lineMatch[2]) {
-        data.brokerage = lineMatch[2].replace(/(?:Contact|Phone|Lic|Listing updated).*$/i, '').trim();
+  const mPhone = html.match(/\\?"listingAgentNumber\\?"\s*:\s*\\?"([^\\"]+)/i);
+  if (mPhone && mPhone[1]) data.agent_phone = mPhone[1].trim();
+
+  const mBPhone = html.match(/\\?"listingBrokerNumber\\?"\s*:\s*\\?"([^\\"]+)/i);
+  const mBroker = html.match(/\\?"brokerName\\?"\s*:\s*\\?"([^\\"]+)/i);
+  if (mBroker && mBroker[1]) data.brokerage = mBroker[1].trim();
+
+  if (!data.agent_phone && mBPhone && mBPhone[1]) {
+    data.agent_phone = mBPhone[1].trim();
+  }
+
+  // Fallback: check DOM elements
+  if (!data.agent_name) {
+    const listedByEl = document.querySelector('[data-rf-test-id="agentInfoItem-agentDisplay"]');
+    if (listedByEl) {
+      const headingEl = listedByEl.querySelector('.agent-basic-details--heading');
+      if (headingEl) {
+        data.agent_name = headingEl.innerText.replace(/Listed by\s*/i, '').trim();
+      }
+      const brokerEl = listedByEl.querySelector('.agent-basic-details--broker');
+      if (brokerEl && !data.brokerage) {
+        data.brokerage = brokerEl.innerText.replace(/^[•\s]+/, '').trim();
       }
     }
-
-    // Grab direct contact phone specifically from this agent section
-    const phoneInChunk = agentChunk.match(/(?:Contact|Phone|Cell|Direct|Call|Tel)?[:\s]*(\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4})/i);
-    if (phoneInChunk) {
-      data.agent_phone = phoneInChunk[1].trim();
-    }
   }
 
-  // Fallback for brokerage if not found in "Listed by"
-  if (!data.brokerage) {
-    const brokerMatch = allText.match(/(?:Brokerage|Provided\s+by|Broker|Brokered\s+by)\s*[:\n]?\s*([A-Za-z0-9\s,\.\-]{3,40})/i);
-    if (brokerMatch) {
-      data.brokerage = brokerMatch[1].trim();
-    }
-  }
-
-  // Fallback: check if the listing agent put their direct cell inside the public remarks
+  // Fallback: check public remarks for direct agent phone
   if (!data.agent_phone && data.remarks) {
     const remarksPhone = data.remarks.match(/(?:call|text|cell|agent|contact)[:\s]*(\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4})/i);
     if (remarksPhone) {
@@ -175,25 +176,135 @@ function extractRedfinData() {
   return data;
 }
 
+function extractRedfinSearchResults() {
+  const cards = document.querySelectorAll('.HomeCardContainer, [data-rf-test-name="mapHomeCard"], .bp-HomeCard, .homecard, div[id^="MapHomeCard_"]');
+  const results = [];
+  const seenUrls = new Set();
+
+  cards.forEach((card, idx) => {
+    try {
+      const linkEl = card.querySelector('a.link-and-anchor, a[href*="/home/"], a.bp-HomeCard__Address, a');
+      if (!linkEl) return;
+      let href = linkEl.getAttribute('href');
+      if (!href || !href.includes('/home/')) return;
+      if (!href.startsWith('http')) {
+        href = 'https://www.redfin.com' + href;
+      }
+      if (seenUrls.has(href)) return;
+      seenUrls.add(href);
+
+      // Address
+      let addr = linkEl.innerText.trim();
+      const addrEl = card.querySelector('.bp-HomeCard__Address, .street-address, [data-rf-test-name="homecard-address"]');
+      if (addrEl && addrEl.innerText) addr = addrEl.innerText.trim();
+
+      // Price
+      let price = 0;
+      const priceEl = card.querySelector('.bp-HomeCard__Price--value, .homecardV2Price, .price');
+      if (priceEl) {
+        const pNum = parseFloat(priceEl.innerText.replace(/[^0-9.]/g, ''));
+        if (!isNaN(pNum)) price = pNum;
+      }
+
+      // Stats
+      let beds = "";
+      let baths = "";
+      let sqft = 1200;
+
+      const bedsEl = card.querySelector('.bp-HomeCard__Stats--beds, [data-rf-test-name="homecard-beds"]');
+      if (bedsEl) beds = bedsEl.innerText.replace(/[^0-9.]/g, '');
+
+      const bathsEl = card.querySelector('.bp-HomeCard__Stats--baths, [data-rf-test-name="homecard-baths"]');
+      if (bathsEl) baths = bathsEl.innerText.replace(/[^0-9.]/g, '');
+
+      const sqftEl = card.querySelector('.bp-HomeCard__Stats--sqft, [data-rf-test-name="homecard-sqft"]');
+      if (sqftEl) {
+        const sNum = parseInt(sqftEl.innerText.replace(/[^0-9]/g, ''), 10);
+        if (!isNaN(sNum)) sqft = sNum;
+      }
+
+      // Photo
+      let photoUrl = "";
+      const imgEl = card.querySelector('img.homecard-image, img.bp-HomeCard__Photo, img');
+      if (imgEl) {
+        photoUrl = imgEl.src || imgEl.getAttribute('data-src') || "";
+      }
+
+      // City & Zip derivation from URL
+      let city = "Melbourne";
+      let county = "BREVARD";
+      let zip = "";
+
+      const urlParts = href.split('/');
+      if (urlParts.length >= 6) {
+        city = decodeURIComponent(urlParts[4]).replace(/-/g, ' ');
+        const zMatch = urlParts[5].match(/\b\d{5}\b/);
+        if (zMatch) zip = zMatch[0];
+      }
+
+      const cityUpper = city.toUpperCase();
+      if (cityUpper.includes("ORLANDO") || cityUpper.includes("WINTER PARK") || cityUpper.includes("APOPKA") || cityUpper.includes("OCOEE")) {
+        county = "ORANGE";
+      } else if (cityUpper.includes("MELBOURNE") || cityUpper.includes("PALM BAY") || cityUpper.includes("TITUSVILLE") || cityUpper.includes("COCOA") || cityUpper.includes("ROCKLEDGE")) {
+        county = "BREVARD";
+      } else if (cityUpper.includes("KISSIMMEE") || cityUpper.includes("ST CLOUD")) {
+        county = "OSCEOLA";
+      } else if (cityUpper.includes("SANFORD") || cityUpper.includes("LAKE MARY") || cityUpper.includes("OVIEDO")) {
+        county = "SEMINOLE";
+      } else if (cityUpper.includes("TAMPA") || cityUpper.includes("BRANDON")) {
+        county = "HILLSBOROUGH";
+      } else if (cityUpper.includes("DELTONA") || cityUpper.includes("DAYTONA")) {
+        county = "VOLUSIA";
+      } else if (cityUpper.includes("LAKELAND")) {
+        county = "POLK";
+      }
+
+      results.push({
+        id: `rf_card_${Date.now()}_${idx}`,
+        address: addr,
+        city: city,
+        county: county,
+        zip: zip,
+        list_price: price,
+        redfin_estimate: Math.round(price * 1.25),
+        dom: 1,
+        sqft: sqft,
+        beds: beds,
+        baths: baths,
+        year_built: "",
+        remarks: "",
+        photo_url: photoUrl,
+        redfin_url: href,
+        agent_name: "Listing Agent",
+        agent_phone: "",
+        agent_email: "",
+        brokerage: ""
+      });
+    } catch (e) {
+      console.error("Error parsing card", e);
+    }
+  });
+
+  return results;
+}
+
 function isRedfinCorporateNumber(phone) {
   if (!phone) return false;
   const digits = phone.replace(/\D/g, "");
   if (digits.length < 10) return false;
 
-  // Known Redfin corporate, tour lead capture, and SMS automated switchboard numbers
   const redfinKnown = [
-    "4075845076", // Redfin Orlando tour line
-    "3213334170", // Redfin Brevard tour line
-    "4075128121", // Redfin automated texting switchboard
-    "8447597732", // Redfin 844 support
-    "8779733346"  // Redfin corporate toll free
+    "4075845076",
+    "3213334170",
+    "4075128121",
+    "8447597732",
+    "8779733346"
   ];
 
   if (redfinKnown.includes(digits) || digits.endsWith("5845076") || digits.endsWith("3334170") || digits.endsWith("5128121")) {
     return true;
   }
 
-  // Also check standard toll free prefixes (800, 844, 855, 866, 877, 888) which are never direct cell phones
   if (/^1?(800|844|855|866|877|888)/.test(digits)) {
     return true;
   }
@@ -204,8 +315,14 @@ function isRedfinCorporateNumber(phone) {
 // Listen for popup requests
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "SCRAPE_REDFIN") {
-    const data = extractRedfinData();
-    sendResponse({ success: true, data: data });
+    const isSingle = window.location.href.includes("/home/");
+    if (isSingle) {
+      const data = extractRedfinData();
+      sendResponse({ success: true, mode: "SINGLE", data: data });
+    } else {
+      const results = extractRedfinSearchResults();
+      sendResponse({ success: true, mode: "SEARCH_RESULTS", count: results.length, listings: results });
+    }
   }
   return true;
 });

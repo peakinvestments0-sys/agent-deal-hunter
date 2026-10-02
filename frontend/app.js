@@ -3163,6 +3163,13 @@ async function handleCsvUpload(e) {
   const file = e.target.files[0];
   if (!file) return;
 
+  const inputEl = e.target;
+  const labelEl = inputEl.closest("label");
+  const origText = labelEl ? labelEl.innerHTML : "";
+  if (labelEl) {
+    labelEl.innerHTML = `<span class="inline-block animate-spin mr-1">⏳</span> Enriching agent phone numbers...`;
+  }
+
   const formData = new FormData();
   formData.append("file", file);
 
@@ -3182,6 +3189,11 @@ async function handleCsvUpload(e) {
     }
   } catch (err) {
     alert("Upload failed: " + err.message);
+  } finally {
+    inputEl.value = "";
+    if (labelEl && origText) {
+      labelEl.innerHTML = origText;
+    }
   }
 }
 

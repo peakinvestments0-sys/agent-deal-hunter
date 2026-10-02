@@ -160,6 +160,9 @@ class IngestFixerRequest(BaseModel):
     agent_email: Optional[str] = ""
     brokerage: Optional[str] = ""
 
+class IngestBulkFixersRequest(BaseModel):
+    listings: List[Dict[str, Any]]
+
 class CalculateFixerMaoRequest(BaseModel):
     arv: float
     sqft: float
@@ -715,7 +718,12 @@ async def upload_csv_file(file: UploadFile = File(...)):
     with open(dest_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
     data_manager.refresh()
-    return {"status": "success", "message": f"Successfully loaded {file.filename} into pipeline!"}
+    total_agents = len(data_manager.get_all_agents())
+    return {
+        "status": "success", 
+        "message": f"Successfully loaded and enriched {file.filename}! Pipeline now has {total_agents} active agents ready for outreach.",
+        "total_agents": total_agents
+    }
 
 # --- Lauren's On-Market Fixer Desk Endpoints ---
 
@@ -736,6 +744,37 @@ def ingest_fixer_endpoint(req: IngestFixerRequest):
     fixers.insert(0, fixer_state)
     save_fixers(fixers)
     return {"status": "success", "fixer": fixer_state, "count": len(fixers)}
+
+@app.post("/api/fixers/ingest-bulk")
+def ingest_bulk_fixers_endpoint(req: IngestBulkFixersRequest):
+    fixers = load_fixers()
+    existing_addrs = {f.get("address", "").lower() for f in fixers}
+    added_count = 0
+
+    for item in req.listings:
+        addr = (item.get("address") or "").strip()
+        if not addr:
+            continue
+        fixer_state = lauren_engine.get_initial_fixer_state(item)
+        opening_hook = lauren_engine.generate_opening_hook(fixer_state)
+        fixer_state["opening_hook"] = opening_hook
+        fixer_state["suggested_reply"] = opening_hook
+
+        if addr.lower() in existing_addrs:
+            fixers = [f if f.get("address", "").lower() != addr.lower() else fixer_state for f in fixers]
+        else:
+            fixers.insert(0, fixer_state)
+            existing_addrs.add(addr.lower())
+            added_count += 1
+
+    save_fixers(fixers)
+    data_manager.refresh()
+    return {
+        "status": "success",
+        "message": f"Successfully ingested {len(req.listings)} fixer listings into Lauren's Desk!",
+        "total_fixers": len(fixers),
+        "newly_added": added_count
+    }
 
 @app.post("/api/fixers/calculate-mao")
 def calculate_fixer_mao_endpoint(req: CalculateFixerMaoRequest):

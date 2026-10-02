@@ -2,7 +2,13 @@ import os
 import re
 import csv
 import json
-from typing import Dict, List, Any
+import requests
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import Dict, List, Any, Optional
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+REDFIN_CACHE_FILE = os.path.join(DATA_DIR, "redfin_agent_cache.json")
 
 def clean_phone(phone_val: Any) -> str:
     """Normalize phone to 10-digit standard or formatted (xxx) xxx-xxxx."""
@@ -38,6 +44,248 @@ def safe_int(val: Any, default: int = 0) -> int:
         return int(float(str(val).replace(",", "").strip()))
     except (ValueError, TypeError):
         return default
+
+# --- Redfin Scraping & Auto-Enrichment ---
+
+def load_redfin_cache() -> Dict[str, Any]:
+    if os.path.exists(REDFIN_CACHE_FILE):
+        try:
+            with open(REDFIN_CACHE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return {}
+    return {}
+
+def save_redfin_cache(cache: Dict[str, Any]):
+    try:
+        os.makedirs(DATA_DIR, exist_ok=True)
+        with open(REDFIN_CACHE_FILE, "w", encoding="utf-8") as f:
+            json.dump(cache, f, indent=2)
+    except Exception:
+        pass
+
+def scrape_redfin_agent_details(url: str, cache: Optional[Dict[str, Any]] = None) -> Dict[str, str]:
+    if not url or not url.startswith("http"):
+        return {"agent_name": "", "agent_phone": "", "brokerage": "", "broker_phone": ""}
+    
+    if cache is not None and url in cache:
+        return cache[url]
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+    }
+    try:
+        r = requests.get(url, headers=headers, timeout=12)
+        if r.status_code != 200:
+            return {"agent_name": "", "agent_phone": "", "brokerage": "", "broker_phone": ""}
+        
+        agent_name = ""
+        agent_phone = ""
+        broker_phone = ""
+        broker_name = ""
+        
+        # Match with optional backslashes for escaped json in reactServerState
+        m_name = re.search(r'\\?"listingAgentName\\?"\s*:\s*\\?"([^\\"]+)', r.text)
+        if m_name:
+            try:
+                agent_name = m_name.group(1).encode().decode('unicode_escape')
+            except Exception:
+                agent_name = m_name.group(1)
+            
+        m_phone = re.search(r'\\?"listingAgentNumber\\?"\s*:\s*\\?"([^\\"]+)', r.text)
+        if m_phone:
+            agent_phone = m_phone.group(1)
+            
+        m_bphone = re.search(r'\\?"listingBrokerNumber\\?"\s*:\s*\\?"([^\\"]+)', r.text)
+        if m_bphone:
+            broker_phone = m_bphone.group(1)
+            
+        m_broker = re.search(r'\\?"brokerName\\?"\s*:\s*\\?"([^\\"]+)', r.text)
+        if m_broker:
+            try:
+                broker_name = m_broker.group(1).encode().decode('unicode_escape')
+            except Exception:
+                broker_name = m_broker.group(1)
+            
+        # Fallback Method 2: HTML tags
+        if not agent_name:
+            m_html_name = re.search(r'data-rf-test-id="agentInfoItem-agentDisplay"[^>]*>.*?Listed by <span>([^<]+)</span>', r.text, re.DOTALL)
+            if m_html_name:
+                agent_name = m_html_name.group(1).strip()
+        
+        res = {
+            "agent_name": agent_name.strip(),
+            "agent_phone": (agent_phone or broker_phone).strip(),
+            "brokerage": broker_name.strip(),
+            "broker_phone": broker_phone.strip()
+        }
+        if cache is not None:
+            cache[url] = res
+        return res
+    except Exception:
+        return {"agent_name": "", "agent_phone": "", "brokerage": "", "broker_phone": ""}
+
+def is_redfin_csv(file_path: str) -> bool:
+    if not os.path.exists(file_path):
+        return False
+    try:
+        with open(file_path, mode="r", encoding="utf-8-sig", errors="replace") as f:
+            header = f.readline().lower()
+            return "redfin.com" in header or "url (see" in header or ("property type" in header and "price" in header and "city" in header)
+    except Exception:
+        return False
+
+def parse_redfin_csv(file_path: str, max_workers: int = 15) -> List[Dict[str, Any]]:
+    """
+    Parses a Redfin Search CSV export, auto-enriches listing agent details via parallel
+    page inspection, and groups records by unique listing agent with active listings.
+    """
+    if not os.path.exists(file_path):
+        return []
+
+    cache = load_redfin_cache()
+    rows = []
+    urls_to_scrape = set()
+
+    with open(file_path, mode="r", encoding="utf-8-sig", errors="replace") as f:
+        reader = csv.DictReader(f)
+        for r in reader:
+            # Find Redfin URL column
+            url = ""
+            for k, v in r.items():
+                if k and ("url" in k.lower() or "redfin" in k.lower()):
+                    if v and str(v).startswith("http"):
+                        url = str(v).strip()
+                        break
+            r["_parsed_url"] = url
+            if url and url not in cache:
+                urls_to_scrape.add(url)
+            rows.append(r)
+
+    # Scrape missing URLs in parallel with thread pool
+    if urls_to_scrape:
+        print(f"[REDFIN ENRICHER] Scraping {len(urls_to_scrape)} new Redfin URLs with {max_workers} threads...")
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_url = {executor.submit(scrape_redfin_agent_details, u): u for u in urls_to_scrape}
+            for future in as_completed(future_to_url):
+                u = future_to_url[future]
+                try:
+                    res = future.result()
+                    if res:
+                        cache[u] = res
+                except Exception as e:
+                    print(f"[REDFIN ENRICHER ERROR] {u}: {e}")
+        save_redfin_cache(cache)
+
+    agents_map: Dict[str, Dict[str, Any]] = {}
+
+    for row in rows:
+        url = row.get("_parsed_url", "")
+        agent_info = cache.get(url, {}) if url else {}
+        
+        agent_name = agent_info.get("agent_name") or "Listing Agent"
+        phone_raw = agent_info.get("agent_phone") or agent_info.get("broker_phone") or ""
+        brokerage = agent_info.get("brokerage") or "Real Estate Brokerage"
+        
+        first_name = agent_name.split()[0] if agent_name != "Listing Agent" else "there"
+        last_name = " ".join(agent_name.split()[1:]) if len(agent_name.split()) > 1 else ""
+        
+        phone_norm = clean_phone(phone_raw)
+        p_digits = raw_phone_digits(phone_raw)
+
+        if p_digits and len(p_digits) >= 7:
+            agent_key = f"phone_{p_digits}"
+        elif agent_name and agent_name != "Listing Agent":
+            agent_key = f"name_{agent_name.lower().replace(' ', '_')}"
+        else:
+            addr_key = (row.get("ADDRESS") or row.get("Address") or "unknown").lower().replace(" ", "_")
+            agent_key = f"prop_{addr_key}"
+
+        price = safe_float(row.get("PRICE") or row.get("Price") or row.get("Listing Price"))
+        dom = safe_int(row.get("DAYS ON MARKET") or row.get("Days on Market"))
+        beds = safe_float(row.get("BEDS") or row.get("Beds"))
+        baths = safe_float(row.get("BATHS") or row.get("Baths"))
+        sqft = safe_int(row.get("SQUARE FEET") or row.get("Square Feet") or row.get("Living Square Feet"))
+        yr = safe_int(row.get("YEAR BUILT") or row.get("Year Built"))
+        
+        addr = (row.get("ADDRESS") or row.get("Address") or "").strip().title()
+        city = (row.get("CITY") or row.get("City") or "").strip().title()
+        state = (row.get("STATE OR PROVINCE") or row.get("State") or "FL").strip().upper()
+        zip_code = (row.get("ZIP OR POSTAL CODE") or row.get("Zip") or "").strip()
+        county = (row.get("LOCATION") or row.get("County") or "").strip().upper()
+        mls_id = (row.get("MLS#") or row.get("Mls#") or "").strip()
+
+        listing = {
+            "id": mls_id or f"rf_{abs(hash(addr)) % 10000000}",
+            "address": addr,
+            "city": city,
+            "state": state,
+            "zip": zip_code,
+            "county": county,
+            "property_type": (row.get("PROPERTY TYPE") or row.get("Property Type") or "Single Family").strip(),
+            "beds": beds,
+            "baths": baths,
+            "sqft": sqft,
+            "year_built": yr,
+            "listing_price": price,
+            "days_on_market": dom,
+            "listing_status": (row.get("STATUS") or "ACTIVE").strip().upper(),
+            "estimated_value": round(price * 1.2, 2) if price else 275000.0,
+            "redfin_url": url,
+            "owner_name": "Property Owner",
+            "owner_mailing": "",
+            "tax_amount": 0.0
+        }
+
+        if agent_key not in agents_map:
+            agents_map[agent_key] = {
+                "agent_id": agent_key,
+                "full_name": agent_name,
+                "first_name": first_name,
+                "last_name": last_name,
+                "phone": phone_norm,
+                "phone_raw": p_digits,
+                "email": "",
+                "brokerage": brokerage,
+                "county": county or "CENTRAL FL",
+                "listings": [],
+                "pipeline_stage": "New Ingest",
+                "notes": f"Imported from Redfin: {url}" if url else "",
+                "pocket_deals": []
+            }
+
+        agents_map[agent_key]["listings"].append(listing)
+
+    # Calculate summary metrics per agent
+    agent_list = []
+    for a in agents_map.values():
+        total_vol = sum(l["listing_price"] for l in a["listings"])
+        count = len(a["listings"])
+        avg_p = total_vol / count if count > 0 else 0.0
+        
+        if count >= 3 or total_vol >= 1_000_000:
+            tier = "Whale (High Volume)"
+        elif count >= 2:
+            tier = "Active Producer (2 Listings)"
+        else:
+            tier = "Single Listing Agent"
+
+        a["listing_count"] = count
+        a["total_volume"] = round(total_vol, 2)
+        a["avg_price"] = round(avg_p, 2)
+        a["tier"] = tier
+        
+        primary_l = a["listings"][0]
+        a["primary_address"] = primary_l["address"]
+        a["primary_city"] = primary_l["city"]
+        a["primary_price"] = primary_l["listing_price"]
+        a["primary_dom"] = primary_l["days_on_market"]
+        
+        agent_list.append(a)
+
+    agent_list.sort(key=lambda x: (x["listing_count"], x["total_volume"]), reverse=True)
+    return agent_list
+
 
 def parse_propwire_csv(file_path: str) -> List[Dict[str, Any]]:
     """
@@ -183,3 +431,9 @@ def parse_propwire_csv(file_path: str) -> List[Dict[str, Any]]:
     # Sort: highest listing count first, then volume
     agent_list.sort(key=lambda x: (x["listing_count"], x["total_volume"]), reverse=True)
     return agent_list
+
+def parse_real_estate_csv(file_path: str) -> List[Dict[str, Any]]:
+    """Master router to automatically detect and parse either Redfin or Propwire CSVs."""
+    if is_redfin_csv(file_path):
+        return parse_redfin_csv(file_path)
+    return parse_propwire_csv(file_path)

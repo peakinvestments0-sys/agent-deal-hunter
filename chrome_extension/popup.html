@@ -5,7 +5,7 @@
   <title>Lauren's Fixer Desk</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { width: 360px; background-color: #0f172a; color: #f8fafc; padding: 14px; font-size: 12px; }
+    body { width: 380px; background-color: #0f172a; color: #f8fafc; padding: 14px; font-size: 12px; }
     .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1e293b; padding-bottom: 10px; margin-bottom: 12px; }
     .title-box { display: flex; align-items: center; gap: 8px; }
     .badge { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); padding: 2px 7px; border-radius: 999px; font-size: 9px; font-weight: 700; text-transform: uppercase; }
@@ -28,6 +28,8 @@
     .alert { padding: 8px; border-radius: 8px; font-size: 11px; margin-top: 10px; display: none; text-align: center; font-weight: 600; }
     .alert-success { background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; }
     .alert-error { background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; }
+    .progress-bar { width: 100%; background: #0f172a; border-radius: 6px; height: 8px; overflow: hidden; margin: 8px 0; border: 1px solid #334155; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #f59e0b, #10b981); width: 0%; transition: width 0.2s; }
     .footer-link { text-align: center; margin-top: 10px; }
     .footer-link a { color: #94a3b8; text-decoration: none; font-size: 10px; }
     .footer-link a:hover { color: #f59e0b; }
@@ -39,14 +41,15 @@
       <span style="font-size: 16px;">🔨</span>
       <strong style="color: #ffffff; font-size: 13px;">Lauren's Fixer Desk</strong>
     </div>
-    <span class="badge">Trojan Horse</span>
+    <span class="badge" id="modeBadge">Trojan Horse</span>
   </div>
 
   <div id="loadingBox" style="text-align: center; padding: 20px 0; color: #94a3b8;">
-    <span>⏳ Scanning Redfin property...</span>
+    <span>⏳ Scanning Redfin page...</span>
   </div>
 
-  <div id="contentBox" style="display: none;">
+  <!-- SINGLE PROPERTY VIEW -->
+  <div id="singleContentBox" style="display: none;">
     <div class="card">
       <div class="prop-title" id="dispAddress">123 Sample St</div>
       <div class="prop-sub" id="dispCity">Melbourne, FL &bull; <span id="dispDom">1 DOM</span></div>
@@ -80,17 +83,55 @@
 
       <div class="input-group">
         <label class="input-label">Agent Cell Phone (For SMS)</label>
-        <input type="tel" id="inputAgentPhone" class="input-field" placeholder="(407) 555-0199">
+        <input type="tel" id="inputAgentPhone" class="input-field" placeholder="(321) 555-0199">
       </div>
 
       <div class="input-group">
-        <label class="input-label">Agent Email (For Standing LOI)</label>
-        <input type="email" id="inputAgentEmail" class="input-field" placeholder="agent@brokerage.com">
+        <label class="input-label">Brokerage</label>
+        <input type="text" id="inputBrokerage" class="input-field" placeholder="Brokerage Name">
       </div>
     </div>
 
-    <button id="btnPush" class="btn-push">
-      <span>🚀 Push to Lauren's Desk</span>
+    <button id="btnPushSingle" class="btn-push">
+      <span>🚀 Push Fixer to Lauren's Desk</span>
+    </button>
+  </div>
+
+  <!-- BULK SEARCH RESULTS VIEW -->
+  <div id="bulkContentBox" style="display: none;">
+    <div class="card">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+        <strong style="color: #ffffff; font-size: 13px;">⚡ Redfin Search Page</strong>
+        <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399; border-color: rgba(16, 185, 129, 0.4);" id="bulkCountBadge">0 Listings</span>
+      </div>
+      <p style="color: #94a3b8; font-size: 11px; margin-bottom: 10px;" id="bulkSubText">
+        Detected active fixer listings on this search page. Click below to crawl agent phone numbers and ingest all into your dashboard.
+      </p>
+
+      <div class="grid">
+        <div class="stat-box">
+          <div class="stat-label">Page Listings</div>
+          <div class="stat-val val-emerald" id="statBulkListings">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Target Desk</div>
+          <div class="stat-val val-amber">Lauren / Brooke</div>
+        </div>
+      </div>
+
+      <div id="progressContainer" style="display: none; margin-top: 10px;">
+        <div style="display: flex; justify-content: space-between; font-size: 10px; color: #cbd5e1; margin-bottom: 2px;">
+          <span id="progressText">Enriching agent phone numbers...</span>
+          <span id="progressPct">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressBarFill"></div>
+        </div>
+      </div>
+    </div>
+
+    <button id="btnPushBulk" class="btn-push">
+      <span>⚡ 1-Click Ingest All to Lauren's Desk</span>
     </button>
   </div>
 

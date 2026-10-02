@@ -20,6 +20,7 @@ data/agent_pipeline_state.json
 data/outreach_history.json
 data/scheduler_history.json
 data/test_merged_farbar.pdf
+data/redfin_agent_cache.json
 *.env
 *.env.local
 
