@@ -26,12 +26,33 @@ function sanitizeSmsNoHyphens(text) {
     .trim();
 }
 
+function resolveSpintax(text) {
+  if (!text) return "";
+  const pattern = /\{([^{}]+)\}/;
+  let safety = 0;
+  while (safety < 20) {
+    safety++;
+    const match = pattern.exec(text);
+    if (!match) break;
+    if (!match[1].includes('|')) {
+      break;
+    }
+    const options = match[1].split('|');
+    const chosen = options[Math.floor(Math.random() * options.length)];
+    text = text.slice(0, match.index) + chosen + text.slice(match.index + match[0].length);
+  }
+  return text;
+}
+
 const BROOKE_ICEBREAKER_VARIATIONS = [
-  "Hey {Agent_FirstName}, Brooke here. Saw your listing over on {Listing_Address}. Do you happen to have any off market fixers or pocket listings coming up in {City} before they hit MLS? Happy to have you represent us.",
-  "Hi {Agent_FirstName}, its Brooke. Reaching out regarding {Listing_Address}. Do you have any upcoming off market deals or fixer opportunities in {City} right now? We can close cash and let you keep both sides.",
-  "Hey {Agent_FirstName}, Brooke here. Checked out {Listing_Address}. Are you working with any sellers in {City} who might have a fixer or off market property coming up? Always glad to have you represent us as the buyer.",
-  "Hi {Agent_FirstName}, its Brooke. Quick question regarding {Listing_Address}. Do you have any pocket listings or pre MLS fixer deals coming down the pipeline in {City}? Ready to write clean cash offers.",
-  "Hey {Agent_FirstName}, Brooke here. Taking a look at {Listing_Address}. My partner John and I are buying properties in {City}. Do you have any fixers or off market opportunities coming up before MLS?"
+  // Angle 1: Local Renovation Buyer (carrier-safe, <160 chars)
+  "{Hey|Hi} {Agent_FirstName}, Brooke here. We buy 2 to 3 fixer projects a month in {City}. Got anything beat up that will not qualify for traditional retail buyers?",
+  
+  // Angle 2: Pattern Interrupt / Roughest Property (carrier-safe, <160 chars)
+  "{Hey|Hi} {Agent_FirstName}, quick question. What is the roughest property you have seen lately that never made it to MLS? Looking for our next flip in {City}.",
+  
+  // Angle 3: Pipeline Pocket Inquirer (carrier-safe, <160 chars)
+  "{Hi|Hey} {Agent_FirstName}, saw your listing on {Listing_Address}. Do you have any off market fixers coming down the pipeline before they hit the MLS?"
 ];
 
 function getRandomBrookeIcebreaker() {
@@ -1710,6 +1731,7 @@ function applySmsTemplate(type, overrides = null) {
     .replace(/\${Offer_Amount}/g, offerFmt)
     .replace(/{Offer_Amount}/g, offerFmt);
 
+  rendered = resolveSpintax(rendered);
   rendered = sanitizeSmsNoHyphens(rendered);
   document.getElementById("smsMessageText").value = rendered;
   updateCharCount();
@@ -2997,11 +3019,14 @@ function renderChatBubbles(a, outreach) {
 
 function insertDrawerTemplate(type) {
   if (!selectedAgent) return;
-  const tmpl = SMS_TEMPLATES[type] || SMS_TEMPLATES.icebreaker;
-  const rendered = tmpl
+  const tmpl = type === 'icebreaker' ? getRandomBrookeIcebreaker() : (SMS_TEMPLATES[type] || SMS_TEMPLATES.icebreaker);
+  let rendered = tmpl
     .replace(/{Agent_FirstName}/g, selectedAgent.first_name || "there")
     .replace(/{Listing_Address}/g, selectedAgent.primary_address || "your listing")
     .replace(/{City}/g, selectedAgent.primary_city || "the area");
+
+  rendered = resolveSpintax(rendered);
+  rendered = sanitizeSmsNoHyphens(rendered);
 
   const input = document.getElementById("drawerReplyText");
   if (input) {

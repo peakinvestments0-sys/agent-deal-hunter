@@ -1,17 +1,47 @@
 [
   {
+    "id": "golden_cold_001",
+    "timestamp": "2026-10-02 06:40:00",
+    "node": "OPENING_HOOK",
+    "agent_inbound": "[Cold First Touch - Outreach Triggered]",
+    "suggested_template": "Hey {Agent_FirstName}, Brooke here. We buy 2 to 3 fixer projects a month in {City}. Got anything beat up that will not qualify for traditional retail buyers?",
+    "final_approved_text": "Hey Sarah, Brooke here. We buy 2 to 3 fixer projects a month in Melbourne. Got anything beat up that will not qualify for traditional retail buyers?",
+    "was_edited": true,
+    "tags": [
+      "Cold Opener",
+      "OPENING_HOOK"
+    ],
+    "notes": "Direct, single-segment cold outreach with zero fluff",
+    "agent_desk": "BROOKE"
+  },
+  {
+    "id": "golden_cold_002",
+    "timestamp": "2026-10-02 06:41:00",
+    "node": "ENTRY_HOOK",
+    "agent_inbound": "[Cold First Touch - Pattern Interrupt]",
+    "suggested_template": "Hey {Agent_FirstName}, quick question. What is the roughest property you have seen lately that never made it to MLS? Looking for our next flip in {City}.",
+    "final_approved_text": "Hey David, quick question. What is the roughest property you have seen lately that never made it to MLS? Looking for our next flip in Melbourne.",
+    "was_edited": true,
+    "tags": [
+      "Pattern Interrupt",
+      "ENTRY_HOOK"
+    ],
+    "notes": "Pattern interrupt cold hook without marketing jargon",
+    "agent_desk": "BROOKE"
+  },
+  {
     "id": "golden_001",
     "timestamp": "2026-09-28 10:00:00",
     "node": "ENTRY_HOOK_AWAITING_REPLY",
     "agent_inbound": "Hey Johnathan, I have a property at 123 Main St in Melbourne.",
     "suggested_template": "Amazing, what can you share with me about this one?",
-    "final_approved_text": "Awesome, thanks for reaching out with 123 Main St! What can you share with me about the property?",
+    "final_approved_text": "Taking a look at 123 Main St now. What can you share with me about the property and what the seller is looking to do?",
     "was_edited": true,
     "tags": [
       "Initial Contact",
       "ENTRY_HOOK_AWAITING_REPLY"
     ],
-    "notes": "Natural address acknowledgment",
+    "notes": "Natural address acknowledgment without syrupy gratitude",
     "agent_desk": "BROOKE"
   },
   {
@@ -20,7 +50,7 @@
     "node": "OFF_MARKET_CONDITION",
     "agent_inbound": "Hey Johnathan, I have an off-market 3/2 fixer at 789 Ocean Breeze Ave in Melbourne, seller asking $180k cash.",
     "suggested_template": "What can you tell me about the condition? What kind of shape are the roof, AC, and interior in?",
-    "final_approved_text": "Hey, thanks for thinking of us on 789 Ocean Breeze! What can you tell me about the condition? What kind of shape are the roof, A/C, and interior in?",
+    "final_approved_text": "Got your note on 789 Ocean Breeze. What kind of shape are the roof, AC, and interior in?",
     "was_edited": true,
     "tags": [
       "Condition Vetting",

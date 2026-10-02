@@ -20,6 +20,18 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 BOT_SETTINGS_FILE = os.path.join(DATA_DIR, "bot_settings.json")
 TRAINING_DATA_FILE = os.path.join(DATA_DIR, "training_golden_replies.json")
 
+def sanitize_sms_no_hyphens(text: str) -> str:
+    """
+    Strict zero hyphens rule for SMS.
+    Replaces any hyphen between words with a space and removes dashes.
+    """
+    if not text:
+        return ""
+    text = re.sub(r'(\w)-(\w)', r'\1 \2', text)
+    text = re.sub(r'\s*[-–—]\s*', ' ', text)
+    text = re.sub(r' +', ' ', text)
+    return text.strip()
+
 DEFAULT_BOT_SETTINGS = {
     "enabled": True,
     "mode": "copilot",  # "copilot" (human approves before sending) or "autopilot" (auto dispatches via SMS)
@@ -359,6 +371,19 @@ def polish_reply_with_gemini(node: str, template_reply: str, agent: Dict[str, An
     if not api_key or not settings.get("use_gemini_enhancer", True):
         return template_reply
 
+    # HARD FIREWALL: Cold first-touch openers must ALWAYS send deterministically from approved templates.
+    # Never allow Gemini to rewrite cold outbound texts (prevents 'Happy Friday!' or syrupy gratitude fluff).
+    COLD_OPENER_NODES = {
+        "OPENING_HOOK",
+        "ENTRY_HOOK",
+        "ENTRY_HOOK_AWAITING_REPLY",
+        "FIRST_TOUCH",
+        "LAUREN_OPENING_HOOK",
+        "BROOKE_COLD_ICEBREAKER"
+    }
+    if node in COLD_OPENER_NODES:
+        return sanitize_sms_no_hyphens(template_reply)
+
     model = settings.get("gemini_model", "gemini-3.5-flash-lite")
     partner_name = settings.get("partner_name", "Jessica")
     agent_name = agent.get("first_name") or agent.get("full_name") or "there"
@@ -390,15 +415,16 @@ def polish_reply_with_gemini(node: str, template_reply: str, agent: Dict[str, An
             f"\"{template_reply}\"\n\n"
             f"CRITICAL RULES:\n"
             f"1. STRICT ZERO HYPHENS RULE: NEVER EVER use hyphens or dashes between words anywhere in your response. (For example write 'top of market', 'as is', '14 day close', '9 percent', '15 percent', 'full market value', '2026 HGTV full retail'). Do not use dashes or hyphens.\n"
-            f"2. Keep it natural, human, casual, and grounded (1 to 2 sentences max). Real buyers text casually on phone.\n"
-            f"3. FLATTERY & TONE: Never use fake or gushing flattery like 'love that pocket of Orlando'. Keep comments subtle, authentic, and grounded in property reality.\n"
-            f"4. IDENTITY: Introduce yourself as 'Lauren here' or 'its Lauren'. DO NOT say 'with 407 Flips' or 'from 407 Flips' in initial texts. Company info is mentioned later when relevant.\n"
-            f"5. RETAIL TARGET VARIETY: Vary phrasing for condition targets such as 'full market value', '2026 HGTV full retail', 'full retail value', 'top of the neighborhood', 'top of market', or 'fully renovated retail'.\n"
-            f"6. Output ONLY the raw SMS text. No quotation marks, no greetings like 'Dear', no markdown."
+            f"2. BANNED FILLER & GRATITUDE (STRICT): NEVER say 'Happy Friday', 'Hope your week is going great', 'Hope this text finds you well', 'Hope you are well', 'Awesome thanks for thinking of us', or 'Thank you for reaching out'. Do NOT start texts with syrupy customer service gratitude.\n"
+            f"3. Keep it natural, human, casual, and grounded (1 to 2 sentences max). Real buyers text casually on phone.\n"
+            f"4. FLATTERY & TONE: Never use fake or gushing flattery like 'love that pocket of Orlando'. Keep comments subtle, authentic, and grounded in property reality.\n"
+            f"5. IDENTITY: Introduce yourself as 'Lauren here' or 'its Lauren'. DO NOT say 'with 407 Flips' or 'from 407 Flips' in initial texts. Company info is mentioned later when relevant.\n"
+            f"6. RETAIL TARGET VARIETY: Vary phrasing for condition targets such as 'full market value', '2026 HGTV full retail', 'full retail value', 'top of the neighborhood', 'top of market', or 'fully renovated retail'.\n"
+            f"7. Output ONLY the raw SMS text. No quotation marks, no greetings like 'Dear', no markdown."
         )
     else:
         system_prompt = (
-            f"You are {bot_name}, a friendly, professional acquisition coordinator working with {partner_name}.\n"
+            f"You are {bot_name}, an active acquisitions coordinator working with {partner_name}.\n"
             f"You are texting via cellular SMS with a Florida real estate listing agent.\n"
             f"Underwriting evaluation partner: {partner_name}.\n"
             f"Main office phone for calls: {office_phone}.\n"
@@ -406,8 +432,8 @@ def polish_reply_with_gemini(node: str, template_reply: str, agent: Dict[str, An
             f"\"{template_reply}\"\n\n"
             f"CRITICAL RULES:\n"
             f"1. STRICT ZERO HYPHENS RULE: NEVER EVER use hyphens or dashes between words anywhere in your response. (Write 'off market', 'as is', 'pre MLS', '10 day close').\n"
-            f"2. Keep it short, natural, warm, and human (1 to 2 sentences max). Real acquisition coordinators text casually on cellular SMS.\n"
-            f"3. Never use corporate robot phrases ('I hope you are well', 'As a real estate investor', 'Thank you for reaching out').\n"
+            f"2. BANNED FILLER & GRATITUDE (STRICT): NEVER say 'Happy Friday', 'Hope your week is going great', 'Hope this text finds you well', 'Hope you are well', 'Awesome thanks for thinking of us', or 'Thank you for reaching out'. Do NOT start texts with syrupy customer service gratitude.\n"
+            f"3. Keep it short, natural, direct, and human (1 to 2 sentences max, under 160 characters when possible). Text like a busy acquisitions investor typing on an iPhone with thumbs.\n"
             f"4. IDENTITY: Introduce yourself as '{bot_name} here' or 'its {bot_name}'. DO NOT say 'with 407 Flips' in initial outreach.\n"
             f"5. Strictly achieve the current step's objective: inquire on condition, ask for photo link or access, ask timeline, or schedule quick call with {partner_name}.\n"
             f"6. Output ONLY the raw SMS text. No quotation marks, no greetings like 'Dear', no markdown."
