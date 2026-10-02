@@ -228,10 +228,11 @@ class LaurenEngine:
 
     def generate_opening_hook(self, fixer: Dict[str, Any]) -> str:
         """
-        Creates natural, varied opening SMS applying the Don't Look Stupid rule.
-        Uses natural, subtle investor tone without fake gushing flattery.
-        Introduces as 'Lauren here' or 'its Lauren' (never mentions 407 Flips upfront).
-        Rotates retail target phrases and condition inquiries with zero hyphens.
+        Creates natural, concise opening SMS applying the Don't Look Stupid rule & Muse Critique.
+        - Single smooth hook combining address + awareness (no redundant back-to-back 'Saw listing' + 'Saw notes')
+        - Introduces as 'Lauren here' or 'its Lauren' (never mentions 407 Flips upfront)
+        - Crisp, professional investor tone without fake gushing or syrupy gratitude
+        - Strict zero hyphens rule
         """
         agent_first = fixer.get("agent_name", "there").split()[0]
         addr = fixer.get("address", "your listing")
@@ -244,48 +245,37 @@ class LaurenEngine:
 
         retail_target = random.choice(RETAIL_CONDITION_TARGETS)
 
-        intro_options = [
+        intro = random.choice([
             f"Hey {agent_first}, Lauren here.",
             f"Hi {agent_first}, its Lauren.",
             f"Hey {agent_first}, its Lauren.",
             f"Hi {agent_first}, Lauren here."
-        ]
-        intro = random.choice(intro_options)
-
-        hook_options = [
-            f"Saw your listing over on {addr}.",
-            f"Reaching out regarding your listing on {addr}.",
-            f"Checked out {addr}.",
-            f"Had a quick question on {addr}.",
-            f"Taking a look at {addr}."
-        ]
-        hook = random.choice(hook_options)
+        ])
 
         if has_cash_only or has_as_is or has_repairs_needed:
-            condition_questions = [
-                f"Saw your notes about the property and condition. Outside of what is already noted in the listing, does the home need anything else major to get it to {retail_target}?",
-                f"Noticed your remarks regarding the condition. Besides what you already have listed online, is there anything else big the house needs to hit {retail_target}?",
-                f"Took a look at the condition notes. Beyond what is already posted, does it need any other heavy work to reach {retail_target}?",
-                f"Saw the notes on needed repairs. Other than what is already disclosed, is there anything else major the home needs to get to {retail_target}?",
-                f"Saw the details on condition. Besides what is already mentioned in your listing, is there any other major work needed to bring it to {retail_target}?"
+            # Listing remarks already mention condition/repairs - acknowledge once and ask for anything else major
+            angles = [
+                f"{intro} Had a quick question on {addr}. Beyond what is noted in the listing, does it need any other heavy work to reach {retail_target}?",
+                f"{intro} Checked out {addr}. Outside of what you have in the listing remarks, are there any other big ticket repairs needed to hit {retail_target}?",
+                f"{intro} Reaching out regarding {addr}. Other than what is disclosed online, is there anything else major needed to bring it to {retail_target}?",
+                f"{intro} Taking a look at {addr}. Besides what is already noted in your listing, does it need any other major updates to get to {retail_target}?"
             ]
         else:
-            condition_questions = [
-                f"Other than what you have listed, does the house need anything major to get it to {retail_target}?",
-                f"Outside of what is noted online, is there anything else the property needs to bring it to {retail_target}?",
-                f"Beyond what is in your listing remarks, are there any major updates or mechanicals needed to hit {retail_target}?",
-                f"Looking at this for our next project. Besides what you have listed, does it need any other heavy work to reach {retail_target}?",
-                f"Other than what is noted in the listing, are there any big ticket repairs needed to get it to {retail_target}?"
+            # Clean / Standard listing remarks
+            angles = [
+                f"{intro} Had a quick question on {addr}. Other than what is noted in the listing, are there any big ticket repairs needed to get it to {retail_target}?",
+                f"{intro} Reaching out about {addr}. Outside of what is listed online, does the house need any major work to hit {retail_target}?",
+                f"{intro} Checked out {addr}. Beyond what is in your listing remarks, is there anything major needed to bring it to {retail_target}?",
+                f"{intro} Quick question on {addr}. Besides what you have listed, does it need any heavy mechanical or structural updates to reach {retail_target}?"
             ]
 
-        question = random.choice(condition_questions)
-        full_text = f"{intro} {hook} {question}"
+        full_text = random.choice(angles)
         return sanitize_sms_no_hyphens(full_text)
 
     def evaluate_inbound(self, fixer: Dict[str, Any], message: str) -> Dict[str, Any]:
         """
         Processes an agent reply through Lauren's Trojan Horse engine.
-        Applies Asymmetric ARV Arbitrage and Nate Barger MAO math.
+        Applies Muse Critique, Asymmetric ARV Arbitrage, and Nate Barger MAO math.
         """
         clean_msg = message.lower().strip()
         curr_node = fixer.get("current_node", "OPENING_HOOK")
@@ -308,7 +298,7 @@ class LaurenEngine:
         # 1. Identity Inquiry ("Who is this?")
         if any(w in clean_msg for w in ["who is this", "who's this", "whos this", "who are you", "what company", "who is texting"]):
             reply = (
-                f"Hey {agent_first}, its Lauren! John and I are local buyers actively looking for our next project in "
+                f"Hey {agent_first}, its Lauren. John and I are local buyers looking for our next renovation project in "
                 f"{fixer.get('city', 'the area')}. Reached out regarding {addr}. Are you still working with the sellers on this one?"
             )
             fixer["current_node"] = "IDENTITY_ANSWERED"
@@ -327,9 +317,9 @@ class LaurenEngine:
         if has_pushback or (curr_node == "MATH_PRESENTED" and not has_comp_word and not has_repair_detail):
             offer_val = fixer.get("underwriting", {}).get("offer_price") or 128000.0
             reply = (
-                f"Totally understand we have a gap right now, {agent_first}! I just shot our formal written terms to your email as well "
-                f"as a standing cash offer at ${offer_val:,.0f} just in case the seller's circumstances or timeline change down the road, "
-                f"or if anything falls through with another buyer. Our offer stands for 30 days. If anything shifts, John and I are ready to close clean in 14 days!"
+                f"Totally understand we have a gap right now, {agent_first}. I just emailed our formal written terms "
+                f"as a standing cash offer at ${offer_val:,.0f} in case the seller timeline or circumstances change, "
+                f"or if a retail buyer falls through. Our offer stands for 30 days. If anything shifts, John and I are ready to close clean in 14 days."
             )
             fixer["standing_loi_sent"] = True
             fixer["status"] = "STANDING_LOI_SENT"
@@ -350,7 +340,7 @@ class LaurenEngine:
 
             retail_target = random.choice(RETAIL_CONDITION_TARGETS)
             reply = (
-                f"Got it, that helps a ton. When you walk through it, what dollar amount do you think a buyer needs to sink into it "
+                f"Got it, that helps a ton {agent_first}. When you walk through it, what ballpark dollar amount do you think a buyer needs to put into it "
                 f"to reach {retail_target} condition?"
             )
             fixer["current_node"] = "ASKED_REPAIR_COST"
@@ -392,10 +382,10 @@ class LaurenEngine:
             # 2. Agent comes in HIGH or close to right: Anchor them down showing low comps as possible.
             if agent_arv < redfin_est:
                 effective_arv = agent_arv
-                intro_phrase = f"{agent_first}, running your numbers through our flip calculator: based on your ${agent_arv:,.0f} resale number"
+                intro_phrase = f"{agent_first}, running your numbers through our calculator: based on your ${agent_arv:,.0f} resale number"
             else:
                 effective_arv = min(agent_arv * 0.85, redfin_est * 0.95)
-                intro_phrase = f"{agent_first}, we looked closely at those comps, but recent conservative neighborhood sales are sitting lower around ${effective_arv:,.0f}. Running that through our flip calculator"
+                intro_phrase = f"{agent_first}, we looked closely at those comps, but recent conservative neighborhood sales are sitting lower around ${effective_arv:,.0f}. Running that through our calculator"
 
             fixer["effective_arv"] = effective_arv
 
@@ -422,14 +412,14 @@ class LaurenEngine:
             offer = calc["offer_price"]
 
             if offer <= 0:
-                offer_phrase = "leaves zero profit margin at all"
+                offer_phrase = "leaves zero margin at all"
             else:
                 offer_phrase = f"puts John right around ${offer:,.0f} cash with zero inspection contingencies"
 
             reply = (
-                f"{intro_phrase}, minus ~${agent_rehab:,.0f} in repairs, 9 percent in holding and commission fees, and our crew's standard 15 percent margin "
-                f"{offer_phrase}. That is why we are coming in way under that one. "
-                f"Would it make sense to send over an offer and have John do a follow up for any questions?"
+                f"{intro_phrase}, minus ~${agent_rehab:,.0f} in repairs, 9 percent in holding and commission fees, and our standard 15 percent margin "
+                f"{offer_phrase}. That is why we are coming in under that one. "
+                f"Would it make sense to send over an offer and have John connect with you?"
             )
             fixer["current_node"] = "MATH_PRESENTED"
             fixer["status"] = "MATH_PRESENTED"
@@ -442,8 +432,8 @@ class LaurenEngine:
 
         # 6. Default Step 1 Hook Follow-up
         reply = (
-            f"Awesome, thanks for getting back to me {agent_first}. In your opinion, what shape are the major mechanicals in "
-            f"(roof, AC, plumbing, electrical), and what kind of rehab do you think it needs?"
+            f"Got it {agent_first}. In your opinion, what shape are the major mechanicals in "
+            f"(roof, AC, plumbing, electrical), and what kind of work do you think it needs to get it retail ready?"
         )
         fixer["current_node"] = "ASKED_REPAIR_SCOPE"
         fixer["status"] = "VETTING_REPAIRS"
@@ -451,7 +441,7 @@ class LaurenEngine:
             "action": "SUGGEST",
             "reply_text": sanitize_sms_no_hyphens(reply),
             "node": "ASKED_REPAIR_SCOPE",
-            "reason": "Trojan Horse Step 1: Inquiring on repair scope directly from the agent."
+            "reason": "Trojan Horse Step 1: Inquiring on repair scope directly from the agent without syrupy gratitude."
         }
 
     def _extract_dollar_amount(self, text: str) -> Optional[float]:
