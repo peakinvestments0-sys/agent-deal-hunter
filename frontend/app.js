@@ -143,10 +143,12 @@ async function initApp() {
   await loadSettings();
   await loadAgents();
   await loadFixers();
+  await pollDripStatus();
 
-  // Live polling for inbound SMS replies and stats updates
+  // Live polling for inbound SMS replies, stats, and drip queue updates
   setInterval(async () => {
     try {
+      await pollDripStatus();
       const res = await fetch("/api/stats");
       const stats = await res.json();
       const inboxBadge = document.getElementById("inboxBadge");
@@ -4954,5 +4956,160 @@ function toggleFixerThread(fixerId) {
   if (el) {
     el.classList.toggle("hidden");
   }
+}
+
+// --- AUTO-DRIP OUTBOUND QUEUE CONTROLLER (LOAD & GO) ---
+let currentDripState = null;
+
+async function startDripQueue(desk) {
+  const pacingEl = document.getElementById(desk === "BROOKE" ? "brookeDripPacing" : "laurenDripPacing");
+  const pacingVal = pacingEl ? pacingEl.value : "60-120";
+  const [minDelay, maxDelay] = pacingVal.split('-').map(Number);
+
+  const btn = document.getElementById(desk === "BROOKE" ? "btnStartBrookeDrip" : "btnStartLaurenDrip");
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = "Starting Queue...";
+  }
+
+  try {
+    const res = await fetch("/api/drip/start", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        desk: desk,
+        min_delay: minDelay || 60,
+        max_delay: maxDelay || 120,
+        county: currentCounty !== "ALL" ? currentCounty : null
+      })
+    });
+    const data = await res.json();
+    if (data.status === "success") {
+      pollDripStatus();
+      setTimeout(async () => {
+        if (desk === "BROOKE") await loadAgents();
+        else await loadFixers();
+      }, 1500);
+    } else {
+      alert(data.message || "Failed to start drip queue.");
+    }
+  } catch (err) {
+    alert("Error starting drip queue: " + err.message);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = "<span>🚀 Start Load &amp; Go</span>";
+    }
+  }
+}
+
+async function pauseDripQueue() {
+  try {
+    const res = await fetch("/api/drip/pause", { method: "POST" });
+    const data = await res.json();
+    pollDripStatus();
+  } catch (err) {
+    console.error("Error pausing drip:", err);
+  }
+}
+
+async function stopDripQueue() {
+  if (!confirm("Are you sure you want to stop and clear the Auto-Drip queue?")) return;
+  try {
+    const res = await fetch("/api/drip/stop", { method: "POST" });
+    const data = await res.json();
+    pollDripStatus();
+    if (currentDesk === "BROOKE") await loadAgents();
+    else await loadFixers();
+  } catch (err) {
+    console.error("Error stopping drip:", err);
+  }
+}
+
+async function pollDripStatus() {
+  try {
+    const res = await fetch("/api/drip/status");
+    const data = await res.json();
+    currentDripState = data;
+    renderDripStatus(data);
+  } catch (err) {
+    console.warn("Failed to poll drip status", err);
+  }
+}
+
+function renderDripStatus(s) {
+  // Brooke Desk Elements
+  const bBadge = document.getElementById("brookeDripStatusBadge");
+  const bSub = document.getElementById("brookeDripSubtitle");
+  const btnStartB = document.getElementById("btnStartBrookeDrip");
+  const btnPauseB = document.getElementById("btnPauseBrookeDrip");
+  const btnStopB = document.getElementById("btnStopBrookeDrip");
+
+  // Lauren Desk Elements
+  const lBadge = document.getElementById("laurenDripStatusBadge");
+  const lSub = document.getElementById("laurenDripSubtitle");
+  const btnStartL = document.getElementById("btnStartLaurenDrip");
+  const btnPauseL = document.getElementById("btnPauseLaurenDrip");
+  const btnStopL = document.getElementById("btnStopLaurenDrip");
+
+  const isRunning = s.status === "RUNNING";
+  const isPaused = s.status === "PAUSED";
+  const isQuiet = s.status === "QUIET_HOURS";
+  const isCompleted = s.status === "COMPLETED";
+
+  const desk = s.active_desk;
+
+  function updateDeskUI(badge, sub, btnStart, btnPause, btnStop, deskName) {
+    if (!badge) return;
+
+    if (desk === deskName && isRunning) {
+      badge.className = "px-2.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 animate-pulse";
+      badge.innerHTML = `🟢 Dripping: ${s.sent_count} / ${s.total_queued} Sent • Next in ${s.seconds_remaining}s`;
+      sub.innerHTML = `<span class="text-emerald-300 font-semibold">Active:</span> Targeting <strong class="text-white">${escapeHtml(s.current_target?.name || 'Agent')}</strong> (${escapeHtml(s.current_target?.address || '')}) • Next text at ${s.next_send_time || 'shortly'}.`;
+      
+      btnStart.classList.add("hidden");
+      btnPause.classList.remove("hidden");
+      btnPause.innerHTML = "<span>⏸️ Pause</span>";
+      btnStop.classList.remove("hidden");
+    } else if (desk === deskName && isPaused) {
+      badge.className = "px-2.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30";
+      badge.innerHTML = `⏸️ Paused (${s.sent_count} / ${s.total_queued} Sent)`;
+      sub.innerText = `Queue is paused. Hit Resume to continue sending with ${s.min_delay}-${s.max_delay}s natural pacing.`;
+      
+      btnStart.classList.add("hidden");
+      btnPause.classList.remove("hidden");
+      btnPause.innerHTML = "<span>▶️ Resume</span>";
+      btnStop.classList.remove("hidden");
+    } else if (desk === deskName && isQuiet) {
+      badge.className = "px-2.5 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30";
+      badge.innerHTML = `🌙 Quiet Hours (Sleeping until 8:30 AM)`;
+      sub.innerText = "Carrier safety active: Outreach automatically pauses outside business hours and resumes at 8:30 AM EST.";
+      
+      btnStart.classList.add("hidden");
+      btnPause.classList.remove("hidden");
+      btnStop.classList.remove("hidden");
+    } else if (desk === deskName && isCompleted) {
+      badge.className = "px-2.5 py-0.5 rounded text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30";
+      badge.innerHTML = `✓ Completed (${s.sent_count} Sent)`;
+      sub.innerText = `All queued contacts have been texted! Inbound replies will be evaluated automatically by the Underdog bot.`;
+      
+      btnStart.classList.remove("hidden");
+      btnPause.classList.add("hidden");
+      btnStop.classList.add("hidden");
+    } else {
+      badge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700";
+      badge.innerHTML = "⚪ Idle";
+      sub.innerText = deskName === "BROOKE" 
+        ? "Paces natural carrier-safe outreach (60-120s random delay) across uncontacted agents in the background."
+        : "Paces Trojan Horse opening hooks (60-120s random delay) across scraped Redfin fixers in the background.";
+      
+      btnStart.classList.remove("hidden");
+      btnPause.classList.add("hidden");
+      btnStop.classList.add("hidden");
+    }
+  }
+
+  updateDeskUI(bBadge, bSub, btnStartB, btnPauseB, btnStopB, "BROOKE");
+  updateDeskUI(lBadge, lSub, btnStartL, btnPauseL, btnStopL, "LAUREN");
 }
 

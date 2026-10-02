@@ -205,6 +205,55 @@
       </div>
     </div>
 
+    <!-- ⚡ BROOKE AUTO-DRIP OUTBOUND QUEUE BAR (LOAD & GO) -->
+    <div class="bg-gradient-to-r from-indigo-950/70 via-slate-900 to-indigo-950/70 border border-indigo-500/40 rounded-2xl p-4 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3.5 min-w-0">
+        <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center text-xl flex-shrink-0">
+          ⚡
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2">
+            <h4 class="text-sm font-bold text-white flex items-center gap-1.5">
+              <span>Auto-Drip Outbound Queue</span>
+              <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Load &amp; Go</span>
+            </h4>
+            <span id="brookeDripStatusBadge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700">
+              ⚪ Idle
+            </span>
+          </div>
+          <p class="text-xs text-slate-400 truncate mt-0.5" id="brookeDripSubtitle">
+            Paces natural carrier-safe outreach (60-120s random delay) across uncontacted agents in the background.
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2.5 flex-shrink-0 w-full md:w-auto justify-end">
+        <!-- Delay Setting Selector -->
+        <div class="flex items-center gap-1.5 bg-slate-950/80 px-2.5 py-1.5 rounded-xl border border-slate-800 text-xs">
+          <span class="text-slate-400 text-[11px]">Pacing:</span>
+          <select id="brookeDripPacing" class="bg-transparent text-indigo-300 text-xs font-semibold focus:outline-none cursor-pointer">
+            <option value="45-90">45-90s (Fast)</option>
+            <option value="60-120" selected>60-120s (Standard)</option>
+            <option value="90-180">90-180s (Stealth)</option>
+            <option value="120-240">2-4 min (Ultra-Safe)</option>
+          </select>
+        </div>
+
+        <!-- Controls -->
+        <button type="button" id="btnStartBrookeDrip" onclick="startDripQueue('BROOKE')" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-indigo-600/30 cursor-pointer">
+          <span>🚀 Start Load &amp; Go</span>
+        </button>
+
+        <button type="button" id="btnPauseBrookeDrip" onclick="pauseDripQueue()" class="hidden px-3 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 text-xs font-bold transition cursor-pointer">
+          <span>⏸️ Pause</span>
+        </button>
+
+        <button type="button" id="btnStopBrookeDrip" onclick="stopDripQueue()" class="hidden px-3 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-300 text-xs font-bold transition cursor-pointer">
+          <span>⏹️ Stop</span>
+        </button>
+      </div>
+    </div>
+
     <!-- PIPELINE TABS & FILTER BAR (FLOWCHART & UNDERDOG FUNNEL) -->
     <div class="space-y-4">
       <!-- Tabs -->
@@ -351,6 +400,55 @@
             <span>Connected (:8001)</span>
           </div>
           <button type="button" onclick="openModal('chromeExtensionModal')" class="text-[10px] text-amber-400 hover:underline mt-1 block cursor-pointer">Setup Instructions &rarr;</button>
+        </div>
+      </div>
+
+      <!-- ⚡ LAUREN AUTO-DRIP OUTBOUND QUEUE BAR (LOAD & GO) -->
+      <div class="bg-gradient-to-r from-amber-950/70 via-slate-900 to-amber-950/70 border border-amber-500/40 rounded-2xl p-4 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5 min-w-0">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center text-xl flex-shrink-0">
+            ⚡
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-2">
+              <h4 class="text-sm font-bold text-white flex items-center gap-1.5">
+                <span>Fixer Auto-Drip Outbound Queue</span>
+                <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">Load &amp; Go</span>
+              </h4>
+              <span id="laurenDripStatusBadge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                ⚪ Idle
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 truncate mt-0.5" id="laurenDripSubtitle">
+              Paces Trojan Horse opening hooks (60-120s random delay) across scraped Redfin fixers in the background.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 flex-shrink-0 w-full md:w-auto justify-end">
+          <!-- Delay Setting Selector -->
+          <div class="flex items-center gap-1.5 bg-slate-950/80 px-2.5 py-1.5 rounded-xl border border-slate-800 text-xs">
+            <span class="text-slate-400 text-[11px]">Pacing:</span>
+            <select id="laurenDripPacing" class="bg-transparent text-amber-300 text-xs font-semibold focus:outline-none cursor-pointer">
+              <option value="45-90">45-90s (Fast)</option>
+              <option value="60-120" selected>60-120s (Standard)</option>
+              <option value="90-180">90-180s (Stealth)</option>
+              <option value="120-240">2-4 min (Ultra-Safe)</option>
+            </select>
+          </div>
+
+          <!-- Controls -->
+          <button type="button" id="btnStartLaurenDrip" onclick="startDripQueue('LAUREN')" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-amber-600/30 cursor-pointer">
+            <span>🚀 Start Load &amp; Go</span>
+          </button>
+
+          <button type="button" id="btnPauseLaurenDrip" onclick="pauseDripQueue()" class="hidden px-3 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 text-xs font-bold transition cursor-pointer">
+            <span>⏸️ Pause</span>
+          </button>
+
+          <button type="button" id="btnStopLaurenDrip" onclick="stopDripQueue()" class="hidden px-3 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-300 text-xs font-bold transition cursor-pointer">
+            <span>⏹️ Stop</span>
+          </button>
         </div>
       </div>
 

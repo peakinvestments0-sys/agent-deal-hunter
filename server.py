@@ -28,6 +28,7 @@ from src.bot_engine import (
     delete_golden_reply, STANDARD_TRAINING_SCENARIOS, polish_reply_with_gemini
 )
 from src.scheduler import cadence_scheduler
+from src.drip_engine import drip_engine
 from src.lauren_engine import (
     load_fixers, save_fixers, calculate_trojan_horse_mao,
     lauren_engine
@@ -225,6 +226,13 @@ class ContractPayload(BaseModel):
     inspection_days: int = 7
     closing_days: int = 14
     title_company: str = "Title Insights"
+
+class StartDripRequest(BaseModel):
+    desk: Optional[str] = "BROOKE"  # "BROOKE", "LAUREN", "ALL"
+    min_delay: Optional[int] = 60
+    max_delay: Optional[int] = 120
+    county: Optional[str] = None
+    limit: Optional[int] = None
 
 # --- API Endpoints ---
 
@@ -614,6 +622,35 @@ def toggle_scheduler_endpoint(req: Dict[str, Any]):
     settings["auto_cadence_followup_enabled"] = enabled
     save_bot_settings(settings)
     return {"status": "success", "enabled": enabled}
+
+# --- Auto-Drip Outbound Queue Endpoints (Load & Go) ---
+@app.post("/api/drip/start")
+def start_drip_endpoint(req: StartDripRequest):
+    return drip_engine.start_drip(
+        desk=req.desk or "BROOKE",
+        min_delay=req.min_delay or 60,
+        max_delay=req.max_delay or 120,
+        county=req.county,
+        limit=req.limit
+    )
+
+@app.post("/api/drip/pause")
+def pause_drip_endpoint():
+    return drip_engine.pause_drip()
+
+@app.post("/api/drip/stop")
+def stop_drip_endpoint():
+    return drip_engine.stop_drip()
+
+@app.get("/api/drip/status")
+def get_drip_status_endpoint():
+    return drip_engine.get_status()
+
+@app.get("/api/drip/log")
+def get_drip_log_endpoint():
+    from src.storage import load_json
+    log_file = os.path.join(DATA_DIR, "drip_queue_log.json")
+    return load_json(log_file, [])
 
 # --- SMTP2GO Email Endpoints ---
 @app.get("/api/email/settings")
