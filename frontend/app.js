@@ -204,8 +204,12 @@ async function initApp() {
             const freshFixers = await fRes.json();
             const freshMsgCount = freshFixers.reduce((acc, f) => acc + (f.messages ? f.messages.length : 0), 0);
             const prevMsgCount = (allFixers || []).reduce((acc, f) => acc + (f.messages ? f.messages.length : 0), 0);
-            if (freshMsgCount !== prevMsgCount || freshFixers.length !== (allFixers || []).length) {
+            const freshPhoneHash = freshFixers.map(f => `${f.id}:${f.agent_phone || ''}:${f.status || ''}`).join('|');
+            const prevPhoneHash = (allFixers || []).map(f => `${f.id}:${f.agent_phone || ''}:${f.status || ''}`).join('|');
+
+            if (freshMsgCount !== prevMsgCount || freshFixers.length !== (allFixers || []).length || freshPhoneHash !== prevPhoneHash) {
               allFixers = freshFixers;
+              populateFixerFilterDropdowns();
               filterFixersList();
             }
           }
@@ -213,6 +217,13 @@ async function initApp() {
       }
     } catch(e) {}
   }, 2500);
+
+  // Instantly re-sync desk the moment you switch back from Google Search tab
+  window.addEventListener('focus', () => {
+    if (typeof currentDesk !== 'undefined' && currentDesk === 'LAUREN') {
+      loadFixers();
+    }
+  });
 }
 
 async function loadCounties() {
@@ -1737,16 +1748,16 @@ function applySmsTemplate(type, overrides = null) {
   const offerFmt = `$${Math.round(offerVal).toLocaleString()}`;
 
   let rendered = tmpl
-    .replace(/{Agent_FirstName}/g, agentNameVal)
-    .replace(/{Agent_Name}/g, selectedAgent.full_name || agentNameVal)
-    .replace(/{Listing_Address}/g, addressVal)
-    .replace(/{City}/g, selectedAgent.primary_city || "the area")
-    .replace(/\${ARV}/g, arvFmt)
-    .replace(/{ARV}/g, arvFmt)
-    .replace(/\${Repairs}/g, repairsFmt)
-    .replace(/{Repairs}/g, repairsFmt)
-    .replace(/\${Offer_Amount}/g, offerFmt)
-    .replace(/{Offer_Amount}/g, offerFmt);
+    .replace(/{Agent_FirstName}/g, () => agentNameVal)
+    .replace(/{Agent_Name}/g, () => selectedAgent.full_name || agentNameVal)
+    .replace(/{Listing_Address}/g, () => addressVal)
+    .replace(/{City}/g, () => selectedAgent.primary_city || "the area")
+    .replace(/\${ARV}/g, () => arvFmt)
+    .replace(/{ARV}/g, () => arvFmt)
+    .replace(/\${Repairs}/g, () => repairsFmt)
+    .replace(/{Repairs}/g, () => repairsFmt)
+    .replace(/\${Offer_Amount}/g, () => offerFmt)
+    .replace(/{Offer_Amount}/g, () => offerFmt);
 
   rendered = resolveSpintax(rendered);
   rendered = sanitizeSmsNoHyphens(rendered);
@@ -1856,16 +1867,16 @@ function applyEmailTemplate(type, overrides = null) {
     .replace(/{Listing_Address}/g, addressVal);
 
   const body = tmpl.body
-    .replace(/{Agent_FirstName}/g, agentNameVal)
-    .replace(/{Agent_Name}/g, selectedAgent.full_name || agentNameVal)
-    .replace(/{Listing_Address}/g, addressVal)
-    .replace(/{City}/g, selectedAgent.primary_city || "Florida")
-    .replace(/\${ARV}/g, arvFmt)
-    .replace(/{ARV}/g, arvFmt)
-    .replace(/\${Repairs}/g, repairsFmt)
-    .replace(/{Repairs}/g, repairsFmt)
-    .replace(/\${Offer_Amount}/g, offerFmt)
-    .replace(/{Offer_Amount}/g, offerFmt);
+    .replace(/{Agent_FirstName}/g, () => agentNameVal)
+    .replace(/{Agent_Name}/g, () => selectedAgent.full_name || agentNameVal)
+    .replace(/{Listing_Address}/g, () => addressVal)
+    .replace(/{City}/g, () => selectedAgent.primary_city || "Florida")
+    .replace(/\${ARV}/g, () => arvFmt)
+    .replace(/{ARV}/g, () => arvFmt)
+    .replace(/\${Repairs}/g, () => repairsFmt)
+    .replace(/{Repairs}/g, () => repairsFmt)
+    .replace(/\${Offer_Amount}/g, () => offerFmt)
+    .replace(/{Offer_Amount}/g, () => offerFmt);
 
   document.getElementById("emailSubjectInput").value = subj;
   document.getElementById("emailBodyText").value = body;
@@ -4196,35 +4207,150 @@ async function loadFixers() {
     const statLois = document.getElementById("statFixersLoiSent");
     if (statLois) statLois.innerText = loisCount;
 
+    populateFixerFilterDropdowns();
     filterFixersList();
   } catch (err) {
     console.error("Error loading fixers:", err);
   }
 }
 
+function populateFixerFilterDropdowns() {
+  const countySel = document.getElementById("fixerCountyFilter");
+  if (countySel) {
+    const currentCountyVal = countySel.value || "ALL";
+    const counties = [...new Set(allFixers.map(f => (f.county || "").toUpperCase().trim()).filter(Boolean))].sort();
+    let countyHtml = `<option value="ALL">All Counties</option>`;
+    counties.forEach(c => {
+      const selected = c === currentCountyVal ? "selected" : "";
+      countyHtml += `<option value="${escapeHtml(c)}" ${selected}>${escapeHtml(c)}</option>`;
+    });
+    countySel.innerHTML = countyHtml;
+  }
+
+  populateFixerCityDropdown();
+}
+
+function populateFixerCityDropdown() {
+  const countySel = document.getElementById("fixerCountyFilter");
+  const citySel = document.getElementById("fixerCityFilter");
+  if (!citySel) return;
+
+  const currentCountyVal = countySel ? countySel.value : "ALL";
+  const currentCityVal = citySel.value || "ALL";
+
+  let eligibleFixers = allFixers;
+  if (currentCountyVal !== "ALL") {
+    eligibleFixers = allFixers.filter(f => (f.county || "").toUpperCase().trim() === currentCountyVal);
+  }
+
+  const cities = [...new Set(eligibleFixers.map(f => (f.city || "").trim()).filter(Boolean))].sort();
+  let cityHtml = `<option value="ALL">All Cities</option>`;
+  cities.forEach(c => {
+    const selected = c.toLowerCase() === currentCityVal.toLowerCase() ? "selected" : "";
+    cityHtml += `<option value="${escapeHtml(c)}" ${selected}>${escapeHtml(c)}</option>`;
+  });
+  citySel.innerHTML = cityHtml;
+}
+
+function handleFixerCountyFilterChange() {
+  populateFixerCityDropdown();
+  filterFixersList();
+}
+
+function isFixerContacted(f) {
+  const hasMessages = Array.isArray(f.messages) && f.messages.length > 0;
+  const isOutreachStatus = f.status && !["NEW", "SCRAPED", ""].includes(f.status.toUpperCase());
+  return hasMessages || isOutreachStatus || !!f.standing_loi_sent;
+}
+
+function hasFixerReplies(f) {
+  return Array.isArray(f.messages) && f.messages.some(m => (m.direction || "").toUpperCase() === "INBOUND");
+}
+
 function filterFixersList() {
   const searchInput = document.getElementById("fixerSearchInput");
   const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+  const contactFilter = document.getElementById("fixerContactFilter") ? document.getElementById("fixerContactFilter").value : "ALL";
+  const countyFilter = document.getElementById("fixerCountyFilter") ? document.getElementById("fixerCountyFilter").value : "ALL";
+  const cityFilter = document.getElementById("fixerCityFilter") ? document.getElementById("fixerCityFilter").value : "ALL";
 
-  if (!query) {
-    filteredFixers = [...allFixers];
-  } else {
-    filteredFixers = allFixers.filter(f => {
+  const isFiltered = query !== "" || contactFilter !== "ALL" || countyFilter !== "ALL" || cityFilter !== "ALL";
+
+  const resetBtn = document.getElementById("btnResetFixerFilters");
+  if (resetBtn) {
+    if (isFiltered) resetBtn.classList.remove("hidden");
+    else resetBtn.classList.add("hidden");
+  }
+
+  const filteredBadge = document.getElementById("fixerFilteredBadge");
+  if (filteredBadge) {
+    if (isFiltered) filteredBadge.classList.remove("hidden");
+    else filteredBadge.classList.add("hidden");
+  }
+
+  filteredFixers = allFixers.filter(f => {
+    // 1. Text search
+    if (query) {
       const addr = (f.address || "").toLowerCase();
       const city = (f.city || "").toLowerCase();
+      const county = (f.county || "").toLowerCase();
       const agent = (f.agent_name || "").toLowerCase();
       const brokerage = (f.brokerage || "").toLowerCase();
+      const remarks = (f.remarks || "").toLowerCase();
       const status = (f.status || "").toLowerCase();
-      return addr.includes(query) || city.includes(query) || agent.includes(query) || brokerage.includes(query) || status.includes(query);
-    });
-  }
+      const matchesQuery = addr.includes(query) || city.includes(query) || county.includes(query) || agent.includes(query) || brokerage.includes(query) || remarks.includes(query) || status.includes(query);
+      if (!matchesQuery) return false;
+    }
+
+    // 2. Contact Status Filter
+    if (contactFilter === "CONTACTED") {
+      if (!isFixerContacted(f)) return false;
+    } else if (contactFilter === "UNCONTACTED") {
+      if (isFixerContacted(f)) return false;
+    } else if (contactFilter === "REPLIED") {
+      if (!hasFixerReplies(f)) return false;
+    } else if (contactFilter === "LOI_SENT") {
+      if (!f.standing_loi_sent && (f.status || "").toUpperCase() !== "STANDING_LOI_SENT") return false;
+    }
+
+    // 3. County Filter
+    if (countyFilter !== "ALL") {
+      const fCounty = (f.county || "").toUpperCase().trim();
+      if (fCounty !== countyFilter.toUpperCase().trim()) return false;
+    }
+
+    // 4. City Filter
+    if (cityFilter !== "ALL") {
+      const fCity = (f.city || "").toLowerCase().trim();
+      if (fCity !== cityFilter.toLowerCase().trim()) return false;
+    }
+
+    return true;
+  });
 
   const countDisplay = document.getElementById("fixerCountDisplay");
   if (countDisplay) {
-    countDisplay.innerText = `Showing ${filteredFixers.length} of ${allFixers.length} fixer listings`;
+    if (isFiltered) {
+      countDisplay.innerHTML = `<span class="text-amber-300 font-bold">Showing ${filteredFixers.length}</span> of ${allFixers.length} fixer listings`;
+    } else {
+      countDisplay.innerText = `Showing ${filteredFixers.length} of ${allFixers.length} fixer listings`;
+    }
   }
 
   renderFixers(filteredFixers);
+}
+
+function resetFixerFilters() {
+  const searchInput = document.getElementById("fixerSearchInput");
+  if (searchInput) searchInput.value = "";
+  const contactFilter = document.getElementById("fixerContactFilter");
+  if (contactFilter) contactFilter.value = "ALL";
+  const countyFilter = document.getElementById("fixerCountyFilter");
+  if (countyFilter) countyFilter.value = "ALL";
+  populateFixerCityDropdown();
+  const cityFilter = document.getElementById("fixerCityFilter");
+  if (cityFilter) cityFilter.value = "ALL";
+  filterFixersList();
 }
 
 const expandedFixerIds = new Set();
@@ -4389,7 +4515,23 @@ function renderFixers(fixers) {
                     <span>📱</span>
                     <span>${escapeHtml(f.agent_phone)}</span>
                   </a>
-                ` : '<span class="text-slate-500">No phone</span>'}
+                  <button type="button" onclick="event.stopPropagation(); quickEditFixerPhone('${f.id}')" class="text-[10px] text-slate-500 hover:text-indigo-300" title="Edit agent phone">✏️</button>
+                  ${f.rerouted_from_phone ? `<span class="text-[9px] px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30 font-mono">🔀 Re-routed from ${escapeHtml(f.rerouted_from_phone)}</span>` : ''}
+                ` : `
+                  <div class="flex items-center gap-1.5">
+                    <button type="button" onclick="event.stopPropagation(); quickEditFixerPhone('${f.id}')" class="px-2 py-0.5 rounded-md bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 text-[10px] font-bold transition flex items-center gap-1 cursor-pointer" title="Manually type agent phone number">
+                      <span>📱 + Add Phone</span>
+                    </button>
+                    <button type="button" id="btn_lookup_${f.id}" onclick="event.stopPropagation(); lookupFixerPhone('${f.id}')" class="px-2 py-0.5 rounded-md bg-indigo-500/15 hover:bg-indigo-500/25 border border-indigo-500/30 text-indigo-300 text-[10px] font-bold transition flex items-center gap-1 cursor-pointer" title="Auto-find phone on Google/Realtor.com">
+                      <span>⚡ Find Phone</span>
+                    </button>
+                    ${f.agent_name ? `
+                      <a href="https://www.google.com/search?q=${encodeURIComponent((f.agent_name || '') + ' ' + (f.brokerage || '') + ' ' + (f.city || '') + ' FL realtor phone number')}" target="_blank" onclick="event.stopPropagation()" class="text-[10px] text-slate-400 hover:text-amber-300 underline" title="Search Google directly">
+                        Google ↗
+                      </a>
+                    ` : ''}
+                  </div>
+                `}
                 ${f.agent_email ? `
                   <a href="mailto:${escapeHtml(f.agent_email)}" onclick="event.stopPropagation()" class="text-cyan-400 hover:underline flex items-center gap-1">
                     <span>✉️</span>
@@ -4435,6 +4577,30 @@ function renderFixers(fixers) {
 
         <!-- COLLAPSIBLE DETAILS BODY -->
         <div id="fixer_details_${f.id}" class="${isExpanded ? '' : 'hidden'} p-5 pt-0 border-t border-slate-800/80 space-y-4">
+
+        <!-- UNDERWRITING CONTRADICTION ALERT (IF FLAGGED) -->
+        ${(f.underwriting_contradiction_flag || (f.contradiction_details && f.contradiction_details.length > 0)) ? `
+          <div class="bg-amber-500/15 border border-amber-500/40 rounded-xl p-3 text-xs text-amber-200 space-y-1">
+            <div class="flex items-center gap-1.5 font-bold text-amber-300">
+              <span>⚠️ Underwriting Contradiction Warning:</span>
+            </div>
+            <div class="text-[11px] leading-relaxed text-amber-200/90 pl-5 space-y-0.5">
+              ${(f.contradiction_details || ["Agent reported mechanicals/roof in good condition. Review repair budget before sending Math Drop."]).map(c => `<div>• ${escapeHtml(c)}</div>`).join('')}
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- 30-DAY FOLLOW-UP TASK (IF SCHEDULED) -->
+        ${f.followup_task ? `
+          <div class="bg-indigo-500/15 border border-indigo-500/40 rounded-xl p-2.5 text-xs text-indigo-200 flex items-center justify-between">
+            <div class="flex items-center gap-2 font-bold text-indigo-300">
+              <span>📅 30-Day Check-in Task:</span>
+              <span class="font-mono text-slate-300 font-normal">Scheduled for ${escapeHtml(f.followup_task.scheduled_date || '30 days')}</span>
+              ${f.followup_task.note ? `<span class="text-[10px] text-slate-400 italic">(${escapeHtml(f.followup_task.note)})</span>` : ''}
+            </div>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-700/60 font-bold">${escapeHtml(f.followup_task.status || 'PENDING')}</span>
+          </div>
+        ` : ''}
 
         <!-- REMARKS ("DON'T LOOK STUPID" AWARENESS) -->
         <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3 text-xs space-y-1">
@@ -4575,22 +4741,32 @@ function renderFixers(fixers) {
             </div>
           </div>
 
-          <!-- Latest Agent Inbound Reply Callout (if any) -->
-          ${latestInbound ? `
-            <div class="p-3 rounded-xl bg-indigo-950/40 border border-indigo-500/40 space-y-2">
-              <div class="flex items-center justify-between text-[11px]">
-                <span class="font-bold text-indigo-300 flex items-center gap-1.5">
-                  <span>📩 Inbound from ${escapeHtml(latestInbound.sender || f.agent_name || 'Agent')}:</span>
+          <!-- LIVE TWO-WAY CONVERSATION CHAT THREAD (INBOUND + OUTBOUND) -->
+          ${(messages && messages.length > 0) ? `
+            <div class="p-3.5 rounded-2xl bg-[#070d18] border border-slate-800 space-y-2.5 shadow-inner">
+              <div class="flex items-center justify-between text-[11px] pb-1 border-b border-slate-800/60">
+                <span class="font-bold text-amber-300 flex items-center gap-1.5">
+                  <span>💬</span>
+                  <span>Live SMS Conversation (${escapeHtml(f.agent_name || 'Agent')}):</span>
                 </span>
-                <span class="font-mono text-slate-400 text-[10px]">${escapeHtml(latestInbound.timestamp || '')}</span>
+                <span class="text-[10px] text-slate-400 font-mono">${messages.length} message${messages.length === 1 ? '' : 's'}</span>
               </div>
-              <div class="space-y-1.5">
-                ${messages.filter(m => m.direction === 'INBOUND').slice(-2).map(inb => `
-                  <div class="text-xs text-slate-100 font-medium bg-[#0b1220] p-2.5 rounded-lg border border-slate-800/80 leading-relaxed flex flex-col gap-0.5">
-                    <span class="text-[10px] text-indigo-400/80 font-mono">${escapeHtml(inb.timestamp || '')}</span>
-                    <span>"${escapeHtml(inb.text || '')}"</span>
-                  </div>
-                `).join('')}
+              <div class="space-y-2 max-h-60 overflow-y-auto pr-1">
+                ${messages.map(m => {
+                  const isOut = m.direction === "OUTBOUND";
+                  return `
+                    <div class="flex flex-col ${isOut ? 'items-end ml-auto' : 'items-start mr-auto'} max-w-[88%] space-y-0.5">
+                      <div class="flex items-center gap-1.5 text-[9px] text-slate-400">
+                        <span class="font-bold ${isOut ? 'text-amber-400' : 'text-indigo-300'}">${escapeHtml(m.sender || (isOut ? 'Lauren (You)' : (f.agent_name || 'Agent')))}</span>
+                        <span>&bull;</span>
+                        <span class="font-mono text-slate-500">${escapeHtml(m.timestamp || '')}</span>
+                      </div>
+                      <div class="p-2.5 rounded-2xl text-xs leading-relaxed ${isOut ? 'bg-amber-500/20 border border-amber-500/35 text-amber-100 rounded-tr-none' : 'bg-slate-800/95 border border-slate-700 text-slate-100 rounded-tl-none'}">
+                        ${escapeHtml(m.text || '')}
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
               </div>
             </div>
           ` : ''}
@@ -4622,32 +4798,6 @@ function renderFixers(fixers) {
                 <span>🚀 Send SMS via Phone</span>
               </button>
             </div>
-          </div>
-        </div>
-
-        <!-- EXPANDABLE MESSAGE THREAD -->
-        <div id="fixer_thread_${f.id}" class="hidden pt-3 border-t border-slate-800 space-y-2">
-          <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Conversation Transcript:</div>
-          <div class="max-h-60 overflow-y-auto space-y-2 p-3 rounded-xl bg-[#0b1220] border border-slate-800">
-            ${(f.messages && f.messages.length > 0) ? f.messages.map(m => {
-              const isOut = m.direction === "OUTBOUND";
-              return `
-                <div class="flex flex-col ${isOut ? 'items-end ml-auto' : 'items-start mr-auto'} max-w-[85%] space-y-1">
-                  <div class="flex items-center gap-1.5 text-[10px] text-slate-400">
-                    <span class="font-bold ${isOut ? 'text-amber-400' : 'text-slate-300'}">${escapeHtml(m.sender || (isOut ? 'Lauren' : 'Agent'))}</span>
-                    <span class="text-slate-500">&bull;</span>
-                    <span class="font-mono text-slate-500">${escapeHtml(m.timestamp || '')}</span>
-                  </div>
-                  <div class="p-2.5 rounded-2xl text-xs leading-relaxed ${isOut ? 'bg-amber-600/20 border border-amber-500/30 text-amber-100 rounded-tr-none' : 'bg-slate-800 border border-slate-700 text-slate-200 rounded-tl-none'}">
-                    ${escapeHtml(m.text || '')}
-                  </div>
-                </div>
-              `;
-            }).join("") : `
-              <div class="text-center py-4 text-xs text-slate-500">
-                No messages exchanged yet. Click <strong>Send SMS</strong> above to launch first outreach!
-              </div>
-            `}
           </div>
         </div><!-- END COLLAPSIBLE DETAILS BODY -->
 
@@ -4966,6 +5116,61 @@ async function deleteFixer(fixerId) {
   }
 }
 
+async function clearEntireFixerDesk() {
+  const count = allFixers ? allFixers.length : 0;
+  const msg = count > 0 
+    ? `⚠️ ARE YOU SURE YOU WANT TO CLEAR LAUREN'S DESK?\n\nThis will remove all ${count} fixer listings from Lauren's Desk so you can start completely fresh.\n\nThis action cannot be undone.`
+    : `⚠️ Clear and reset Lauren's Desk on the server to start fresh?`;
+
+  if (!confirm(msg)) {
+    return;
+  }
+
+  try {
+    const res = await fetch("/api/fixers/clear", {
+      method: "POST"
+    });
+    
+    if (res.ok) {
+      allFixers = [];
+      filteredFixers = [];
+      
+      // Update UI elements directly
+      const headerBadge = document.getElementById("headerLaurenBadge");
+      if (headerBadge) headerBadge.innerText = "0";
+      const statCount = document.getElementById("statFixersCount");
+      if (statCount) statCount.innerText = "0";
+      const statAvgArv = document.getElementById("statFixersAvgArv");
+      if (statAvgArv) statAvgArv.innerText = "$0";
+      const statAvgMao = document.getElementById("statFixersAvgMao");
+      if (statAvgMao) statAvgMao.innerText = "$0";
+      const statLois = document.getElementById("statFixersLoiSent");
+      if (statLois) statLois.innerText = "0";
+      const countDisplay = document.getElementById("fixerCountDisplay");
+      if (countDisplay) countDisplay.innerText = "Showing 0 of 0 fixer listings";
+
+      populateFixerFilterDropdowns();
+      renderFixers([]);
+      
+      alert("✅ Lauren's Desk has been completely cleared. Ready for fresh Redfin scrapes!");
+    } else {
+      const delRes = await fetch("/api/fixers", { method: "DELETE" });
+      if (delRes.ok) {
+        allFixers = [];
+        filteredFixers = [];
+        populateFixerFilterDropdowns();
+        renderFixers([]);
+        alert("✅ Lauren's Desk has been completely cleared. Ready for fresh Redfin scrapes!");
+      } else {
+        alert("Failed to clear desk. Please check server logs.");
+      }
+    }
+  } catch (err) {
+    alert("Network error: " + err.message);
+  }
+}
+window.clearEntireFixerDesk = clearEntireFixerDesk;
+
 function toggleFixerThread(fixerId) {
   const el = document.getElementById(`fixer_thread_${fixerId}`);
   if (el) {
@@ -4975,6 +5180,94 @@ function toggleFixerThread(fixerId) {
 
 // --- AUTO-DRIP OUTBOUND QUEUE CONTROLLER (LOAD & GO) ---
 let currentDripState = null;
+
+async function quickEditFixerPhone(fixerId) {
+  const fixer = allFixers.find(f => f.id === fixerId);
+  const currentPhone = fixer ? (fixer.agent_phone || "") : "";
+  const agentName = fixer ? (fixer.agent_name || "Listing Agent") : "Agent";
+
+  const newPhone = prompt(`Enter phone number for ${agentName} (${fixer?.address || ''}):`, currentPhone);
+  if (newPhone === null) return;
+
+  const cleaned = newPhone.trim();
+  try {
+    const res = await fetch(`/api/fixers/${fixerId}/phone`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: cleaned })
+    });
+    if (res.ok) {
+      if (fixer) fixer.agent_phone = cleaned;
+      filterFixersList();
+    } else {
+      alert("Failed to update phone number.");
+    }
+  } catch (err) {
+    alert("Network error: " + err.message);
+  }
+}
+window.quickEditFixerPhone = quickEditFixerPhone;
+
+async function lookupFixerPhone(fixerId) {
+  const fixer = allFixers.find(f => f.id === fixerId);
+  const agentName = fixer ? (fixer.agent_name || "Agent") : "Agent";
+  const brokerage = fixer ? (fixer.brokerage || "") : "";
+  const city = fixer ? (fixer.city || "") : "";
+
+  const btn = document.getElementById(`btn_lookup_${fixerId}`);
+  const origHtml = btn ? btn.innerHTML : "";
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<span>⏳ Searching...</span>`;
+  }
+  try {
+    const res = await fetch(`/api/fixers/${fixerId}/lookup-phone`, { method: "POST" });
+    const d = await res.json();
+    if (d.status === "success" && d.phone) {
+      if (fixer) fixer.agent_phone = d.phone;
+      filterFixersList();
+    } else {
+      const gUrl = `https://www.google.com/search?q=${encodeURIComponent(agentName + ' ' + brokerage + ' ' + city + ' FL realtor phone number')}`;
+      if (confirm(`🔍 Web lookup didn't find a direct number.\n\nWould you like to open Google Search for "${agentName}" to grab their number?`)) {
+        window.open(gUrl, '_blank');
+        setTimeout(() => {
+          quickEditFixerPhone(fixerId);
+        }, 500);
+      }
+    }
+  } catch (err) {
+    alert("Lookup error: " + err.message);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = origHtml;
+    }
+  }
+}
+window.lookupFixerPhone = lookupFixerPhone;
+
+async function lookupAllFixerPhones() {
+  const btn = document.querySelector('[title*="Search Google & Realtor.com"]');
+  const origText = btn ? btn.innerHTML : "";
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<span>⏳ Searching Web...</span>`;
+  }
+  try {
+    const res = await fetch("/api/fixers/lookup-all-phones", { method: "POST" });
+    const d = await res.json();
+    await loadFixers();
+    alert(d.message || "Lookup complete!");
+  } catch (err) {
+    alert("Batch lookup error: " + err.message);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = origText;
+    }
+  }
+}
+window.lookupAllFixerPhones = lookupAllFixerPhones;
 
 async function startDripQueue(desk) {
   const pacingEl = document.getElementById(desk === "BROOKE" ? "brookeDripPacing" : "laurenDripPacing");
@@ -4987,6 +5280,12 @@ async function startDripQueue(desk) {
     btn.innerText = "Starting Queue...";
   }
 
+  const countyVal = desk === "BROOKE" 
+    ? (currentCounty !== "ALL" ? currentCounty : null)
+    : (document.getElementById("fixerCountyFilter") && document.getElementById("fixerCountyFilter").value !== "ALL" 
+        ? document.getElementById("fixerCountyFilter").value 
+        : null);
+
   try {
     const res = await fetch("/api/drip/start", {
       method: "POST",
@@ -4995,7 +5294,7 @@ async function startDripQueue(desk) {
         desk: desk,
         min_delay: minDelay || 60,
         max_delay: maxDelay || 120,
-        county: currentCounty !== "ALL" ? currentCounty : null
+        county: countyVal
       })
     });
     const data = await res.json();
@@ -5084,7 +5383,8 @@ function renderDripStatus(s) {
       
       btnStart.classList.add("hidden");
       btnPause.classList.remove("hidden");
-      btnPause.innerHTML = "<span>⏸️ Pause</span>";
+      btnPause.className = "px-4 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-amber-500/10 cursor-pointer";
+      btnPause.innerHTML = "<span>⏸️ Pause Queue</span>";
       btnStop.classList.remove("hidden");
     } else if (desk === deskName && isPaused) {
       badge.className = "px-2.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30";
@@ -5093,7 +5393,8 @@ function renderDripStatus(s) {
       
       btnStart.classList.add("hidden");
       btnPause.classList.remove("hidden");
-      btnPause.innerHTML = "<span>▶️ Resume</span>";
+      btnPause.className = "px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-emerald-600/30 cursor-pointer animate-pulse";
+      btnPause.innerHTML = "<span>▶️ Resume Queue</span>";
       btnStop.classList.remove("hidden");
     } else if (desk === deskName && isQuiet) {
       badge.className = "px-2.5 py-0.5 rounded text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30";
@@ -5127,4 +5428,9 @@ function renderDripStatus(s) {
   updateDeskUI(bBadge, bSub, btnStartB, btnPauseB, btnStopB, "BROOKE");
   updateDeskUI(lBadge, lSub, btnStartL, btnPauseL, btnStopL, "LAUREN");
 }
+
+window.startDripQueue = startDripQueue;
+window.pauseDripQueue = pauseDripQueue;
+window.stopDripQueue = stopDripQueue;
+window.pollDripStatus = pollDripStatus;
 

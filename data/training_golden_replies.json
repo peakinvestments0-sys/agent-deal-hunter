@@ -1,5 +1,136 @@
 [
   {
+    "node": "LAUREN_ASK_REPAIR_SCOPE",
+    "agent_inbound": "The inspection summary attached to the MLS listing covers everything they know.",
+    "final_approved_text": "Makes sense. Once it is all brought back to top dollar condition, what do you realistically think it lists and sells for on the back end?",
+    "suggested_text": "Makes sense. Once it is all brought back to top dollar condition, what do you realistically think it lists and sells for on the back end?",
+    "tags": [
+      "Repair Scope Extraction",
+      "LAUREN_ASK_REPAIR_SCOPE",
+      "Deflection Auto-Pivot"
+    ],
+    "agent_desk": "LAUREN",
+    "id": "golden_1791055917_181",
+    "timestamp": "2026-10-03 15:31:57"
+  },
+  {
+    "node": "IDENTITY_ANSWERED",
+    "agent_inbound": "Are you an agent?",
+    "final_approved_text": "No, we are direct cash buyers. We are unrepresented, so you can write up the offer for us if the numbers work. Are the sellers flexible on price for a quick close?",
+    "suggested_text": "No, we are direct cash buyers. We are unrepresented, so you can write up the offer for us if the numbers work. Are the sellers flexible on price for a quick close?",
+    "tags": [
+      "Identity & Tone",
+      "IDENTITY_ANSWERED"
+    ],
+    "agent_desk": "LAUREN",
+    "id": "golden_1791055829_987",
+    "timestamp": "2026-10-03 15:30:29"
+  },
+  {
+    "node": "ENTRY_HOOK_AWAITING_REPLY",
+    "agent_inbound": "Hey Johnathan, I have a property at 123 Main St in Melbourne.",
+    "final_approved_text": "Taking a look at 123 Main St now. What's the seller looking to do with it?",
+    "suggested_text": "Amazing, what can you share with me about this one?",
+    "tags": [
+      "Initial Contact",
+      "ENTRY_HOOK_AWAITING_REPLY"
+    ],
+    "agent_desk": "BROOKE",
+    "id": "golden_1791055646_416",
+    "timestamp": "2026-10-03 15:27:26"
+  },
+  {
+    "node": "OFF_MARKET_GOLD_TIMELINE",
+    "agent_inbound": "Photos are attached, asking $180k cash.",
+    "final_approved_text": "Photos look helpful. How soon are the sellers looking to decide and close?",
+    "suggested_text": "Great, thank you for sharing this with me. How soon are the sellers looking to make a decision?",
+    "tags": [
+      "Seller Motivation",
+      "OFF_MARKET_GOLD_TIMELINE"
+    ],
+    "agent_desk": "BROOKE",
+    "id": "golden_1791055604_703",
+    "timestamp": "2026-10-03 15:26:44"
+  },
+  {
+    "node": "OFF_MARKET_PHOTOS",
+    "agent_inbound": "Roof is about 12 years old, AC works fine. Needs complete kitchen and bath remodel, flooring, and paint throughout.",
+    "final_approved_text": "Good detail, thanks. Do you have any photos, a walkthrough link, or lockbox code by chance?",
+    "suggested_text": "Perfect, do you have any photos, a walkthrough link, or lockbox code by chance?",
+    "tags": [
+      "Property Access",
+      "OFF_MARKET_PHOTOS"
+    ],
+    "agent_desk": "BROOKE",
+    "id": "golden_1791055427_517",
+    "timestamp": "2026-10-03 15:23:47"
+  },
+  {
+    "node": "LAUREN_ASK_REPAIR_COST",
+    "agent_inbound": "Needs a full roof, AC is ancient, and the whole inside is 1980s original.",
+    "final_approved_text": "Makes sense. When you walk through it, what dollar amount do you think it needs to get to top of market condition?",
+    "suggested_text": "Got it, that helps a ton. When you walk through it, what dollar amount do you think a buyer needs to sink into it to get it to top of market condition?",
+    "tags": [
+      "Trojan Horse Step 3",
+      "LAUREN_ASK_REPAIR_COST"
+    ],
+    "agent_desk": "LAUREN",
+    "id": "golden_1791055279_760",
+    "timestamp": "2026-10-03 15:21:19"
+  },
+  {
+    "node": "LAUREN_ASK_REPAIR_SCOPE",
+    "agent_inbound": "Yes the sellers are very negotiable, they just want it sold this month.",
+    "final_approved_text": "Appreciate it Sarah. In your opinion, what shape are the major mechanicals in (roof, AC, plumbing, electrical)",
+    "suggested_text": "Awesome, thanks for getting back to me Sarah. In your opinion, what shape are the major mechanicals in (roof, AC, plumbing, electrical), and what kind of rehab do you think it needs?",
+    "tags": [
+      "Trojan Horse Step 2",
+      "LAUREN_ASK_REPAIR_SCOPE"
+    ],
+    "agent_desk": "LAUREN",
+    "id": "golden_1791055199_465",
+    "timestamp": "2026-10-03 15:19:59"
+  },
+  {
+    "node": "LAUREN_ASK_REPAIR_SCOPE",
+    "agent_inbound": "Yes the sellers are very negotiable, they just want it sold this month.",
+    "final_approved_text": "Appreciate it Sarah. In your opinion, what shape are the major mechanicals in (roof, AC, plumbing, electrical)",
+    "suggested_text": "Awesome, thanks for getting back to me Sarah. In your opinion, what shape are the major mechanicals in (roof, AC, plumbing, electrical), and what kind of rehab do you think it needs?",
+    "tags": [
+      "Trojan Horse Step 2",
+      "LAUREN_ASK_REPAIR_SCOPE"
+    ],
+    "agent_desk": "LAUREN",
+    "id": "golden_1791055169_683",
+    "timestamp": "2026-10-03 15:19:29"
+  },
+  {
+    "node": "LAUREN_OPENING_HOOK",
+    "agent_inbound": "[New Redfin Fixer Scraped: 456 Palm Breeze Rd. Remarks: Handyman special, cash only, needs roof.]",
+    "final_approved_text": "Hey Sarah, Lauren here. Looking at your Palm Breeze Rd listing as a cash buy. Beyond what's in the remarks, anything major I should know before I pencil it out?",
+    "suggested_text": "Hey Sarah, Lauren here. Saw your listing on Palm Breeze Rd. Saw your notes about the roof and interior updates needed. Other than what is already noted in the listing, does the home need anything else major to get it to full market value?",
+    "tags": [
+      "Trojan Horse Step 1",
+      "LAUREN_OPENING_HOOK"
+    ],
+    "agent_desk": "LAUREN",
+    "id": "golden_1791055100_596",
+    "timestamp": "2026-10-03 15:18:20"
+  },
+  {
+    "node": "LAUREN_OPENING_HOOK",
+    "agent_inbound": "[New Redfin Fixer Scraped: 456 Palm Breeze Rd. Remarks: Handyman special, cash only, needs roof.]",
+    "final_approved_text": "Hey Sarah, Lauren here. Looking at your Palm Breeze Rd listing as a cash buy. Beyond what's in the remarks, anything major I should know before I pencil it out?",
+    "suggested_text": "Hey Sarah, Lauren here. Saw your listing on Palm Breeze Rd. Saw your notes about the roof and interior updates needed. Other than what is already noted in the listing, does the home need anything else major to get it to full market value?",
+    "tags": [
+      "Trojan Horse Step 1",
+      "LAUREN_OPENING_HOOK"
+    ],
+    "agent_desk": "LAUREN",
+    "id": "golden_1791055037_176",
+    "timestamp": "2026-10-03 15:17:17"
+  },
+  {
     "id": "golden_cold_001",
     "timestamp": "2026-10-02 06:40:00",
     "node": "OPENING_HOOK",
@@ -245,8 +376,8 @@
     "agent_desk": "LAUREN",
     "node": "LAUREN_MATH_DROP",
     "agent_inbound": "If it is completely remodeled like new, maybe 260k max in this pocket.",
-    "suggested_template": "Sarah, running your numbers through our flip calculator: based on your ,000 resale number, minus ~50k in repairs, 9 percent in holding and commission fees, and our crew's standard 15 percent margin puts John right around ,600 cash with zero inspection contingencies. That is why we are coming in way under that one. Would it make sense to send over an offer and have John do a follow up for any questions?",
-    "final_approved_text": "Sarah, running your numbers through our flip calculator: based on your ,000 resale number, minus ~50k in repairs, 9 percent in holding and commission fees, and our crew's standard 15 percent margin puts John right around ,600 cash with zero inspection contingencies. That is why we are coming in way under that one. Would it make sense to send over an offer and have John do a follow up for any questions?",
+    "suggested_template": "Running your numbers through our flip calculator: based on your $260,000 resale number, minus ~50k in repairs, 9 percent in holding and commission fees, and our standard 15 percent margin puts John right around $128,600 cash with zero inspection contingencies. That is why we are coming in under that one. Would it make sense to send over an offer and have John connect with you?",
+    "final_approved_text": "Running your numbers through our flip calculator: based on your $260,000 resale number, minus ~50k in repairs, 9 percent in holding and commission fees, and our standard 15 percent margin puts John right around $128,600 cash with zero inspection contingencies. That is why we are coming in under that one. Would it make sense to send over an offer and have John connect with you?",
     "was_edited": false,
     "tags": [
       "Trojan Horse Step 5A",
@@ -259,9 +390,9 @@
     "timestamp": "2026-10-01 10:25:00",
     "agent_desk": "LAUREN",
     "node": "LAUREN_HIGH_ARV_ANCHOR",
-    "agent_inbound": "Comps are easily at ,000 all day long.",
-    "suggested_template": "Sarah, we looked closely at those comps, but recent conservative neighborhood sales are sitting lower around ,500. Running that through our flip calculator, minus ~50k in repairs, 9 percent in holding and commission fees, and our crew's standard 15 percent margin puts John right around ,940 cash with zero inspection contingencies. That is why we are coming in way under that one. Would it make sense to send over an offer and have John do a follow up for any questions?",
-    "final_approved_text": "Sarah, we looked closely at those comps, but recent conservative neighborhood sales are sitting lower around ,500. Running that through our flip calculator, minus ~50k in repairs, 9 percent in holding and commission fees, and our crew's standard 15 percent margin puts John right around ,940 cash with zero inspection contingencies. That is why we are coming in way under that one. Would it make sense to send over an offer and have John do a follow up for any questions?",
+    "agent_inbound": "Comps are easily at $380,000 all day long.",
+    "suggested_template": "We looked closely at those comps, but recent conservative sales in the pocket are sitting lower around $256,500. Running that through our flip calculator, minus ~50k in repairs, 9 percent in holding and commission fees, and our standard 15 percent margin puts John right around $125,940 cash with zero inspection contingencies. That is why we are coming in under that one. Would it make sense to send over an offer and have John connect with you?",
+    "final_approved_text": "We looked closely at those comps, but recent conservative sales in the pocket are sitting lower around $256,500. Running that through our flip calculator, minus ~50k in repairs, 9 percent in holding and commission fees, and our standard 15 percent margin puts John right around $125,940 cash with zero inspection contingencies. That is why we are coming in under that one. Would it make sense to send over an offer and have John connect with you?",
     "was_edited": false,
     "tags": [
       "Trojan Horse Step 5B",
@@ -275,8 +406,8 @@
     "agent_desk": "LAUREN",
     "node": "LAUREN_STANDING_LOI",
     "agent_inbound": "No way in hell my seller takes anything under 180k. We already turned down 170k.",
-    "suggested_template": "Totally understand we have a gap right now, Sarah! I just shot our formal written terms to your email as well as a standing cash offer at ,940 just in case the seller's circumstances or timeline change down the road, or if anything falls through with another buyer. Our offer stands for 30 days. If anything shifts, John and I are ready to close clean in 14 days!",
-    "final_approved_text": "Totally understand we have a gap right now, Sarah! I just shot our formal written terms to your email as well as a standing cash offer at ,940 just in case the seller's circumstances or timeline change down the road, or if anything falls through with another buyer. Our offer stands for 30 days. If anything shifts, John and I are ready to close clean in 14 days!",
+    "suggested_template": "Totally understand we have a gap right now. I just emailed our formal written terms as a standing cash offer at $128,000 just in case the seller's circumstances or timeline change down the road, or if anything falls through with another buyer. Our offer stands for 30 days. If anything shifts, John and I are ready to close clean in 14 days!",
+    "final_approved_text": "Totally understand we have a gap right now. I just emailed our formal written terms as a standing cash offer at $128,000 just in case the seller's circumstances or timeline change down the road, or if anything falls through with another buyer. Our offer stands for 30 days. If anything shifts, John and I are ready to close clean in 14 days!",
     "was_edited": false,
     "tags": [
       "Standing Paper Trail",

@@ -304,8 +304,8 @@ STANDARD_TRAINING_SCENARIOS = [
         "category": "Trojan Horse Step 5A",
         "description": "When agent ARV is low, accept their comp immediately, say nothing about higher comps, and run math from their low number.",
         "sample_inbound": "If it is completely remodeled like new, maybe 260k max in this pocket.",
-        "default_suggestion": "Sarah, running your numbers through our flip calculator: based on your $260,000 resale number, minus ~55k in repairs, 9 percent in holding and commission fees, and our crew's standard 15 percent margin puts John right around $128,000 cash with zero inspection contingencies. That is why we are coming in way under that one. Would it make sense to send over an offer and have John do a follow up for any questions?",
-        "default_script": "Sarah, running your numbers through our flip calculator: based on your $260,000 resale number, minus ~55k in repairs, 9 percent in holding and commission fees, and our crew's standard 15 percent margin puts John right around $128,000 cash with zero inspection contingencies. That is why we are coming in way under that one. Would it make sense to send over an offer and have John do a follow up for any questions?"
+        "default_suggestion": "Running your numbers through our flip calculator: based on your $260,000 resale number, minus ~55k in repairs, 9 percent in holding and commission fees, and our standard 15 percent margin puts John right around $128,000 cash with zero inspection contingencies. That is why we are coming in under that one. Would it make sense to send over an offer and have John connect with you?",
+        "default_script": "Running your numbers through our flip calculator: based on your $260,000 resale number, minus ~55k in repairs, 9 percent in holding and commission fees, and our standard 15 percent margin puts John right around $128,000 cash with zero inspection contingencies. That is why we are coming in under that one. Would it make sense to send over an offer and have John connect with you?"
     },
     {
         "agent_desk": "LAUREN",
@@ -314,8 +314,18 @@ STANDARD_TRAINING_SCENARIOS = [
         "category": "Trojan Horse Step 5B",
         "description": "When agent ARV is high or close to right, anchor them down showing low conservative comps.",
         "sample_inbound": "Comps are easily at $380,000 all day long.",
-        "default_suggestion": "Sarah, we looked closely at those comps, but recent conservative neighborhood sales are sitting lower around $256,500. Running that through our flip calculator, minus ~55k in repairs, 9 percent in holding and commission fees, and our crew's standard 15 percent margin puts John right around $125,000 cash with zero inspection contingencies. That is why we are coming in way under that one. Would it make sense to send over an offer and have John do a follow up for any questions?",
-        "default_script": "Sarah, we looked closely at those comps, but recent conservative neighborhood sales are sitting lower around $256,500. Running that through our flip calculator, minus ~55k in repairs, 9 percent in holding and commission fees, and our crew's standard 15 percent margin puts John right around $125,000 cash with zero inspection contingencies. That is why we are coming in way under that one. Would it make sense to send over an offer and have John do a follow up for any questions?"
+        "default_suggestion": "We looked closely at those comps, but recent conservative sales in the pocket are sitting lower around $256,500. Running that through our flip calculator, minus ~55k in repairs, 9 percent in holding and commission fees, and our standard 15 percent margin puts John right around $125,000 cash with zero inspection contingencies. That is why we are coming in under that one. Would it make sense to send over an offer and have John connect with you?",
+        "default_script": "We looked closely at those comps, but recent conservative sales in the pocket are sitting lower around $256,500. Running that through our flip calculator, minus ~55k in repairs, 9 percent in holding and commission fees, and our standard 15 percent margin puts John right around $125,000 cash with zero inspection contingencies. That is why we are coming in under that one. Would it make sense to send over an offer and have John connect with you?"
+    },
+    {
+        "agent_desk": "LAUREN",
+        "node": "LAUREN_DEFLECTION_PIVOT",
+        "title": "2B. Deflection Auto-Pivot to ARV",
+        "category": "Repair Scope Extraction",
+        "description": "When agent deflects condition questions ('inspection covers it', 'all in listing', 'dont have more info'), auto-pivot immediately to back-end resale ARV.",
+        "sample_inbound": "The inspection summary attached to the MLS listing covers everything they know.",
+        "default_suggestion": "Makes sense. Once it is all brought back to top dollar condition, what do you realistically think it lists and sells for on the back end?",
+        "default_script": "Makes sense. Once it is all brought back to top dollar condition, what do you realistically think it lists and sells for on the back end?"
     },
     {
         "agent_desk": "LAUREN",
@@ -324,8 +334,8 @@ STANDARD_TRAINING_SCENARIOS = [
         "category": "Standing Paper Trail",
         "description": "When the agent rejects the offer or claims it is too low, leaving a 30 day standing written LOI with Page 12 commission protection.",
         "sample_inbound": "No way, seller turned down 170k last week. That is way too low.",
-        "default_suggestion": "Totally understand we have a gap right now, Sarah! I just shot our formal written terms to your email as well as a standing cash offer at $128,000 just in case the seller's circumstances or timeline change down the road, or if anything falls through with another buyer. Our offer stands for 30 days. If anything shifts, John and I are ready to close clean in 14 days!",
-        "default_script": "Totally understand we have a gap right now, Sarah! I just shot our formal written terms to your email as well as a standing cash offer at $128,000 just in case the seller's circumstances or timeline change down the road, or if anything falls through with another buyer. Our offer stands for 30 days. If anything shifts, John and I are ready to close clean in 14 days!"
+        "default_suggestion": "Totally understand we have a gap right now. I just emailed our formal written terms as a standing cash offer at $128,000 just in case the seller's circumstances or timeline change down the road, or if anything falls through with another buyer. Our offer stands for 30 days. If anything shifts, John and I are ready to close clean in 14 days!",
+        "default_script": "Totally understand we have a gap right now. I just emailed our formal written terms as a standing cash offer at $128,000 just in case the seller's circumstances or timeline change down the road, or if anything falls through with another buyer. Our offer stands for 30 days. If anything shifts, John and I are ready to close clean in 14 days!"
     }
 ]
 
@@ -378,8 +388,17 @@ def polish_reply_with_gemini(node: str, template_reply: str, agent: Dict[str, An
         "ENTRY_HOOK",
         "ENTRY_HOOK_AWAITING_REPLY",
         "FIRST_TOUCH",
+        "FIRST_TOUCH_ICEBREAKER",
         "LAUREN_OPENING_HOOK",
-        "BROOKE_COLD_ICEBREAKER"
+        "BROOKE_COLD_ICEBREAKER",
+        "BROOKE_FIRST_TOUCH",
+        "icebreaker",
+        "double_comm",
+        "checkin",
+        "backup_offer",
+        "loi_offer",
+        "FOLLOWUP_1",
+        "FOLLOWUP_2"
     }
     if node in COLD_OPENER_NODES:
         return sanitize_sms_no_hyphens(template_reply)
@@ -627,8 +646,11 @@ class BotEngine:
         state_updates["notes"].append(f"Agent: {message}")
         state_updates["last_interaction"] = time.strftime("%Y-%m-%d %H:%M:%S")
 
-        # 1. OPT-OUT & COMPLIANCE GUARD
+        # 1. OPT-OUT & COMPLIANCE GUARD -> GLOBAL SUPPRESSION
         if is_opt_out(clean_msg):
+            from src.storage import add_global_opt_out
+            if agent.get("phone"):
+                add_global_opt_out(agent.get("phone"), source_desk="BROOKE", reason="Agent sent opt-out message")
             state_updates["active"] = False
             state_updates["current_node"] = "CASH_AGENT_DEAD"
             return {
@@ -640,7 +662,84 @@ class BotEngine:
                 "state_updates": state_updates
             }
 
-        # 1b. IDENTITY & PERSONA INQUIRY ("Who is this?" / "Who am I talking to?")
+        # 1a. SOFT-NO DETECTION -> AUTO-LOG 30-DAY FOLLOW-UP TASK
+        SOFT_NO_PATTERNS = [
+            "keep you in mind", "keep you guys in mind", "keep your info", "keep in mind",
+            "nothing right now", "not right now", "nothing at this time", "nothing at the moment",
+            "not at this time", "not at the moment", "maybe in the future", "maybe later",
+            "will keep an eye out", "ill let you know if something comes up", "will let you know",
+            "will reach out if anything pops up", "don't have anything right now", "dont have anything right now"
+        ]
+        if any(p in clean_msg for p in SOFT_NO_PATTERNS):
+            from datetime import timedelta
+            followup_date = (datetime.now() + timedelta(days=30)).strftime("%Y-%m-%d")
+            state_updates["followup_task"] = {
+                "type": "30_DAY_CHECKIN",
+                "scheduled_date": followup_date,
+                "status": "PENDING",
+                "created_at": time.strftime("%Y-%m-%d %H:%M:%S"),
+                "note": "Agent replied with soft no. Auto-logged 30-day follow-up task."
+            }
+            state_updates["current_node"] = "TIER_2_NURTURE_SAVED"
+            base_reply = SCRIPTS["TIER_2_NURTURE_SAVED"]
+            reason = "Agent gave a soft no. Auto-logged 30-day follow-up task and saved to Tier 2."
+            reply = polish_reply_with_gemini(state_updates["current_node"], base_reply, agent, message)
+            state_updates["suggested_reply"] = reply
+            state_updates["suggested_reply_node"] = state_updates["current_node"]
+            state_updates["suggested_reply_reason"] = reason
+            return {
+                "action": "AUTO_SEND" if settings.get("mode") == "autopilot" else "SUGGEST",
+                "reply_text": reply,
+                "node": state_updates["current_node"],
+                "tier_update": "🌱 Tier 2: Pocket Lead Nurture",
+                "stage_update": "30-Day Check-in",
+                "state_updates": state_updates
+            }
+
+        # 1b. DEFLECTION DETECTION -> AUTO-PIVOT TO PRICING/ARV
+        DEFLECTION_PATTERNS = [
+            "inspection summary covers",
+            "inspection report covers",
+            "everything they know",
+            "all in the listing",
+            "that's all in the listing",
+            "thats all in the listing",
+            "everything is in the listing",
+            "everything in the listing",
+            "i don't have more info",
+            "dont have more info",
+            "dont have any more info",
+            "don't know anything else",
+            "dont know anything else",
+            "see the mls",
+            "check the mls",
+            "all info is on the listing",
+            "read the remarks",
+            "refer to listing",
+            "see inspection report",
+            "attached inspection",
+            "dont know much about it",
+            "seller doesn't know anything else",
+            "seller doesnt know anything else"
+        ]
+        if any(d in clean_msg for d in DEFLECTION_PATTERNS) and state.get("current_node") in ["OFF_MARKET_CONDITION", "ENTRY_HOOK_AWAITING_REPLY", "OFF_MARKET_PHOTOS", "AWAITING_ADDRESS"]:
+            state_updates["current_node"] = "OFF_MARKET_PRICE"
+            base_reply = SCRIPTS["OFF_MARKET_PRICE"]
+            reason = "Deflection detected ('all in listing/inspection'). Skipped condition questions and pivoted to pricing."
+            reply = polish_reply_with_gemini(state_updates["current_node"], base_reply, agent, message)
+            state_updates["suggested_reply"] = reply
+            state_updates["suggested_reply_node"] = state_updates["current_node"]
+            state_updates["suggested_reply_reason"] = reason
+            return {
+                "action": "AUTO_SEND" if settings.get("mode") == "autopilot" else "SUGGEST",
+                "reply_text": reply,
+                "node": state_updates["current_node"],
+                "tier_update": "🔥 Tier 1: In Conversation",
+                "stage_update": "Warm / In Discussion",
+                "state_updates": state_updates
+            }
+
+        # 1c. IDENTITY & PERSONA INQUIRY ("Who is this?" / "Who am I talking to?")
         IDENTITY_KEYWORDS = [
             "who is this", "who's this", "whos this", "who is texting", 
             "who am i talking to", "who am i speaking with", "who are you", 
@@ -664,6 +763,34 @@ class BotEngine:
                 "action": "AUTO_SEND" if settings.get("mode") == "autopilot" else "SUGGEST",
                 "reply_text": reply,
                 "node": "IDENTITY_EXPLAINED",
+                "tier_update": "🔥 Tier 1: In Conversation",
+                "stage_update": "Warm / In Discussion",
+                "state_updates": state_updates
+            }
+
+        # 1d. AGENT / REPRESENTATION / LICENSING INQUIRY ("Are you an agent?", "Are you licensed?")
+        REPRESENTATION_KEYWORDS = [
+            "are you an agent", "are you a realtor", "are you licensed", "are you the buyer", 
+            "do you have an agent", "who is your agent", "are you represented", "is this an agent", 
+            "what brokerage", "which brokerage"
+        ]
+        if any(k in clean_msg for k in REPRESENTATION_KEYWORDS):
+            agent_first = agent.get("first_name") or (agent.get("full_name", "").split()[0] if agent.get("full_name") else "there")
+            bot_name = settings.get("bot_name", "Brooke")
+            primary_addr = state_updates.get("address") or (agent.get("listings") or [{}])[0].get("address") or "your listing"
+            state_updates["current_node"] = "UNREPRESENTED_CONFIRMED"
+            base_reply = f"No, we are direct cash buyers {agent_first}. We are unrepresented, so you can write up the offer for us if the numbers work. Are the sellers flexible on price for a quick close?"
+            reason = f"Agent asked about representation status. {bot_name} clarified direct unrepresented cash buyer with double commission incentive."
+            
+            reply = polish_reply_with_gemini("UNREPRESENTED_CONFIRMED", base_reply, agent, message)
+            state_updates["suggested_reply"] = reply
+            state_updates["suggested_reply_node"] = "UNREPRESENTED_CONFIRMED"
+            state_updates["suggested_reply_reason"] = reason
+
+            return {
+                "action": "AUTO_SEND" if settings.get("mode") == "autopilot" else "SUGGEST",
+                "reply_text": reply,
+                "node": "UNREPRESENTED_CONFIRMED",
                 "tier_update": "🔥 Tier 1: In Conversation",
                 "stage_update": "Warm / In Discussion",
                 "state_updates": state_updates

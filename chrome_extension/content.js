@@ -3,11 +3,91 @@
  * Scrapes property details, agent contacts, and remarks for Lauren's Trojan Horse Desk.
  */
 
+function inferFloridaCounty(city, address, zip) {
+  const c = (city || "").toUpperCase().trim();
+  const a = (address || "").toUpperCase();
+
+  // Pinellas
+  if (/ST\s*PETE|ST\s*PETERSBURG|CLEARWATER|LARGO|PINELLAS\s*PARK|DUNEDIN|TARPON\s*SPRINGS|SAFETY\s*HARBOR|SEMINOLE|GULFPORT|PALM\s*HARBOR|OLDSMAR|MADEIRA\s*BEACH|TREASURE\s*ISLAND|BELLEAIR|KENNETH\s*CITY|INDIAN\s*ROCKS|SOUTH\s*PASADENA/i.test(c)) {
+    return "PINELLAS";
+  }
+  // Hillsborough
+  if (/TAMPA|BRANDON|RIVERVIEW|PLANT\s*CITY|VALRICO|RUSKIN|APOLLO\s*BEACH|LUTZ|TEMPLE\s*TERRACE|SEFFNER|GIBSONTON|WIMAUMA/i.test(c)) {
+    return "HILLSBOROUGH";
+  }
+  // Pasco
+  if (/NEW\s*PORT\s*RICHEY|PORT\s*RICHEY|WESLEY\s*CHAPEL|ZEPHYRHILLS|LAND\s*O\s*LAKES|HUDSON|HOLIDAY|DADE\s*CITY|TRINITY|ODESSA/i.test(c)) {
+    return "PASCO";
+  }
+  // Orange
+  if (/ORLANDO|WINTER\s*PARK|APOPKA|OCOEE|WINTER\s*GARDEN|WINDERMERE|MAITLAND|BELLE\s*ISLE|PINE\s*HILLS/i.test(c)) {
+    return "ORANGE";
+  }
+  // Seminole
+  if (/SANFORD|LAKE\s*MARY|ALTAMONTE|OVIEDO|CASSELBERRY|LONGWOOD|WINTER\s*SPRINGS/i.test(c)) {
+    return "SEMINOLE";
+  }
+  // Brevard
+  if (/MELBOURNE|PALM\s*BAY|TITUSVILLE|COCOA|ROCKLEDGE|MERRITT\s*ISLAND|SATELLITE\s*BEACH|CAPE\s*CANAVERAL|WEST\s*MELBOURNE|INDIALANTIC|MIMS|MALABAR|GRANT/i.test(c)) {
+    return "BREVARD";
+  }
+  // Sarasota
+  if (/SARASOTA|VENICE|NORTH\s*PORT|ENGLEWOOD|OSPREY|NOKOMIS/i.test(c)) {
+    return "SARASOTA";
+  }
+  // Manatee
+  if (/BRADENTON|LAKEWOOD\s*RANCH|PALMETTO|ELLENTON|PARRISH|ANNA\s*MARIA/i.test(c)) {
+    return "MANATEE";
+  }
+  // Polk
+  if (/LAKELAND|WINTER\s*HAVEN|DAVENPORT|HAINES\s*CITY|BARTOW|LAKE\s*WALES/i.test(c)) {
+    return "POLK";
+  }
+  // Osceola
+  if (/KISSIMMEE|ST\s*CLOUD|CELEBRATION|POINCIANA/i.test(c)) {
+    return "OSCEOLA";
+  }
+  // Volusia
+  if (/DAYTONA|DELTONA|DELAND|PORT\s*ORANGE|ORMOND\s*BEACH|NEW\s*SMYRNA/i.test(c)) {
+    return "VOLUSIA";
+  }
+  // Lee
+  if (/FORT\s*MYERS|CAPE\s*CORAL|LEHIGH\s*ACRES|BONITA\s*SPRINGS|ESTERO/i.test(c)) {
+    return "LEE";
+  }
+  // Palm Beach
+  if (/WEST\s*PALM\s*BEACH|BOCA\s*RATON|BOYNTON\s*BEACH|DELRAY\s*BEACH|JUPITER|WELLINGTON|LAKE\s*WORTH/i.test(c)) {
+    return "PALM BEACH";
+  }
+  // Broward
+  if (/FORT\s*LAUDERDALE|PEMBROKE\s*PINES|HOLLYWOOD|CORAL\s*SPRINGS|MIRAMAR|POMPANO\s*BEACH|DAVIE|PLANTATION/i.test(c)) {
+    return "BROWARD";
+  }
+  // Miami-Dade
+  if (/MIAMI|HIALEAH|HOMESTEAD|CORAL\s*GABLES|DORAL|KENDALL|AVENTURA/i.test(c)) {
+    return "MIAMI-DADE";
+  }
+  // Duval
+  if (/JACKSONVILLE|ATLANTIC\s*BEACH|NEPTUNE\s*BEACH/i.test(c)) {
+    return "DUVAL";
+  }
+  // Marion
+  if (/OCALA|BELLEVIEW/i.test(c)) {
+    return "MARION";
+  }
+  // Lake
+  if (/CLERMONT|LEESBURG|EUSTIS|MOUNT\s*DORA|TAVARES/i.test(c)) {
+    return "LAKE";
+  }
+
+  return "FLORIDA";
+}
+
 function extractRedfinData() {
   const data = {
     address: "",
-    city: "Melbourne",
-    county: "BREVARD",
+    city: "Florida",
+    county: "FLORIDA",
     zip: "",
     list_price: 0,
     redfin_estimate: 0,
@@ -28,18 +108,34 @@ function extractRedfinData() {
   // 1. Address
   const streetEl = document.querySelector('[data-rf-test-id="abp-streetLine"]') ||
                    document.querySelector('.street-address') ||
-                   document.querySelector('h1.full-address');
+                   document.querySelector('h1.full-address') ||
+                   document.querySelector('[class*="street-address"]');
   if (streetEl) data.address = streetEl.innerText.trim();
 
   const cityZipEl = document.querySelector('[data-rf-test-id="abp-cityStateZip"]') ||
                     document.querySelector('.dp-subtext') ||
-                    document.querySelector('.citystatezip');
+                    document.querySelector('.citystatezip') ||
+                    document.querySelector('[class*="cityStateZip"]');
   if (cityZipEl) {
     const raw = cityZipEl.innerText.trim();
     const parts = raw.split(',');
     if (parts.length > 0) data.city = parts[0].trim();
     const zipMatch = raw.match(/\b\d{5}\b/);
     if (zipMatch) data.zip = zipMatch[0];
+  }
+
+  // URL fallback for address and city
+  if (!data.address || !data.city || data.city === "Florida") {
+    const urlParts = window.location.pathname.split('/');
+    if (urlParts.length >= 4) {
+      if (urlParts[2]) data.city = decodeURIComponent(urlParts[2]).replace(/-/g, ' ');
+      if (urlParts[3]) {
+        const seg = decodeURIComponent(urlParts[3]);
+        const zMatch = seg.match(/\b\d{5}\b/);
+        if (zMatch) data.zip = zMatch[0];
+        data.address = seg.replace(/-\d{5}$/, '').replace(/-/g, ' ');
+      }
+    }
   }
 
   // 2. Listing Price
@@ -55,7 +151,8 @@ function extractRedfinData() {
   // 3. Redfin Estimate
   const estEl = document.querySelector('[data-rf-test-id="avm-price"]') ||
                 document.querySelector('.avm-price') ||
-                document.querySelector('[data-rf-test-id="estimate-price"]');
+                document.querySelector('[data-rf-test-id="estimate-price"]') ||
+                document.querySelector('[class*="avm-price"]');
   if (estEl) {
     const eNum = parseFloat(estEl.innerText.replace(/[^0-9.]/g, ''));
     if (!isNaN(eNum)) data.redfin_estimate = eNum;
@@ -64,7 +161,8 @@ function extractRedfinData() {
   // 4. SqFt
   const sqftEl = document.querySelector('[data-rf-test-id="abp-sqFt"] .statsValue') ||
                  document.querySelector('.sqft .statsValue') ||
-                 document.querySelector('[class*="sqFt"] .statsValue');
+                 document.querySelector('[class*="sqFt"] .statsValue') ||
+                 document.querySelector('[data-rf-test-name="sqFt"] .statsValue');
   if (sqftEl) {
     const sqNum = parseFloat(sqftEl.innerText.replace(/[^0-9.]/g, ''));
     if (!isNaN(sqNum)) data.sqft = sqNum;
@@ -76,70 +174,102 @@ function extractRedfinData() {
   const bathsEl = document.querySelector('[data-rf-test-id="abp-baths"] .statsValue') || document.querySelector('[class*="baths"] .statsValue');
   if (bathsEl) data.baths = bathsEl.innerText.trim();
 
-  // 6. Days on Market (DOM)
-  const allText = document.body.innerText;
-  const domMatch = allText.match(/(\d+)\s+days?\s+on\s+redfin/i) || allText.match(/(\d+)\s+days?\s+on\s+market/i);
-  if (domMatch) {
-    data.dom = parseInt(domMatch[1], 10);
+  // 6. Days on Market (DOM) / timeOnRedfin
+  const html = document.documentElement.innerHTML;
+  const torMatch = html.match(/"timeOnRedfin":\s*\{\s*"value":\s*(\d+)/i) || html.match(/"timeOnRedfin":\s*(\d+)/i);
+  if (torMatch && torMatch[1]) {
+    const ms = parseInt(torMatch[1], 10);
+    if (ms > 86400000) {
+      data.dom = Math.max(1, Math.round(ms / (1000 * 60 * 60 * 24)));
+    } else if (ms > 0) {
+      data.dom = 1;
+    }
+  } else {
+    const allText = document.body.innerText;
+    const domMatch = allText.match(/(\d+)\s+days?\s+on\s+redfin/i) || allText.match(/(\d+)\s+days?\s+on\s+market/i);
+    if (domMatch) {
+      data.dom = parseInt(domMatch[1], 10);
+    }
   }
 
   // 7. Year Built
+  const allText = document.body.innerText;
   const yrMatch = allText.match(/year\s+built\s*[:\n]\s*(\d{4})/i) || allText.match(/built\s+in\s+(\d{4})/i);
   if (yrMatch) data.year_built = yrMatch[1];
 
-  // 8. Public Remarks
-  const remarksEl = document.querySelector('[data-rf-test-id="listing-remarks"]') ||
-                    document.querySelector('#marketing-remarks-scroll') ||
-                    document.querySelector('.remarks');
-  if (remarksEl) {
-    data.remarks = remarksEl.innerText.trim();
+  // 8. Public Remarks (Multi-Source Extraction)
+  let remarksText = "";
+
+  // Priority 1: JSON-LD Description
+  const jsonLdScripts = document.querySelectorAll('script[type="application/ld+json"]');
+  for (const s of jsonLdScripts) {
+    try {
+      const parsed = JSON.parse(s.innerText);
+      if (parsed && parsed.description) {
+        remarksText = parsed.description.trim();
+        break;
+      }
+      if (Array.isArray(parsed)) {
+        for (const item of parsed) {
+          if (item && item.description) {
+            remarksText = item.description.trim();
+            break;
+          }
+        }
+      }
+    } catch (e) {}
   }
 
+  // Priority 2: DOM selectors
+  if (!remarksText) {
+    const remarksEl = document.querySelector('[data-rf-test-id="listing-remarks"]') ||
+                      document.querySelector('#marketing-remarks-scroll') ||
+                      document.querySelector('.remarks') ||
+                      document.querySelector('.house-info--marketing-remarks') ||
+                      document.querySelector('[class*="ListingRemarks"]') ||
+                      document.querySelector('.notes-content');
+    if (remarksEl && remarksEl.innerText && remarksEl.innerText.trim().length > 10) {
+      remarksText = remarksEl.innerText.trim();
+    }
+  }
+
+  // Priority 3: Meta tags
+  if (!remarksText) {
+    const metaDesc = document.querySelector('meta[property="og:description"]') || document.querySelector('meta[name="description"]');
+    if (metaDesc && metaDesc.content && metaDesc.content.trim().length > 15) {
+      remarksText = metaDesc.content.trim();
+    }
+  }
+
+  // Priority 4: React state match
+  if (!remarksText) {
+    const mRem = html.match(/"remarks":\s*\{\s*"value":\s*"((?:\\.|[^"\\])+)"/i) ||
+                 html.match(/"publicRemarks":\s*"((?:\\.|[^"\\])+)"/i);
+    if (mRem && mRem[1]) {
+      remarksText = mRem[1].replace(/\\n/g, ' ').replace(/\\"/g, '"').replace(/\\\//g, '/').trim();
+    }
+  }
+
+  data.remarks = remarksText;
+
   // 9. Photo URL
-  const ogImg = document.querySelector('meta[property="og:image"]');
+  const ogImg = document.querySelector('meta[property="og:image"]') || document.querySelector('meta[name="twitter:image"]');
   if (ogImg && ogImg.content) {
     data.photo_url = ogImg.content;
   }
 
-  // Address & City Parsing Fallback
-  if (data.address && data.address.includes(',')) {
-    const addrParts = data.address.split(',');
-    if (addrParts.length >= 2 && (!data.city || data.city === "Melbourne")) {
-      data.city = addrParts[1].trim();
-    }
-    const zMatch = data.address.match(/\b\d{5}\b/);
-    if (zMatch && !data.zip) data.zip = zMatch[0];
-  }
+  // 10. Florida County Inference
+  data.county = inferFloridaCounty(data.city, data.address, data.zip);
 
-  // Infer Florida County from City
-  const cityUpper = (data.city || "").toUpperCase();
-  if (cityUpper.includes("ORLANDO") || cityUpper.includes("WINTER PARK") || cityUpper.includes("APOPKA") || cityUpper.includes("OCOEE")) {
-    data.county = "ORANGE";
-  } else if (cityUpper.includes("MELBOURNE") || cityUpper.includes("PALM BAY") || cityUpper.includes("TITUSVILLE") || cityUpper.includes("COCOA") || cityUpper.includes("ROCKLEDGE")) {
-    data.county = "BREVARD";
-  } else if (cityUpper.includes("KISSIMMEE") || cityUpper.includes("ST CLOUD")) {
-    data.county = "OSCEOLA";
-  } else if (cityUpper.includes("SANFORD") || cityUpper.includes("LAKE MARY") || cityUpper.includes("ALTAMONTE") || cityUpper.includes("OVIEDO")) {
-    data.county = "SEMINOLE";
-  } else if (cityUpper.includes("TAMPA") || cityUpper.includes("BRANDON")) {
-    data.county = "HILLSBOROUGH";
-  } else if (cityUpper.includes("DELTONA") || cityUpper.includes("DAYTONA")) {
-    data.county = "VOLUSIA";
-  } else if (cityUpper.includes("LAKELAND")) {
-    data.county = "POLK";
-  }
-
-  // 10. Extract Listing Agent Details
-  const html = document.documentElement.innerHTML;
-  
-  const mName = html.match(/\\?"listingAgentName\\?"\s*:\s*\\?"([^\\"]+)/i);
+  // 11. Extract Listing Agent Details
+  const mName = html.match(/"listingAgentName":\s*"([^"\\]+)/i);
   if (mName && mName[1]) data.agent_name = mName[1].trim();
 
-  const mPhone = html.match(/\\?"listingAgentNumber\\?"\s*:\s*\\?"([^\\"]+)/i);
+  const mPhone = html.match(/"listingAgentNumber":\s*"([^"\\]+)/i);
   if (mPhone && mPhone[1]) data.agent_phone = mPhone[1].trim();
 
-  const mBPhone = html.match(/\\?"listingBrokerNumber\\?"\s*:\s*\\?"([^\\"]+)/i);
-  const mBroker = html.match(/\\?"brokerName\\?"\s*:\s*\\?"([^\\"]+)/i);
+  const mBPhone = html.match(/"listingBrokerNumber":\s*"([^"\\]+)/i);
+  const mBroker = html.match(/"brokerName":\s*"([^"\\]+)/i);
   if (mBroker && mBroker[1]) data.brokerage = mBroker[1].trim();
 
   if (!data.agent_phone && mBPhone && mBPhone[1]) {
@@ -165,7 +295,6 @@ function extractRedfinData() {
 }
 
 function extractRedfinSearchResults() {
-  // Find all property links on search page
   const linkElements = document.querySelectorAll('a[href*="/home/"]');
   const results = [];
   const seenUrls = new Set();
@@ -175,7 +304,6 @@ function extractRedfinSearchResults() {
       let href = linkEl.getAttribute('href') || "";
       if (!href || !href.includes('/home/')) return;
       
-      // Clean query params
       href = href.split('?')[0];
       if (!href.startsWith('http')) {
         href = 'https://www.redfin.com' + href;
@@ -183,16 +311,12 @@ function extractRedfinSearchResults() {
       if (seenUrls.has(href)) return;
       seenUrls.add(href);
 
-      // Find surrounding card container
       const card = linkEl.closest('[class*="Homecard"], [class*="homecard"], [class*="HomeCard"], [data-rf-test-name="mapHomeCard"], div.MapHomecardWrapper') || linkEl.parentElement;
 
-      // Address & City Parsing from URL and card
       let addr = "";
-      let city = "Melbourne";
-      let county = "BREVARD";
+      let city = "Florida";
       let zip = "";
 
-      // Parse from URL: https://www.redfin.com/FL/Cocoa/2563-Terri-Ln-32926/home/120323468
       const urlParts = href.split('/');
       if (urlParts.length >= 6) {
         city = decodeURIComponent(urlParts[4]).replace(/-/g, ' ');
@@ -209,7 +333,6 @@ function extractRedfinSearchResults() {
         }
       }
 
-      // Price: Check specific price elements first, then card text regex
       let price = 0;
       if (card) {
         const priceEl = card.querySelector('.bp-Homecard__Price--value, [data-rf-test-name="homecard-price"], .homecardV2Price, [class*="Price--value"], [class*="price"]');
@@ -226,7 +349,6 @@ function extractRedfinSearchResults() {
         }
       }
 
-      // Stats: Beds, Baths, Sqft
       let beds = "";
       let baths = "";
       let sqft = 1200;
@@ -244,7 +366,6 @@ function extractRedfinSearchResults() {
           if (!isNaN(sNum) && sNum > 200 && sNum < 50000) sqft = sNum;
         }
 
-        // Fallbacks from card text
         if (!beds && card.innerText) {
           const bMatch = card.innerText.match(/(\d+)\s*(?:beds?|bd)/i);
           if (bMatch) beds = bMatch[1];
@@ -262,7 +383,16 @@ function extractRedfinSearchResults() {
         }
       }
 
-      // Photo URL
+      // Check DOM on Card
+      let cardDom = 1;
+      if (card && card.innerText) {
+        const domMatch = card.innerText.match(/(\d+)\s*(?:days?|d)\s+on\s+redfin/i) ||
+                         card.innerText.match(/(\d+)\s*d\s+ago/i);
+        if (domMatch) {
+          cardDom = parseInt(domMatch[1], 10);
+        }
+      }
+
       let photoUrl = "";
       if (card) {
         const imgEl = card.querySelector('img.bp-Homecard__Photo--image, img[class*="Photo"], img[data-rf-test-name="homecard-photo"], img');
@@ -280,29 +410,11 @@ function extractRedfinSearchResults() {
                 photoUrl = bestPart;
               }
             }
-          } else if (imgEl.getAttribute('data-src')) {
-            photoUrl = imgEl.getAttribute('data-src');
           }
         }
       }
 
-      const cityUpper = city.toUpperCase();
-      if (cityUpper.includes("ORLANDO") || cityUpper.includes("WINTER PARK") || cityUpper.includes("APOPKA") || cityUpper.includes("OCOEE")) {
-        county = "ORANGE";
-      } else if (cityUpper.includes("MELBOURNE") || cityUpper.includes("PALM BAY") || cityUpper.includes("TITUSVILLE") || cityUpper.includes("COCOA") || cityUpper.includes("ROCKLEDGE")) {
-        county = "BREVARD";
-      } else if (cityUpper.includes("KISSIMMEE") || cityUpper.includes("ST CLOUD")) {
-        county = "OSCEOLA";
-      } else if (cityUpper.includes("SANFORD") || cityUpper.includes("LAKE MARY") || cityUpper.includes("OVIEDO")) {
-        county = "SEMINOLE";
-      } else if (cityUpper.includes("TAMPA") || cityUpper.includes("BRANDON")) {
-        county = "HILLSBOROUGH";
-      } else if (cityUpper.includes("DELTONA") || cityUpper.includes("DAYTONA")) {
-        county = "VOLUSIA";
-      } else if (cityUpper.includes("LAKELAND")) {
-        county = "POLK";
-      }
-
+      const county = inferFloridaCounty(city, addr, zip);
       const est = price > 0 ? Math.round(price * 1.25) : 275000;
 
       results.push({
@@ -313,7 +425,7 @@ function extractRedfinSearchResults() {
         zip: zip,
         list_price: price,
         redfin_estimate: est,
-        dom: 1,
+        dom: cardDom,
         sqft: sqft,
         beds: beds,
         baths: baths,

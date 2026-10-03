@@ -28,3 +28,5 @@ data/redfin_agent_cache.json
 *.log
 .DS_Store
 Thumbs.db
+data/*backup*.json
+

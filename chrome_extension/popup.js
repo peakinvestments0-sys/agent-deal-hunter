@@ -1,6 +1,85 @@
 let currentData = null;
 let bulkListings = [];
 
+function inferFloridaCounty(city, address, zip) {
+  const c = (city || "").toUpperCase().trim();
+
+  // Pinellas
+  if (/ST\s*PETE|ST\s*PETERSBURG|CLEARWATER|LARGO|PINELLAS\s*PARK|DUNEDIN|TARPON\s*SPRINGS|SAFETY\s*HARBOR|SEMINOLE|GULFPORT|PALM\s*HARBOR|OLDSMAR|MADEIRA\s*BEACH|TREASURE\s*ISLAND|BELLEAIR|KENNETH\s*CITY|INDIAN\s*ROCKS|SOUTH\s*PASADENA/i.test(c)) {
+    return "PINELLAS";
+  }
+  // Hillsborough
+  if (/TAMPA|BRANDON|RIVERVIEW|PLANT\s*CITY|VALRICO|RUSKIN|APOLLO\s*BEACH|LUTZ|TEMPLE\s*TERRACE|SEFFNER|GIBSONTON|WIMAUMA/i.test(c)) {
+    return "HILLSBOROUGH";
+  }
+  // Pasco
+  if (/NEW\s*PORT\s*RICHEY|PORT\s*RICHEY|WESLEY\s*CHAPEL|ZEPHYRHILLS|LAND\s*O\s*LAKES|HUDSON|HOLIDAY|DADE\s*CITY|TRINITY|ODESSA/i.test(c)) {
+    return "PASCO";
+  }
+  // Orange
+  if (/ORLANDO|WINTER\s*PARK|APOPKA|OCOEE|WINTER\s*GARDEN|WINDERMERE|MAITLAND|BELLE\s*ISLE|PINE\s*HILLS/i.test(c)) {
+    return "ORANGE";
+  }
+  // Seminole
+  if (/SANFORD|LAKE\s*MARY|ALTAMONTE|OVIEDO|CASSELBERRY|LONGWOOD|WINTER\s*SPRINGS/i.test(c)) {
+    return "SEMINOLE";
+  }
+  // Brevard
+  if (/MELBOURNE|PALM\s*BAY|TITUSVILLE|COCOA|ROCKLEDGE|MERRITT\s*ISLAND|SATELLITE\s*BEACH|CAPE\s*CANAVERAL|WEST\s*MELBOURNE|INDIALANTIC|MIMS|MALABAR|GRANT/i.test(c)) {
+    return "BREVARD";
+  }
+  // Sarasota
+  if (/SARASOTA|VENICE|NORTH\s*PORT|ENGLEWOOD|OSPREY|NOKOMIS/i.test(c)) {
+    return "SARASOTA";
+  }
+  // Manatee
+  if (/BRADENTON|LAKEWOOD\s*RANCH|PALMETTO|ELLENTON|PARRISH|ANNA\s*MARIA/i.test(c)) {
+    return "MANATEE";
+  }
+  // Polk
+  if (/LAKELAND|WINTER\s*HAVEN|DAVENPORT|HAINES\s*CITY|BARTOW|LAKE\s*WALES/i.test(c)) {
+    return "POLK";
+  }
+  // Osceola
+  if (/KISSIMMEE|ST\s*CLOUD|CELEBRATION|POINCIANA/i.test(c)) {
+    return "OSCEOLA";
+  }
+  // Volusia
+  if (/DAYTONA|DELTONA|DELAND|PORT\s*ORANGE|ORMOND\s*BEACH|NEW\s*SMYRNA/i.test(c)) {
+    return "VOLUSIA";
+  }
+  // Lee
+  if (/FORT\s*MYERS|CAPE\s*CORAL|LEHIGH\s*ACRES|BONITA\s*SPRINGS|ESTERO/i.test(c)) {
+    return "LEE";
+  }
+  // Palm Beach
+  if (/WEST\s*PALM\s*BEACH|BOCA\s*RATON|BOYNTON\s*BEACH|DELRAY\s*BEACH|JUPITER|WELLINGTON|LAKE\s*WORTH/i.test(c)) {
+    return "PALM BEACH";
+  }
+  // Broward
+  if (/FORT\s*LAUDERDALE|PEMBROKE\s*PINES|HOLLYWOOD|CORAL\s*SPRINGS|MIRAMAR|POMPANO\s*BEACH|DAVIE|PLANTATION/i.test(c)) {
+    return "BROWARD";
+  }
+  // Miami-Dade
+  if (/MIAMI|HIALEAH|HOMESTEAD|CORAL\s*GABLES|DORAL|KENDALL|AVENTURA/i.test(c)) {
+    return "MIAMI-DADE";
+  }
+  // Duval
+  if (/JACKSONVILLE|ATLANTIC\s*BEACH|NEPTUNE\s*BEACH/i.test(c)) {
+    return "DUVAL";
+  }
+  // Marion
+  if (/OCALA|BELLEVIEW/i.test(c)) {
+    return "MARION";
+  }
+  // Lake
+  if (/CLERMONT|LEESBURG|EUSTIS|MOUNT\s*DORA|TAVARES/i.test(c)) {
+    return "LAKE";
+  }
+
+  return "FLORIDA";
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   const loadingBox = document.getElementById("loadingBox");
   const singleContentBox = document.getElementById("singleContentBox");
@@ -62,7 +141,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     singleContentBox.style.display = "block";
 
     document.getElementById("dispAddress").innerText = data.address || "Unknown Address";
-    document.getElementById("dispCity").innerText = `${data.city || "Florida"}, ${data.zip || ""} • ${data.dom || 1} DOM`;
+    document.getElementById("dispCity").innerText = `${data.city || "Florida"}, ${data.zip || ""} • ${data.county || "FL"} • ${data.dom || 1} DOM`;
     document.getElementById("dispPrice").innerText = data.list_price ? `$${data.list_price.toLocaleString()}` : "$0";
     
     const est = data.redfin_estimate || (data.list_price * 1.25);
@@ -141,7 +220,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const progressBarFill = document.getElementById("progressBarFill");
 
     progressContainer.style.display = "block";
-    btnPushBulk.innerText = "Crawling Agent Numbers...";
+    btnPushBulk.innerText = "Crawling Agent Numbers & Remarks...";
 
     let completed = 0;
     const total = bulkListings.length;
@@ -150,20 +229,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Helper to scrape single listing page via browser fetch
     async function enrichListing(l) {
       if (!l.redfin_url) return l;
+      l.county = inferFloridaCounty(l.city, l.address, l.zip);
+
       try {
         const resp = await fetch(l.redfin_url);
         if (resp.ok) {
           const html = await resp.text();
           
           // 1. Agent Name & Phone & Brokerage
-          const mName = html.match(/\\?"listingAgentName\\?"\s*:\s*\\?"([^\\"]+)/i);
+          const mName = html.match(/"listingAgentName":\s*"([^"\\]+)/i);
           if (mName && mName[1]) l.agent_name = mName[1].trim();
 
-          const mPhone = html.match(/\\?"listingAgentNumber\\?"\s*:\s*\\?"([^\\"]+)/i);
+          const mPhone = html.match(/"listingAgentNumber":\s*"([^"\\]+)/i);
           if (mPhone && mPhone[1]) l.agent_phone = mPhone[1].trim();
 
-          const mBPhone = html.match(/\\?"listingBrokerNumber\\?"\s*:\s*\\?"([^\\"]+)/i);
-          const mBroker = html.match(/\\?"brokerName\\?"\s*:\s*\\?"([^\\"]+)/i);
+          const mBPhone = html.match(/"listingBrokerNumber":\s*"([^"\\]+)/i);
+          const mBroker = html.match(/"brokerName":\s*"([^"\\]+)/i);
           if (mBroker && mBroker[1]) l.brokerage = mBroker[1].trim();
 
           if (!l.agent_phone && mBPhone && mBPhone[1]) {
@@ -183,7 +264,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           if (ogImg && ogImg[1] && !ogImg[1].includes('redfin_logo') && !ogImg[1].includes('default')) {
             l.photo_url = ogImg[1].replace(/&amp;/g, '&');
           } else if (!l.photo_url) {
-            const mPhoto = html.match(/\\?"(?:photoUrl|fullSizeUrl|primaryPhotoUrl)\\?"\s*:\s*\\?"(https:[^\\"]+)/i) ||
+            const mPhoto = html.match(/"(?:photoUrl|fullSizeUrl|primaryPhotoUrl)":\s*"(https:[^"\\]+)/i) ||
                            html.match(/(https:\/\/(?:ssl|photos)\.cdn-redfin\.com\/photo\/\d+\/[a-zA-Z0-9_\-\/]+\.jpg)/i);
             if (mPhoto && mPhoto[1]) {
               l.photo_url = mPhoto[1].replace(/\\/g, '');
@@ -195,9 +276,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           if (ogPrice && ogPrice[1] && parseFloat(ogPrice[1]) > 0) {
             l.list_price = parseFloat(ogPrice[1]);
           } else {
-            const mPrice = html.match(/\\?"price\\?"\s*:\s*\{?\\?"value\\?"?\s*:\s*(\d+)/i) ||
-                           html.match(/\\?"listingPrice\\?"\s*:\s*(\d+)/i) ||
-                           html.match(/\\?"price\\?"\s*:\s*(\d{5,8})/i);
+            const mPrice = html.match(/"price":\s*\{\s*"value":\s*(\d+)/i) ||
+                           html.match(/"listingPrice":\s*(\d+)/i) ||
+                           html.match(/"price":\s*(\d{5,8})/i);
             if (mPrice && mPrice[1]) {
               l.list_price = parseFloat(mPrice[1]);
             } else {
@@ -211,9 +292,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
 
           // 4. Redfin Estimate / AVM
-          const mEst = html.match(/\\?"redfinEstimate\\?"\s*:\s*\{?\\?"value\\?"?\s*:\s*(\d+)/i) ||
-                       html.match(/\\?"predictedValue\\?"\s*:\s*(\d+)/i) ||
-                       html.match(/\\?"avmPrice\\?"\s*:\s*(\d+)/i) ||
+          const mEst = html.match(/"redfinEstimate":\s*\{\s*"value":\s*(\d+)/i) ||
+                       html.match(/"predictedValue":\s*(\d+)/i) ||
+                       html.match(/"avmPrice":\s*(\d+)/i) ||
                        html.match(/data-rf-test-id=["']avm-price["'][^>]*>[\s\S]*?\$([0-9,]+)/i);
           if (mEst && mEst[1]) {
             l.redfin_estimate = parseFloat(mEst[1].toString().replace(/,/g, ''));
@@ -222,9 +303,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
 
           // 5. SqFt
-          const mSqft = html.match(/\\?"sqFt\\?"\s*:\s*\{?\\?"value\\?"?\s*:\s*(\d+)/i) ||
-                        html.match(/\\?"sqft\\?"\s*:\s*(\d+)/i) ||
-                        html.match(/\\?"squareFeet\\?"\s*:\s*(\d+)/i) ||
+          const mSqft = html.match(/"sqFt":\s*\{\s*"value":\s*(\d+)/i) ||
+                        html.match(/"sqft":\s*(\d+)/i) ||
+                        html.match(/"squareFeet":\s*(\d+)/i) ||
                         html.match(/data-rf-test-id=["']abp-sqFt["'][^>]*>[\s\S]*?([0-9,]+)/i) ||
                         html.match(/([0-9,]+)\s*Sq\s*Ft/i);
           if (mSqft && mSqft[1]) {
@@ -235,29 +316,90 @@ document.addEventListener("DOMContentLoaded", async () => {
           }
 
           // 6. Beds & Baths
-          const mBeds = html.match(/\\?"(?:beds|numBeds)\\?"\s*:\s*(\d+)/i) || html.match(/(\d+)\s*beds?/i);
+          const mBeds = html.match(/"(?:beds|numBeds)":\s*(\d+)/i) || html.match(/(\d+)\s*beds?/i);
           if (mBeds && mBeds[1]) l.beds = mBeds[1];
 
-          const mBaths = html.match(/\\?"(?:baths|numBaths)\\?"\s*:\s*([\d\.]+)/i) || html.match(/([\d\.]+)\s*baths?/i);
+          const mBaths = html.match(/"(?:baths|numBaths)":\s*([\d\.]+)/i) || html.match(/([\d\.]+)\s*baths?/i);
           if (mBaths && mBaths[1]) l.baths = mBaths[1];
 
           // 7. Year Built
-          const mYr = html.match(/\\?"yearBuilt\\?"\s*:\s*\{?\\?"value\\?"?\s*:\s*(\d{4})/i) ||
-                      html.match(/\\?"yearBuilt\\?"\s*:\s*(\d{4})/i) ||
+          const mYr = html.match(/"yearBuilt":\s*\{\s*"value":\s*(\d{4})/i) ||
+                      html.match(/"yearBuilt":\s*(\d{4})/i) ||
                       html.match(/Built in (\d{4})/i);
           if (mYr && mYr[1]) l.year_built = mYr[1];
 
-          // 8. Public Remarks
-          const mRemarks = html.match(/data-rf-test-id=["']listing-remarks["'][^>]*>([\s\S]*?)<\/div>/i) ||
-                           html.match(/\\?"remarks\\?"\s*:\s*\\?"([^\\"]+)/i) ||
-                           html.match(/\\?"publicRemarks\\?"\s*:\s*\\?"([^\\"]+)/i);
-          if (mRemarks && mRemarks[1]) {
-            l.remarks = mRemarks[1].replace(/<[^>]+>/g, ' ').replace(/\\n/g, ' ').replace(/\\"/g, '"').trim();
+          // 8. Public Remarks (Multi-Source Extraction)
+          let remarks = "";
+
+          // JSON-LD scripts
+          const jsonLdMatches = html.match(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi);
+          if (jsonLdMatches) {
+            for (const scriptTag of jsonLdMatches) {
+              try {
+                const content = scriptTag.replace(/<script[^>]*>/i, '').replace(/<\/script>/i, '').trim();
+                const parsed = JSON.parse(content);
+                if (parsed && parsed.description) {
+                  remarks = parsed.description.trim();
+                  break;
+                }
+                if (Array.isArray(parsed)) {
+                  for (const item of parsed) {
+                    if (item && item.description) {
+                      remarks = item.description.trim();
+                      break;
+                    }
+                  }
+                }
+              } catch (e) {}
+            }
           }
 
-          // 9. DOM
-          const mDom = html.match(/(\d+)\s+days?\s+on\s+redfin/i) || html.match(/(\d+)\s+days?\s+on\s+market/i);
-          if (mDom && mDom[1]) l.dom = parseInt(mDom[1], 10);
+          // React JSON state
+          if (!remarks) {
+            const mRemarks = html.match(/"remarks":\s*\{\s*"value":\s*"((?:\\.|[^"\\])+)"/i) ||
+                             html.match(/"publicRemarks":\s*"((?:\\.|[^"\\])+)"/i) ||
+                             html.match(/"marketingRemarks":\s*"((?:\\.|[^"\\])+)"/i) ||
+                             html.match(/"listingRemarks":\s*"((?:\\.|[^"\\])+)"/i);
+            if (mRemarks && mRemarks[1] && mRemarks[1].length > 10) {
+              remarks = mRemarks[1].replace(/\\n/g, ' ').replace(/\\"/g, '"').replace(/\\\//g, '/').trim();
+            }
+          }
+
+          // Meta description tag
+          if (!remarks) {
+            const metaDesc = html.match(/<meta\s+(?:property|name)=["'](?:og:)?description["']\s+content=["']([^"']+)["']/i);
+            if (metaDesc && metaDesc[1] && metaDesc[1].trim().length > 15) {
+              remarks = metaDesc[1].replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"').trim();
+            }
+          }
+
+          // DOM HTML fallback
+          if (!remarks) {
+            const domRem = html.match(/class=["'][^"']*(?:house-info--marketing-remarks|listing-remarks|remarks)[^"']*["'][^>]*>([\s\S]*?)<\/(?:div|section|p)>/i);
+            if (domRem && domRem[1]) {
+              remarks = domRem[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+            }
+          }
+
+          if (remarks) {
+            l.remarks = remarks;
+          }
+
+          // 9. Days on Market (DOM) / timeOnRedfin
+          const torMatch = html.match(/"timeOnRedfin":\s*\{\s*"value":\s*(\d+)/i) ||
+                           html.match(/"timeOnRedfin":\s*(\d+)/i);
+          if (torMatch && torMatch[1]) {
+            const ms = parseInt(torMatch[1], 10);
+            if (ms > 86400000) {
+              l.dom = Math.max(1, Math.round(ms / (1000 * 60 * 60 * 24)));
+            } else if (ms > 0) {
+              l.dom = 1;
+            }
+          } else {
+            const mDom = html.match(/(\d+)\s*(?:days?|d)\s+on\s+redfin/i) ||
+                         html.match(/(\d+)\s*(?:days?|d)\s+on\s+market/i);
+            if (mDom && mDom[1]) l.dom = parseInt(mDom[1], 10);
+          }
         }
       } catch (e) {
         console.warn("Failed to enrich url", l.redfin_url, e);
@@ -274,7 +416,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       completed += batch.length;
       
       const pct = Math.min(100, Math.round((completed / total) * 100));
-      progressText.innerText = `Enriched ${completed} / ${total} agent contacts...`;
+      progressText.innerText = `Enriched ${completed} / ${total} agent contacts & remarks...`;
       progressPct.innerText = `${pct}%`;
       progressBarFill.style.width = `${pct}%`;
     }

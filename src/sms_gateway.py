@@ -63,6 +63,13 @@ def send_sms(phone: str, message: str, agent_id: str = "", metadata: Dict[str, A
     password = settings.get("password", "")
     sim_number = int(settings.get("sim_number", 1))
 
+    from src.storage import is_globally_opted_out
+    if is_globally_opted_out(phone):
+        return {
+            "status": "suppressed",
+            "message": "Recipient phone is globally suppressed across Brooke & Lauren desks due to STOP / opt-out."
+        }
+
     phone_e164 = clean_phone_e164(phone)
     if not phone_e164:
         return {"status": "error", "message": "Invalid recipient phone number."}

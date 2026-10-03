@@ -184,6 +184,12 @@ class SendFixerSmsRequest(BaseModel):
 class UpdateFixerPhoneRequest(BaseModel):
     phone: str
 
+class PushPhoneRequest(BaseModel):
+    phone: str
+    agent_name: Optional[str] = None
+    address: Optional[str] = None
+    fixer_id: Optional[str] = None
+
 class ApproveBotRequest(BaseModel):
     agent_id: str
     custom_message: Optional[str] = None
@@ -394,6 +400,28 @@ def delete_inbox_message_endpoint(payload: DeleteInboxPayload):
 def clear_inbox_spam_endpoint():
     count = data_manager.clear_spam_inbound()
     return {"status": "success", "deleted_count": count, "message": f"Successfully deleted {count} spam/unmatched message{'s' if count != 1 else ''}"}
+
+class OptOutPayload(BaseModel):
+    phone: str
+    source_desk: Optional[str] = "MANUAL"
+    reason: Optional[str] = "Manual suppression"
+
+@app.get("/api/opt-outs")
+def get_global_opt_outs_endpoint():
+    from src.storage import load_global_opt_outs
+    return {"status": "success", "opt_outs": load_global_opt_outs()}
+
+@app.post("/api/opt-outs")
+def add_global_opt_out_endpoint(payload: OptOutPayload):
+    from src.storage import add_global_opt_out
+    res = add_global_opt_out(payload.phone, source_desk=payload.source_desk or "MANUAL", reason=payload.reason or "Manual suppression")
+    return {"status": "success" if res else "already_exists", "phone": payload.phone}
+
+@app.delete("/api/opt-outs/{phone}")
+def remove_global_opt_out_endpoint(phone: str):
+    from src.storage import remove_global_opt_out
+    res = remove_global_opt_out(phone)
+    return {"status": "success" if res else "not_found", "phone": phone}
 
 @app.post("/api/agent/{agent_id}/reset-history")
 def reset_agent_history_endpoint(agent_id: str):
@@ -972,6 +1000,98 @@ def reset_fixer_flow_endpoint(fixer_id: str):
     fixer["messages"] = []
     save_fixers(fixers)
     return {"status": "success", "fixer": fixer}
+
+@app.post("/api/fixers/{fixer_id}/phone")
+def update_fixer_phone_endpoint(fixer_id: str, req: UpdateFixerPhoneRequest):
+    fixers = load_fixers()
+    fixer = next((f for f in fixers if f.get("id") == fixer_id), None)
+    if not fixer:
+        raise HTTPException(status_code=404, detail="Fixer listing not found")
+    fixer["agent_phone"] = req.phone.strip()
+    save_fixers(fixers)
+    return {"status": "success", "fixer": fixer}
+
+@app.post("/api/fixers/push-phone")
+def push_phone_endpoint(req: PushPhoneRequest):
+    fixers = load_fixers()
+    clean_phone = req.phone.strip()
+    matched = []
+    
+    agent_query = (req.agent_name or "").lower().strip()
+    # Remove honorifics/commas/noise from query like "PA", "LLC", "Realtor"
+    agent_tokens = [t for t in re.sub(r'[^a-zA-Z0-9\s]', ' ', agent_query).split() if t not in ["pa", "llc", "inc", "realtor", "agent", "phone", "fl", "florida"]]
+    
+    for f in fixers:
+        match = False
+        f_agent = (f.get("agent_name") or "").lower()
+        f_addr = (f.get("address") or "").lower()
+        
+        if req.fixer_id and f.get("id") == req.fixer_id:
+            match = True
+        elif req.address and req.address.lower() in f_addr:
+            match = True
+        elif agent_tokens and all(token in f_agent for token in agent_tokens):
+            match = True
+        elif agent_tokens and any(token in f_agent for token in agent_tokens if len(token) >= 4):
+            match = True
+            
+        if match:
+            f["agent_phone"] = clean_phone
+            f["phone_lookup_source"] = "GOOGLE_SEARCH_EXTENSION"
+            matched.append(f)
+            
+    if matched:
+        save_fixers(fixers)
+        return {
+            "status": "success",
+            "message": f"Attached {clean_phone} to {len(matched)} listing(s) ({matched[0].get('agent_name')})",
+            "matched_count": len(matched),
+            "phone": clean_phone
+        }
+    return {"status": "not_found", "message": f"Could not find matching fixer card for '{req.agent_name}'"}
+
+@app.post("/api/fixers/{fixer_id}/lookup-phone")
+def lookup_fixer_phone_endpoint(fixer_id: str):
+    from src.agent_phone_lookup import lookup_agent_contact
+    fixers = load_fixers()
+    fixer = next((f for f in fixers if f.get("id") == fixer_id), None)
+    if not fixer:
+        raise HTTPException(status_code=404, detail="Fixer listing not found")
+    
+    res = lookup_agent_contact(
+        agent_name=fixer.get("agent_name", ""),
+        brokerage=fixer.get("brokerage", ""),
+        city=fixer.get("city", "Florida"),
+        address=fixer.get("address", "")
+    )
+    if res.get("phone"):
+        fixer["agent_phone"] = res["phone"]
+        fixer["phone_lookup_source"] = "WEB_SKIP_TRACE"
+        save_fixers(fixers)
+        return {"status": "success", "phone": res["phone"], "fixer": fixer}
+    return {"status": "not_found", "message": f"No phone number found online for {fixer.get('agent_name', 'Agent')}", "candidates": res.get("candidates", [])}
+
+@app.post("/api/fixers/lookup-all-phones")
+def lookup_all_fixer_phones_endpoint():
+    from src.agent_phone_lookup import batch_lookup_fixer_phones
+    fixers = load_fixers()
+    initial_phones = len([f for f in fixers if f.get("agent_phone")])
+    enriched = batch_lookup_fixer_phones(fixers)
+    new_phones = len([f for f in enriched if f.get("agent_phone")])
+    save_fixers(enriched)
+    found_count = new_phones - initial_phones
+    return {
+        "status": "success",
+        "message": f"Lookup complete! Found {found_count} new agent phone numbers ({new_phones} total ready).",
+        "found_count": found_count,
+        "total_with_phone": new_phones
+    }
+
+@app.delete("/api/fixers")
+@app.post("/api/fixers/clear")
+def clear_all_fixers_endpoint():
+    save_fixers([])
+    return {"status": "success", "message": "All fixer listings cleared from Lauren's Desk", "count": 0}
 
 @app.delete("/api/fixers/{fixer_id}")
 def delete_fixer_endpoint(fixer_id: str):

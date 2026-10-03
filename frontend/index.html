@@ -453,21 +453,72 @@
       </div>
 
       <!-- FILTER & ACTIONS BAR FOR FIXERS -->
-      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 shadow-md">
-        <div class="flex items-center gap-3 flex-1">
-          <div class="relative w-full max-w-sm">
-            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-sm">🔍</span>
-            <input type="text" id="fixerSearchInput" placeholder="Search fixer address, city, agent..." oninput="filterFixersList()" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500">
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 space-y-3 shadow-md">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <!-- Left side filters -->
+          <div class="flex flex-wrap items-center gap-2.5 flex-1 min-w-[280px]">
+            <!-- Text Search -->
+            <div class="relative w-56 max-w-full">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-xs">🔍</span>
+              <input type="text" id="fixerSearchInput" placeholder="Search address, agent, city..." oninput="filterFixersList()" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl pl-8 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500">
+            </div>
+
+            <!-- Contact Status Filter -->
+            <div class="flex items-center gap-1.5 bg-[#0b1220] px-2.5 py-1.5 rounded-xl border border-slate-700/80">
+              <span class="text-[11px] text-slate-400 font-medium">Status:</span>
+              <select id="fixerContactFilter" onchange="filterFixersList()" class="bg-transparent text-amber-300 text-xs font-semibold focus:outline-none cursor-pointer">
+                <option value="ALL">All Listings</option>
+                <option value="CONTACTED">💬 Already Contacted</option>
+                <option value="UNCONTACTED">✨ Not Contacted (New)</option>
+                <option value="REPLIED">📥 Inbound Replies</option>
+                <option value="LOI_SENT">📄 Standing LOI Sent</option>
+              </select>
+            </div>
+
+            <!-- County Filter -->
+            <div class="flex items-center gap-1.5 bg-[#0b1220] px-2.5 py-1.5 rounded-xl border border-slate-700/80">
+              <span class="text-[11px] text-slate-400 font-medium">County:</span>
+              <select id="fixerCountyFilter" onchange="handleFixerCountyFilterChange()" class="bg-transparent text-amber-300 text-xs font-semibold focus:outline-none cursor-pointer">
+                <option value="ALL">All Counties</option>
+              </select>
+            </div>
+
+            <!-- City Filter -->
+            <div class="flex items-center gap-1.5 bg-[#0b1220] px-2.5 py-1.5 rounded-xl border border-slate-700/80">
+              <span class="text-[11px] text-slate-400 font-medium">City:</span>
+              <select id="fixerCityFilter" onchange="filterFixersList()" class="bg-transparent text-amber-300 text-xs font-semibold focus:outline-none cursor-pointer">
+                <option value="ALL">All Cities</option>
+              </select>
+            </div>
+
+            <!-- Reset Filters Button -->
+            <button type="button" id="btnResetFixerFilters" onclick="resetFixerFilters()" class="hidden px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white text-[11px] font-semibold transition cursor-pointer" title="Reset all filters">
+              ✕ Reset
+            </button>
           </div>
-          <span class="text-xs text-slate-400 font-medium" id="fixerCountDisplay">Loading fixers...</span>
+
+          <!-- Right side action buttons -->
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="lookupAllFixerPhones()" class="px-3.5 py-1.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm" title="Search Google & Realtor.com to automatically find phone numbers for agents with missing contacts">
+              <span>🔍 Auto-Find Numbers</span>
+            </button>
+            <button type="button" id="btnToggleAllFixers" onclick="toggleAllFixerCards()" class="px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-amber-300 text-xs font-semibold border border-slate-700 transition flex items-center gap-1.5 cursor-pointer" title="Expand or collapse all fixer cards">
+              <span>⛶ Expand All</span>
+            </button>
+            <button type="button" onclick="loadFixers()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition flex items-center gap-1.5 cursor-pointer">
+              <span>🔄 Reload</span>
+            </button>
+            <!-- CLEAR ENTIRE DESK BUTTON -->
+            <button type="button" onclick="clearEntireFixerDesk()" class="px-3.5 py-1.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/30 hover:border-rose-500/50 text-rose-300 hover:text-rose-200 text-xs font-bold transition flex items-center gap-1.5 shadow-sm cursor-pointer" title="Clear all scraped listings from Lauren's Desk and start fresh">
+              <span>🗑️ Clear Entire Desk</span>
+            </button>
+          </div>
         </div>
-        <div class="flex items-center gap-2">
-          <button type="button" id="btnToggleAllFixers" onclick="toggleAllFixerCards()" class="px-3.5 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-amber-300 text-xs font-semibold border border-slate-700 transition flex items-center gap-1.5 cursor-pointer" title="Expand or collapse all fixer cards">
-            <span>⛶ Expand All</span>
-          </button>
-          <button type="button" onclick="loadFixers()" class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition flex items-center gap-1.5 cursor-pointer">
-            <span>🔄 Reload Fixers</span>
-          </button>
+
+        <!-- Count indicator and active filter info -->
+        <div class="flex items-center justify-between text-xs text-slate-400 pt-1.5 border-t border-slate-800/60">
+          <span id="fixerCountDisplay">Loading fixers...</span>
+          <span id="fixerFilteredBadge" class="hidden text-[10px] font-semibold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">⚡ Filter Applied</span>
         </div>
       </div>
 
@@ -1997,6 +2048,6 @@
     </div>
   </div>
 
-  <script src="/app.js?v=20261002_02"></script>
+  <script src="/app.js?v=20261003_1325"></script>
 </body>
 </html>

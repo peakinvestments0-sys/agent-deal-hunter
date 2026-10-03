@@ -118,6 +118,10 @@ class DripQueueManager:
 
         if self.active_desk in ["LAUREN", "ALL"]:
             fixers = load_fixers()
+            missing_phones = 0
+            already_contacted = 0
+            county_skipped = 0
+
             for f in fixers:
                 phone = (f.get("agent_phone") or "").strip()
                 status = f.get("status", "NEW")
@@ -125,11 +129,19 @@ class DripQueueManager:
                 is_dead = status == "DEAD"
                 is_contacted = status != "NEW" or len(msgs) > 0
 
+                if is_contacted:
+                    already_contacted += 1
+
                 if county and county != "ALL":
                     if (f.get("county") or "").upper() != county.upper():
+                        county_skipped += 1
                         continue
 
-                if phone and not is_dead and not is_contacted:
+                if not phone:
+                    missing_phones += 1
+                    continue
+
+                if not is_dead and not is_contacted:
                     new_queue.append({
                         "desk": "LAUREN",
                         "id": f.get("id"),
@@ -145,9 +157,24 @@ class DripQueueManager:
             new_queue = new_queue[:limit]
 
         if not new_queue:
+            if self.active_desk == "LAUREN":
+                fixers = load_fixers()
+                if not fixers:
+                    msg = "Lauren's Desk is empty. Scrape Redfin fixer listings using the Chrome extension first."
+                elif missing_phones > 0 and len(new_queue) == 0:
+                    msg = f"Found {len(fixers)} listings on Lauren's Desk, but {missing_phones} are missing agent phone numbers. Click '📱 + Add Phone' on any card to enter their number, or scrape listings with listed contacts."
+                elif already_contacted == len(fixers):
+                    msg = f"All {len(fixers)} fixer listings on Lauren's Desk have already been contacted."
+                elif county_skipped > 0:
+                    msg = f"No listings found for county '{county}'. Try switching County filter to 'All Counties'."
+                else:
+                    msg = f"No uncontacted agents found ready to drip for {self.active_desk} desk."
+            else:
+                msg = f"No uncontacted agents found ready to drip for {self.active_desk} desk."
+
             return {
                 "status": "warning",
-                "message": f"No uncontacted agents found ready to drip for {self.active_desk} desk.",
+                "message": msg,
                 "queued": 0
             }
 

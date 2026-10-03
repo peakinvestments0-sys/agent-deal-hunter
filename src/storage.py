@@ -15,6 +15,7 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 STATE_FILE = os.path.join(DATA_DIR, "agent_pipeline_state.json")
 CUSTOM_AGENTS_FILE = os.path.join(DATA_DIR, "custom_agents.json")
 OUTREACH_FILE = os.path.join(DATA_DIR, "outreach_history.json")
+GLOBAL_OPT_OUTS_FILE = os.path.join(DATA_DIR, "global_opt_outs.json")
 
 def load_json(filepath: str, default: Any) -> Any:
     if os.path.exists(filepath):
@@ -24,6 +25,97 @@ def load_json(filepath: str, default: Any) -> Any:
         except Exception:
             return default
     return default
+
+def save_json(filepath: str, data: Any):
+    with open(filepath, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+
+def load_global_opt_outs() -> List[Dict[str, Any]]:
+    return load_json(GLOBAL_OPT_OUTS_FILE, [])
+
+def save_global_opt_outs(opt_outs: List[Dict[str, Any]]):
+    save_json(GLOBAL_OPT_OUTS_FILE, opt_outs)
+
+def is_globally_opted_out(phone: str) -> bool:
+    if not phone:
+        return False
+    digits = raw_phone_digits(phone)[-10:]
+    if not digits or len(digits) < 10:
+        return False
+    opt_outs = load_global_opt_outs()
+    for o in opt_outs:
+        o_digits = raw_phone_digits(o.get("phone") or o.get("phone_digits") or "")[-10:]
+        if o_digits and o_digits == digits:
+            return True
+    return False
+
+def add_global_opt_out(phone: str, source_desk: str = "GLOBAL", reason: str = "") -> bool:
+    if not phone:
+        return False
+    digits = raw_phone_digits(phone)[-10:]
+    if not digits or len(digits) < 10:
+        return False
+    
+    opt_outs = load_global_opt_outs()
+    for o in opt_outs:
+        o_digits = raw_phone_digits(o.get("phone") or o.get("phone_digits") or "")[-10:]
+        if o_digits == digits:
+            return False
+            
+    entry = {
+        "phone": f"({digits[:3]}) {digits[3:6]}-{digits[6:]}",
+        "phone_digits": digits,
+        "source_desk": source_desk,
+        "reason": reason or "STOP / Opt-out requested",
+        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
+    }
+    opt_outs.append(entry)
+    save_global_opt_outs(opt_outs)
+    return True
+
+def remove_global_opt_out(phone: str) -> bool:
+    digits = raw_phone_digits(phone)[-10:]
+    if not digits:
+        return False
+    opt_outs = load_global_opt_outs()
+    initial_len = len(opt_outs)
+    opt_outs = [o for o in opt_outs if raw_phone_digits(o.get("phone") or o.get("phone_digits") or "")[-10:] != digits]
+    if len(opt_outs) != initial_len:
+        save_global_opt_outs(opt_outs)
+        return True
+    return False
+
+def extract_reroute_phone_number(text: str) -> Optional[str]:
+    """
+    Detects if an inbound SMS contains a new texting number e.g.:
+    'we use a different number for texting 813-555-1234', 'text me at 407-555-1212',
+    'please text my cell (321) 555-4321', 'reach me at 8135551212'.
+    """
+    if not text:
+        return None
+    
+    has_reroute_intent = bool(re.search(
+        r'\b(text|call|cell|mobile|number|phone|reach|line|contact|use|different number)\b',
+        text,
+        re.IGNORECASE
+    ))
+    
+    patterns = [
+        r'(?:text|call|cell|mobile|number|phone|reach|line|at|use|to)\s*(?:me\s*)?(?:at\s*|on\s*|to\s*|is\s*)?[:\-]?\s*(\+?1?[\s\.-]?\(?\d{3}\)?[\s\.-]?\d{3}[\s\.-]?\d{4})\b',
+        r'(\(?\d{3}\)?[\s\.-]?\d{3}[\s\.-]?\d{4})\b'
+    ]
+    
+    for pat in patterns:
+        m = re.search(pat, text, re.IGNORECASE)
+        if m:
+            cand = m.group(1)
+            digits = re.sub(r'\D', '', cand)
+            if len(digits) == 11 and digits.startswith('1'):
+                digits = digits[1:]
+            if len(digits) == 10 and not digits.startswith('0') and not digits.startswith('1'):
+                if has_reroute_intent or pat == patterns[0]:
+                    return f"({digits[:3]}) {digits[3:6]}-{digits[6:]}"
+    return None
 
 def save_json(filepath: str, data: Any):
     with open(filepath, "w", encoding="utf-8") as f:
@@ -348,6 +440,9 @@ class AgentDataManager:
                 except Exception:
                     pass
 
+        # Check for Number-Change Re-route in message
+        reroute_phone = extract_reroute_phone_number(message)
+
         log_entry = {
             "timestamp": timestamp,
             "direction": "INBOUND",
@@ -359,6 +454,7 @@ class AgentDataManager:
             "agent_name": agent["full_name"] if agent else (fixer_match.get("agent_name", "Fixer Agent") if fixer_match else "Unknown Agent"),
             "is_fixer": bool(fixer_match),
             "fixer_address": fixer_match.get("address", "") if fixer_match else "",
+            "reroute_phone_detected": reroute_phone,
             "raw": raw_payload or {}
         }
         self.log_outreach(log_entry)
@@ -370,6 +466,10 @@ class AgentDataManager:
             current_unreads = self.pipeline_state.get(aid, {}).get("unread_replies", 0) + 1
 
             bot_result = bot_engine.evaluate_inbound_sms(agent, message)
+
+            # Global Opt-out check
+            if bot_result.get("action") == "OPT_OUT" or bot_result.get("node") == "CASH_AGENT_DEAD":
+                add_global_opt_out(phone, source_desk="BROOKE", reason="Agent sent opt-out message")
 
             updates = {
                 "pipeline_stage": bot_result.get("stage_update", "Warm / In Discussion"),
@@ -385,6 +485,20 @@ class AgentDataManager:
 
             if bot_result.get("state_updates", {}).get("is_gold"):
                 updates["is_gold_deal"] = True
+
+            # Soft-No 30-Day Follow-Up Task
+            if bot_result.get("state_updates", {}).get("followup_task"):
+                updates["followup_task"] = bot_result["state_updates"]["followup_task"]
+
+            # If number-change re-route detected, update agent phone
+            if reroute_phone and raw_phone_digits(reroute_phone) != raw_phone_digits(phone):
+                updates["phone"] = reroute_phone
+                updates["custom_phone"] = reroute_phone
+                updates["phone_raw"] = raw_phone_digits(reroute_phone)
+                updates["rerouted_from_phone"] = phone
+                notes_list = list(agent.get("notes", [])) if isinstance(agent.get("notes"), list) else ([agent.get("notes")] if agent.get("notes") else [])
+                notes_list.append(f"[{timestamp}] Number re-routed to {reroute_phone} per inbound SMS.")
+                updates["notes"] = "\n".join(notes_list) if isinstance(agent.get("notes"), str) else notes_list
 
             self.update_agent_state(aid, updates)
 

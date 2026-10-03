@@ -31,6 +31,16 @@
         "content.js"
       ],
       "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://*.google.com/search*",
+        "https://www.google.com/search*"
+      ],
+      "js": [
+        "google_content.js"
+      ],
+      "run_at": "document_idle"
     }
   ]
 }
