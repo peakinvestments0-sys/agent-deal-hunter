@@ -1350,6 +1350,15 @@ function renderAgentTable(agents) {
   }
 
   tbody.innerHTML = agents.map(a => {
+    const isTestAgent = Boolean(
+      a.is_test || 
+      a.is_custom ||
+      (a.tier && a.tier.toLowerCase().includes("test")) ||
+      (a.full_name && a.full_name.toLowerCase().includes("test")) || 
+      a.agent_id?.toLowerCase().startsWith("test") ||
+      a.agent_id?.toLowerCase().startsWith("custom")
+    );
+
     let tierBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-800 text-slate-300">${a.tier}</span>`;
     if (a.tier.includes("Tier 1")) {
       tierBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40">🔥 ${escapeHtml(a.tier)}</span>`;
@@ -1363,7 +1372,7 @@ function renderAgentTable(agents) {
       tierBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-300 border border-amber-500/20">🐋 Whale Producer</span>`;
     }
 
-    const customBadge = (a.is_custom || a.tier.includes("Test"))
+    const customBadge = isTestAgent
       ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-violet-500/20 text-violet-300 border border-violet-500/30">🧪 Sandbox Agent</span>`
       : '';
 
@@ -1548,10 +1557,12 @@ function renderAgentTable(agents) {
             </button>
 
             <!-- PandaDoc FAR/BAR Contract -->
-            <!-- Quick Delete Button (Direct 1 Click Delete) -->
+            <!-- Quick Delete Button (Direct 1 Click Delete) - Hidden for Test Agent -->
+            ${!isTestAgent ? `
             <button type="button" onclick="quickDeleteAgent('${a.agent_id}', '${escapeHtml(a.full_name || 'Agent')}')" class="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/25 text-rose-400 hover:text-rose-300 border border-rose-500/20 transition cursor-pointer font-bold text-xs" title="Delete Agent &amp; Property Record">
               🗑️
             </button>
+            ` : ''}
           </div>
         </td>
       </tr>
@@ -1560,6 +1571,10 @@ function renderAgentTable(agents) {
 }
 
 async function quickDeleteAgent(agentId, agentName) {
+  if (agentId?.toLowerCase().startsWith("test") || agentName?.toLowerCase().includes("test")) {
+    alert("Test Agent is protected and cannot be deleted.");
+    return;
+  }
   if (!confirm(`Are you sure you want to delete ${agentName || 'this agent'} and their property records from your database?`)) {
     return;
   }

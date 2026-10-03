@@ -452,6 +452,8 @@ def create_agent_endpoint(req: CreateAgentRequest):
 
 @app.delete("/api/agent/{agent_id}")
 def delete_agent_endpoint(agent_id: str):
+    if agent_id.lower().startswith("test") or agent_id.lower() == "test_agent" or "test" in agent_id.lower():
+        raise HTTPException(status_code=400, detail="Test Agent is protected and cannot be deleted.")
     success = data_manager.delete_agent(agent_id)
     if not success:
         raise HTTPException(status_code=404, detail="Agent not found")
