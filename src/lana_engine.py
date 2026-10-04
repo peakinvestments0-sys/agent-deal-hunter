@@ -446,7 +446,7 @@ class LanaEngine:
         template = (
             "LOI Terms for {address}: Purchase Price: ${offer:,.0f} Cash. Earnest Money: $2,500. "
             "Feasibility Period: 14 days. Closing: {close_days} days. Full listing commission protected. "
-            "Proof of funds verified. Let me know if you would like me to text or email the formal contract. Lana"
+            "Proof of funds verified. Let me know if you would like me to text or email the contract. Lana"
         )
         rendered = template.format(agent_name=agent_name, address=addr, offer=offer, close_days=effective_close)
         return strip_hyphens_for_sms(rendered)
@@ -468,7 +468,7 @@ class LanaEngine:
             </div>
             <div style="border: 1px solid #e2e8f0; border-top: none; padding: 24px; border-radius: 0 0 8px 8px; background: #ffffff;">
                 <p>Dear {agent_name},</p>
-                <p>Please present this Letter of Intent (LOI) to the seller of <strong>{addr}</strong>. Our builder client is ready to execute a formal Florida standard contract immediately upon mutual agreement on the core terms below:</p>
+                <p>Please present this Letter of Intent (LOI) to the seller of <strong>{addr}</strong>. Our builder client is ready to execute a contract immediately upon mutual agreement on the core terms below:</p>
                 
                 <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px;">
                     <tr style="border-bottom: 1px solid #e2e8f0;">
@@ -509,7 +509,7 @@ class LanaEngine:
                     </tr>
                 </table>
 
-                <p style="font-size: 13px; color: #64748b; margin-top: 24px;">Proof of funds is available upon request. To proceed, please reply to this email or text confirmation to have the formal contract delivered.</p>
+                <p style="font-size: 13px; color: #64748b; margin-top: 24px;">Proof of funds is available upon request. To proceed, please reply to this email or text confirmation to have the contract delivered.</p>
                 
                 <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
                     <p style="margin: 0; font-weight: bold; color: #0f172a;">Lana</p>
