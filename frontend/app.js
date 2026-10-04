@@ -5522,7 +5522,8 @@ async function loadLots() {
   try {
     const res = await fetch("/api/lana/lots");
     if (!res.ok) throw new Error("Failed to load infill lots");
-    allLots = await res.json();
+    const data = await res.json();
+    allLots = Array.isArray(data) ? data : (data.lots || []);
 
     // Top switcher badge
     const headerBadge = document.getElementById("headerLanaBadge");

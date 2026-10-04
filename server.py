@@ -1356,7 +1356,14 @@ async def upload_lana_lots_csv_endpoint(request: Request, file: Optional[UploadF
             lot_acres = 0.20
             lot_sqft = 8712.0
 
-        county = (
+        city = (
+            row.get("city")
+            or row.get("City")
+            or row.get("CITY")
+            or "Orlando"
+        ).strip().title()
+
+        county_raw = (
             row.get("county")
             or row.get("County")
             or row.get("COUNTY")
@@ -1365,12 +1372,33 @@ async def upload_lana_lots_csv_endpoint(request: Request, file: Optional[UploadF
             or "ORANGE"
         ).strip().upper()
 
-        city = (
-            row.get("city")
-            or row.get("City")
-            or row.get("CITY")
-            or "Orlando"
-        ).strip().title()
+        # Map common FL / metro cities if county_raw is a subdivision/neighborhood
+        CITY_COUNTY_FALLBACK = {
+            "orlando": "ORANGE", "winter park": "ORANGE", "apopka": "ORANGE",
+            "windermere": "ORANGE", "winter garden": "ORANGE", "maitland": "ORANGE",
+            "ocoee": "ORANGE", "oakland": "ORANGE", "gotha": "ORANGE",
+            "christmas": "ORANGE", "tangerine": "ORANGE", "zellwood": "ORANGE",
+            "sanford": "SEMINOLE", "lake mary": "SEMINOLE", "altamonte springs": "SEMINOLE",
+            "longwood": "SEMINOLE", "oviedo": "SEMINOLE", "casselberry": "SEMINOLE",
+            "winter springs": "SEMINOLE", "geneva": "SEMINOLE", "chuluota": "SEMINOLE",
+            "kissimmee": "OSCEOLA", "saint cloud": "OSCEOLA", "st cloud": "OSCEOLA",
+            "celebration": "OSCEOLA", "poinciana": "OSCEOLA",
+            "palm bay": "BREVARD", "melbourne": "BREVARD", "titusville": "BREVARD",
+            "cocoa": "BREVARD", "rockledge": "BREVARD",
+            "tampa": "HILLSBOROUGH", "brandon": "HILLSBOROUGH", "riverview": "HILLSBOROUGH",
+            "st petersburg": "PINELLAS", "clearwater": "PINELLAS", "largo": "PINELLAS",
+            "jacksonville": "DUVAL", "daytona beach": "VOLUSIA", "deltona": "VOLUSIA",
+            "deland": "VOLUSIA", "lakeland": "POLK", "winter haven": "POLK",
+            "atlanta": "FULTON", "dallas": "DALLAS", "houston": "HARRIS"
+        }
+        from src.sdf_parser import COUNTY_TO_DOR_CODE
+        known_counties = set(COUNTY_TO_DOR_CODE.keys()) | {"DALLAS", "TARRANT", "COLLIN", "HARRIS", "FORT BEND", "FULTON", "DEKALB", "COBB", "GWINNETT"}
+        if county_raw in known_counties:
+            county = county_raw
+        elif city.lower() in CITY_COUNTY_FALLBACK:
+            county = CITY_COUNTY_FALLBACK[city.lower()]
+        else:
+            county = county_raw
 
         zip_code = (
             row.get("zip")
