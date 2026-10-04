@@ -1262,43 +1262,190 @@ def ingest_lana_lot_endpoint(req: IngestLotRequest):
     return {"status": "success", "lot": lot_state, "total_lots": len(lots)}
 
 @app.post("/api/lana/lots/upload-csv")
-async def upload_lana_lots_csv_endpoint(file: UploadFile = File(...)):
+async def upload_lana_lots_csv_endpoint(request: Request, file: Optional[UploadFile] = File(None)):
     lots = load_lots()
-    content = await file.read()
-    text = content.decode("utf-8", errors="ignore")
+    text = ""
+    if file:
+        content = await file.read()
+        text = content.decode("utf-8", errors="ignore")
+    else:
+        content_type = request.headers.get("content-type", "")
+        if "multipart/form-data" in content_type:
+            try:
+                form = await request.form()
+                upload = form.get("file")
+                if upload and hasattr(upload, "read"):
+                    c = await upload.read()
+                    text = c.decode("utf-8", errors="ignore")
+            except Exception:
+                pass
+        if not text:
+            raw_body = await request.body()
+            text = raw_body.decode("utf-8", errors="ignore")
+
+    if not text.strip():
+        return {"status": "error", "message": "CSV content is empty."}
+
     import csv, io
     reader = csv.DictReader(io.StringIO(text))
     added = 0
+    filtered_out = 0
+
     for row in reader:
-        addr = row.get("address") or row.get("Property Address") or row.get("Street Address") or row.get("ADDRESS") or ""
-        if not addr: continue
-        clean_addr = addr.strip().lower()
+        addr = (
+            row.get("address")
+            or row.get("Property Address")
+            or row.get("Street Address")
+            or row.get("ADDRESS")
+            or row.get("Address")
+            or ""
+        ).strip()
+        if not addr:
+            continue
+
+        clean_addr = addr.lower()
         if any((l.get("address") or "").strip().lower() == clean_addr for l in lots):
             continue
-        
-        prc_raw = str(row.get("price") or row.get("list_price") or row.get("LIST_PRICE") or row.get("Price") or 100000).replace("$","").replace(",","")
-        try: prc = float(prc_raw)
-        except Exception: prc = 100000.0
+
+        prc_raw = str(
+            row.get("price")
+            or row.get("list_price")
+            or row.get("LIST_PRICE")
+            or row.get("Price")
+            or row.get("PRICE")
+            or 100000
+        ).replace("$", "").replace(",", "").strip()
+        try:
+            prc = float(prc_raw)
+        except Exception:
+            prc = 100000.0
+
+        dom_raw = str(
+            row.get("days_on_market")
+            or row.get("DAYS ON MARKET")
+            or row.get("Days on Market")
+            or row.get("dom")
+            or row.get("DOM")
+            or 70
+        ).replace(",", "").strip()
+        try:
+            dom = int(dom_raw)
+        except Exception:
+            dom = 70
+
+        lot_size_raw = str(
+            row.get("LOT SIZE")
+            or row.get("Lot Size")
+            or row.get("lot_acres")
+            or row.get("acres")
+            or row.get("Acres")
+            or row.get("lot_sqft")
+            or ""
+        ).replace(",", "").strip()
+        lot_acres = 0.20
+        lot_sqft = 8712.0
+        try:
+            val = float(lot_size_raw)
+            if val > 100:
+                lot_sqft = val
+                lot_acres = round(val / 43560.0, 3)
+            elif val > 0:
+                lot_acres = val
+                lot_sqft = round(val * 43560.0)
+        except Exception:
+            lot_acres = 0.20
+            lot_sqft = 8712.0
+
+        county = (
+            row.get("county")
+            or row.get("County")
+            or row.get("COUNTY")
+            or row.get("LOCATION")
+            or row.get("Location")
+            or "ORANGE"
+        ).strip().upper()
+
+        city = (
+            row.get("city")
+            or row.get("City")
+            or row.get("CITY")
+            or "Orlando"
+        ).strip().title()
+
+        zip_code = (
+            row.get("zip")
+            or row.get("Zip")
+            or row.get("ZIP")
+            or row.get("ZIP OR POSTAL CODE")
+            or row.get("Zip/Postal Code")
+            or ""
+        ).strip()
+
+        agent_name = (
+            row.get("agent_name")
+            or row.get("Agent")
+            or row.get("Listing Agent")
+            or row.get("AGENT")
+            or "Listing Agent"
+        ).strip()
+
+        agent_phone = (
+            row.get("agent_phone")
+            or row.get("Phone")
+            or row.get("Agent Phone")
+            or row.get("PHONE")
+            or ""
+        ).strip()
+
+        agent_email = (
+            row.get("agent_email")
+            or row.get("Email")
+            or row.get("Agent Email")
+            or row.get("EMAIL")
+            or ""
+        ).strip()
+
+        remarks = (
+            row.get("remarks")
+            or row.get("Description")
+            or row.get("DESCRIPTION")
+            or row.get("public_remarks")
+            or ""
+        ).strip()
 
         lot_data = {
             "address": addr,
-            "city": row.get("city") or row.get("City") or "Orlando",
-            "county": row.get("county") or row.get("County") or "ORANGE",
-            "zip": row.get("zip") or row.get("Zip") or "",
+            "city": city,
+            "county": county,
+            "zip": zip_code,
             "list_price": prc,
-            "days_on_market": int(row.get("days_on_market") or row.get("dom") or row.get("DOM") or 70),
-            "lot_acres": float(row.get("lot_acres") or row.get("acres") or row.get("Acres") or 0.20),
-            "agent_name": row.get("agent_name") or row.get("Agent") or row.get("Listing Agent") or "Listing Agent",
-            "agent_phone": row.get("agent_phone") or row.get("Phone") or row.get("Agent Phone") or "",
-            "agent_email": row.get("agent_email") or row.get("Email") or row.get("Agent Email") or "",
-            "remarks": row.get("remarks") or row.get("Description") or ""
+            "days_on_market": dom,
+            "lot_acres": lot_acres,
+            "lot_sqft": lot_sqft,
+            "agent_name": agent_name,
+            "agent_phone": agent_phone,
+            "agent_email": agent_email,
+            "remarks": remarks
         }
+
+        passes, filter_reasons = passes_infill_filters(lot_data)
+        if not passes:
+            filtered_out += 1
+            continue
+
         new_lot = lana_engine.get_initial_lot_state(lot_data)
         lots.append(new_lot)
         added += 1
 
     save_lots(lots)
-    return {"status": "success", "added_count": added, "total_lots": len(lots)}
+    return {
+        "status": "success",
+        "added_count": added,
+        "ingested": added,
+        "filtered_out": filtered_out,
+        "total_lots": len(lots),
+        "message": f"Successfully ingested {added} infill lots ({filtered_out} filtered out)."
+    }
 
 @app.get("/api/lana/lots/{lot_id}")
 def get_lana_lot_endpoint(lot_id: str):

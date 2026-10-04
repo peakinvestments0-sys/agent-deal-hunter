@@ -6385,21 +6385,21 @@ async function handleLotCsvUpload(input) {
   const file = input.files && input.files[0];
   if (!file) return;
 
-  const text = await file.text();
+  const formData = new FormData();
+  formData.append("file", file);
   input.value = "";
 
   try {
     const res = await fetch("/api/lana/lots/upload-csv", {
       method: "POST",
-      headers: { "Content-Type": "text/csv" },
-      body: text
+      body: formData
     });
     const d = await res.json();
     if (d.status === "success") {
-      alert(`✓ Ingested ${d.ingested} infill lots into Lana's Desk (${d.filtered_out} filtered out).`);
+      alert(`✓ Ingested ${d.ingested ?? d.added_count} infill lots into Lana's Desk (${d.filtered_out || 0} filtered out).`);
       await loadLots();
     } else {
-      alert("CSV upload failed: " + (d.message || "Error"));
+      alert("CSV upload failed: " + (d.message || d.detail || "Error"));
     }
   } catch (err) {
     alert("Error uploading CSV: " + err.message);
