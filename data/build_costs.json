@@ -77,6 +77,69 @@
     "updated": "2026-10-01"
   },
   {
+    "county": "DALLAS",
+    "metro": "Dallas",
+    "build_cost_psf": 155,
+    "source": "Dallas County residential construction index Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "TARRANT",
+    "metro": "Dallas - Fort Worth",
+    "build_cost_psf": 150,
+    "source": "Tarrant County permit valuation baseline Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "COLLIN",
+    "metro": "Dallas - Plano",
+    "build_cost_psf": 160,
+    "source": "Collin County construction cost baseline Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "HARRIS",
+    "metro": "Houston",
+    "build_cost_psf": 145,
+    "source": "Harris County residential building valuation Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "FORT BEND",
+    "metro": "Houston",
+    "build_cost_psf": 150,
+    "source": "Fort Bend County permit data baseline Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "FULTON",
+    "metro": "Atlanta",
+    "build_cost_psf": 160,
+    "source": "Fulton County building inspection permit average Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "DEKALB",
+    "metro": "Atlanta",
+    "build_cost_psf": 155,
+    "source": "DeKalb County residential construction index Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "COBB",
+    "metro": "Atlanta",
+    "build_cost_psf": 155,
+    "source": "Cobb County permit valuation baseline Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "GWINNETT",
+    "metro": "Atlanta",
+    "build_cost_psf": 150,
+    "source": "Gwinnett County residential building permit baseline Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
     "county": "SOUTH_ATLANTIC_DEFAULT",
     "metro": "Regional Baseline",
     "build_cost_psf": 147,

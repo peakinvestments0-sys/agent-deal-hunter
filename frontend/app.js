@@ -5882,11 +5882,14 @@ function renderLots(lots) {
 
           <!-- Desk Action Buttons -->
           <div class="flex items-center gap-2 flex-wrap">
-            <button type="button" onclick="sendLotDoorbell('${lot.id}')" class="px-3.5 py-1.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm" title="Send 140-char SMS Doorbell Hook with zero hyphens">
-              <span>📱 Send Doorbell SMS</span>
+            <button type="button" onclick="sendLotDoorbell('${lot.id}')" class="px-3 py-1.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm" title="Send direct cash offer SMS with 21-day close">
+              <span>💬 Send Offer SMS</span>
             </button>
-            <button type="button" onclick="sendLotFormalLoiEmail('${lot.id}')" class="px-3.5 py-1.5 rounded-xl bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 border border-cyan-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm" title="Send formal written LOI email with FAR/BAR VAC-14 terms & full commission protected">
-              <span>✉️ Send Written LOI</span>
+            <button type="button" onclick="sendLotFormalLoiSms('${lot.id}')" class="px-3 py-1.5 rounded-xl bg-teal-600/20 hover:bg-teal-600/30 text-teal-300 border border-teal-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm" title="Send full written LOI terms via SMS text">
+              <span>📱 LOI via Text</span>
+            </button>
+            <button type="button" onclick="sendLotFormalLoiEmail('${lot.id}')" class="px-3 py-1.5 rounded-xl bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 border border-cyan-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm" title="Send formal written LOI email with full commission protected">
+              <span>✉️ LOI via Email</span>
             </button>
             <button type="button" onclick="openUnderwriteLotModal('${lot.id}')" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 text-xs font-semibold transition flex items-center gap-1 cursor-pointer">
               <span>📐 Underwrite</span>
@@ -6089,6 +6092,36 @@ async function sendLotDoorbell(lotId) {
   }
 }
 
+async function sendLotFormalLoiSms(lotId) {
+  const lot = allLots.find(l => l.id === lotId);
+  if (!lot) return;
+
+  const phonePrompt = prompt(`Enter listing agent phone number for written LOI via text:`, lot.agent_phone || "");
+  if (phonePrompt === null) return;
+  const recipientPhone = phonePrompt.trim();
+  if (!recipientPhone) {
+    alert("Phone number is required to dispatch LOI via SMS.");
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/lana/lots/${lotId}/send-loi-sms`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: recipientPhone, close_days: 21 })
+    });
+    const d = await res.json();
+    if (d.status === "success") {
+      alert("✓ Written LOI terms dispatched directly via SMS text!");
+      await loadLots();
+    } else {
+      alert("Failed to send LOI SMS: " + (d.message || "Error"));
+    }
+  } catch (err) {
+    alert("Error sending LOI SMS: " + err.message);
+  }
+}
+
 async function sendLotFormalLoiEmail(lotId) {
   const lot = allLots.find(l => l.id === lotId);
   if (!lot) return;
@@ -6105,7 +6138,7 @@ async function sendLotFormalLoiEmail(lotId) {
     const res = await fetch(`/api/lana/lots/${lotId}/send-loi-email`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ recipient_email: recipientEmail, close_days: 14 })
+      body: JSON.stringify({ recipient_email: recipientEmail, close_days: 21 })
     });
     const d = await res.json();
     if (d.status === "success") {
@@ -6545,6 +6578,7 @@ window.openUnderwriteLotModal = openUnderwriteLotModal;
 window.calculateLotResidualLive = calculateLotResidualLive;
 window.saveLotUnderwritingFromModal = saveLotUnderwritingFromModal;
 window.sendLotDoorbell = sendLotDoorbell;
+window.sendLotFormalLoiSms = sendLotFormalLoiSms;
 window.sendLotFormalLoiEmail = sendLotFormalLoiEmail;
 window.openLotInboundModal = openLotInboundModal;
 window.setLotInboundPreset = setLotInboundPreset;

@@ -227,10 +227,12 @@ class UnderwriteLotRequest(BaseModel):
 class SendLotLoiEmailRequest(BaseModel):
     recipient_email: Optional[str] = None
     custom_offer: Optional[float] = None
-    close_days: Optional[int] = 14
+    close_days: Optional[int] = 21
 
 class SendLotSmsRequest(BaseModel):
+    phone: Optional[str] = None
     message: Optional[str] = None
+    close_days: Optional[int] = 21
 
 class LotInboundRequest(BaseModel):
     message: str
@@ -240,7 +242,7 @@ class UpdateLotPhoneRequest(BaseModel):
 
 class ConsolidateAgentLotsRequest(BaseModel):
     agent_name: str
-    close_days: Optional[int] = 14
+    close_days: Optional[int] = 21
 
 class RunSdfParserRequest(BaseModel):
     directory_or_file: Optional[str] = None
@@ -1370,10 +1372,10 @@ def send_lana_loi_email_endpoint(lot_id: str, req: SendLotLoiEmailRequest):
         raise HTTPException(status_code=400, detail="No agent email on file for written LOI dispatch")
     
     uw = lot.get("underwriting") or {}
-    offer_val = float(req.custom_offer or uw.get("target_offer") or (lot.get("list_price", 100000.0) * 0.60))
+    offer_val = float(req.custom_offer or uw.get("offer_price") or uw.get("target_offer") or (lot.get("list_price", 100000.0) * 0.60))
     addr = lot.get("address", "Property")
     agent_name = lot.get("agent_name", "Listing Agent")
-    close_days = req.close_days or 14
+    close_days = req.close_days or 21
     
     finished_val = float(uw.get("finished_newbuild_value") or 450000.0)
     build_cost_psf = float(uw.get("build_cost_psf") or 165.0)
@@ -1382,12 +1384,12 @@ def send_lana_loi_email_endpoint(lot_id: str, req: SendLotLoiEmailRequest):
     builder_margin_pct = float(uw.get("builder_profit_pct") or 18.0)
     max_payable = float(uw.get("max_payable") or offer_val)
 
-    subject = f"Official Builder Cash Offer & Written LOI: {addr} (Johnathan Roberts / 407 Flips Builder Network)"
+    subject = f"Official Builder Cash Offer & Written LOI: {addr} (Johnathan Roberts / Builder Network)"
     html = f"""
     <div style="font-family: Arial, sans-serif; max-width: 650px; margin: 0 auto; color: #1e293b; line-height: 1.6;">
         <div style="background-color: #0f172a; padding: 22px; border-radius: 12px 12px 0 0; color: #ffffff;">
             <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #38bdf8; font-weight: bold;">
-                PEAK INVESTMENTS &bull; 407 FLIPS INFILL BUILDER NETWORK
+                PEAK INVESTMENTS &bull; INFILL BUILDER NETWORK
             </div>
             <h2 style="margin: 6px 0 0 0; font-size: 20px; font-weight: bold; color: #f8fafc;">
                 Letter of Intent: Cash Infill Land Acquisition
@@ -1395,7 +1397,7 @@ def send_lana_loi_email_endpoint(lot_id: str, req: SendLotLoiEmailRequest):
         </div>
         <div style="padding: 24px; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 12px 12px; background: #ffffff;">
             <p>Dear {agent_name},</p>
-            <p>Thank you for connecting with Lana on our acquisitions team regarding <strong>{addr}</strong>. On behalf of Johnathan Roberts and our Florida residential building network, we are pleased to submit this formal <strong>Letter of Intent (LOI)</strong> to purchase the subject vacant parcel under the following terms:</p>
+            <p>Thank you for connecting with Lana on our acquisitions team regarding <strong>{addr}</strong>. On behalf of Johnathan Roberts and our residential building network, we are pleased to submit this formal <strong>Letter of Intent (LOI)</strong> to purchase the subject vacant parcel under the following terms:</p>
             
             <div style="background: #f8fafc; border-left: 4px solid #10b981; padding: 18px; margin: 20px 0; border-radius: 6px;">
                 <p style="margin: 0; font-size: 12px; color: #64748b; font-weight: bold; text-transform: uppercase;">PURCHASE PRICE (NET CASH TO SELLER):</p>
@@ -1409,23 +1411,23 @@ def send_lana_loi_email_endpoint(lot_id: str, req: SendLotLoiEmailRequest):
             <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 20px;">
                 <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">Buyer:</td><td style="padding: 8px 0; font-weight: bold;">Peak Investments LLC / Assigns</td></tr>
                 <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">Property:</td><td style="padding: 8px 0; font-weight: bold;">{addr}</td></tr>
-                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">Earnest Money:</td><td style="padding: 8px 0; font-weight: bold;">$2,500 deposited with Florida Title Company upon contract</td></tr>
-                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">Feasibility / Study:</td><td style="padding: 8px 0; font-weight: bold;">7 Business Days (utilities & survey verification)</td></tr>
+                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">Earnest Money:</td><td style="padding: 8px 0; font-weight: bold;">$2,500 deposited with Title Company upon contract</td></tr>
+                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">Feasibility / Study:</td><td style="padding: 8px 0; font-weight: bold;">14 Days (utilities & survey verification)</td></tr>
                 <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">Closing Date:</td><td style="padding: 8px 0; font-weight: bold;">{close_days} Days from Effective Date</td></tr>
-                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">Commission:</td><td style="padding: 8px 0; font-weight: bold; color: #2563eb;">Full Listing & Cooperating Broker Commission Protected on FAR/BAR VAC-14 Contract</td></tr>
+                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">Commission:</td><td style="padding: 8px 0; font-weight: bold; color: #2563eb;">Full Listing Commission Protected</td></tr>
             </table>
 
             <h4 style="margin: 18px 0 8px 0; color: #0f172a; font-size: 14px;">Infill Residual Underwriting Basis:</h4>
             <div style="background: #f1f5f9; padding: 14px; border-radius: 6px; font-size: 12px; color: #475569; margin-bottom: 20px;">
-                Our offer is pegged directly to current Florida construction permit metrics: Finished new construction resale target: <strong>${finished_val:,.0f}</strong>. Structure cost basis: <strong>${build_cost_psf:.0f}/sqft</strong> for a <strong>{planned_sqft:,.0f} sqft</strong> home (<strong>${total_build_cost:,.0f}</strong>), allowing for client's standard <strong>{builder_margin_pct:.0f}%</strong> builder margin and holding/closing fees, supporting a maximum allowable land basis of <strong>${max_payable:,.0f}</strong>.
+                Our offer is pegged directly to current construction permit metrics: Finished new construction resale target: <strong>${finished_val:,.0f}</strong>. Structure cost basis: <strong>${build_cost_psf:.0f}/sqft</strong> for a <strong>{planned_sqft:,.0f} sqft</strong> home (<strong>${total_build_cost:,.0f}</strong>), allowing for client's standard <strong>{builder_margin_pct:.0f}%</strong> builder margin and holding/closing fees, supporting a maximum allowable land basis of <strong>${max_payable:,.0f}</strong>.
             </div>
 
-            <p style="font-size: 12px; color: #64748b;">This Letter of Intent shall remain open for acceptance for 7 business days from the date hereof.</p>
+            <p style="font-size: 12px; color: #64748b;">This Letter of Intent shall remain open for acceptance for 5 business days from the date hereof.</p>
 
             <p style="font-size: 13px; color: #64748b; margin-top: 24px;">
                 Sincerely,<br>
                 <strong>Lana &amp; Johnathan Roberts</strong><br>
-                407 Flips / Peak Investments Builder Network<br>
+                Peak Investments Builder Network<br>
                 Direct: (407) 815-5043 | Email: john@407flips.com
             </p>
         </div>
@@ -1439,7 +1441,7 @@ def send_lana_loi_email_endpoint(lot_id: str, req: SendLotLoiEmailRequest):
         agent_first = agent_name.split()[0].title()
         sms_text = (
             f"Hi {agent_first}, Lana here. Just emailed our formal written LOI at ${offer_val:,.0f} cash "
-            f"for {addr} with full commission protected. If circumstances or timelines change, our offer stands!"
+            f"for {addr} with full commission protected. Valid for 5 business days. Please let me know once reviewed!"
         )
         sms_res = send_sms(phone=phone, message=sms_text, agent_id=lot_id)
         lot.setdefault("messages", []).append({
@@ -1450,11 +1452,40 @@ def send_lana_loi_email_endpoint(lot_id: str, req: SendLotLoiEmailRequest):
         })
 
     lot["loi_sent"] = True
-    lot["status"] = "STANDING_LOI_SENT"
+    lot["status"] = "LOI_SENT"
     lot["last_outbound_date"] = time.strftime("%Y-%m-%d %H:%M:%S")
     save_lots(lots)
 
     return {"status": "success", "email_res": email_res, "sms_res": sms_res, "lot": lot}
+
+@app.post("/api/lana/lots/{lot_id}/send-loi-sms")
+def send_lana_loi_sms_endpoint(lot_id: str, req: SendLotSmsRequest):
+    lots = load_lots()
+    lot = next((l for l in lots if l.get("id") == lot_id), None)
+    if not lot:
+        raise HTTPException(status_code=404, detail="Lot not found")
+    
+    phone = (req.phone or lot.get("agent_phone") or "").strip()
+    if not phone:
+        raise HTTPException(status_code=400, detail="No agent phone on file for LOI SMS dispatch")
+        
+    close_days = req.close_days or int(lot.get("close_days") or 21)
+    loi_text = req.message or lana_engine.generate_loi_sms(lot, close_days=close_days)
+    sms_res = send_sms(phone=phone, message=loi_text, agent_id=lot_id, metadata={"desk": "LANA", "action": "LOI_SMS"})
+    
+    lot.setdefault("messages", []).append({
+        "direction": "OUTBOUND",
+        "sender": "Lana",
+        "text": loi_text,
+        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
+    })
+    
+    lot["loi_sent"] = True
+    lot["status"] = "LOI_SENT"
+    lot["last_outbound_date"] = time.strftime("%Y-%m-%d %H:%M:%S")
+    save_lots(lots)
+    
+    return {"status": "success", "sms_res": sms_res, "lot": lot}
 
 @app.post("/api/lana/lots/{lot_id}/inbound")
 def evaluate_lana_inbound_endpoint(lot_id: str, req: LotInboundRequest):

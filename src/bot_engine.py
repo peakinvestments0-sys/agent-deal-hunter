@@ -22,13 +22,12 @@ TRAINING_DATA_FILE = os.path.join(DATA_DIR, "training_golden_replies.json")
 
 def sanitize_sms_no_hyphens(text: str) -> str:
     """
-    Strict zero hyphens rule for SMS.
-    Replaces any hyphen between words with a space and removes dashes.
+    Strips em-dashes (—) and en-dashes (–), but preserves standard plain hyphens (-).
+    Prevents carrier UCS-2 SMS encoding fragmentation while allowing hyphenated words like '21-day'.
     """
     if not text:
         return ""
-    text = re.sub(r'(\w)-(\w)', r'\1 \2', text)
-    text = re.sub(r'\s*[-–—]\s*', ' ', text)
+    text = re.sub(r'\s*[–—]\s*', ' ', text)
     text = re.sub(r' +', ' ', text)
     return text.strip()
 
@@ -341,82 +340,82 @@ STANDARD_TRAINING_SCENARIOS = [
     {
         "agent_desk": "LANA",
         "node": "LANA_OPENING_HOOK",
-        "title": "1. Builder Framing Opener",
+        "title": "1. Direct Cash Offer Opener",
         "category": "Land Step 1",
-        "description": "Reaching out on an on-market vacant residential lot noting client builds in the area and asking if buildable as is with utilities.",
+        "description": "Reaching out on an on-market vacant residential lot presenting a direct cash offer with a 21-day close.",
         "sample_inbound": "[New Infill Lot Scraped: 1420 W Jackson St, Orlando, FL. 0.18 acre, list price $115,000, 72 DOM.]",
-        "default_suggestion": "Hi David, Lana here. My client builds new construction in Orlando and asked me to reach out regarding 1420 W Jackson St. Is the lot buildable as is, and are municipal water and sewer at the lot line? Reply STOP to opt out",
-        "default_script": "Hi David, Lana here. My client builds new construction in Orlando and asked me to reach out regarding 1420 W Jackson St. Is the lot buildable as is, and are municipal water and sewer at the lot line? Reply STOP to opt out"
+        "default_suggestion": "Hi David, my name is Lana. I'm interested in your listing on W Jackson St. I reviewed the numbers — I'll be at $69,000 cash with a 21-day close. If this is something your client is interested in, let me know and I can get a contract sent over.",
+        "default_script": "Hi David, my name is Lana. I'm interested in your listing on W Jackson St. I reviewed the numbers — I'll be at $69,000 cash with a 21-day close. If this is something your client is interested in, let me know and I can get a contract sent over."
     },
     {
         "agent_desk": "LANA",
-        "node": "LANA_QUALIFY_BUILDABLE",
-        "title": "2. Lot Buildable & Zoning",
-        "category": "Land Step 2",
-        "description": "Asking about zoning classification and single-family or duplex building rights.",
-        "sample_inbound": "Yes it is buildable, utilities are available in the area.",
-        "default_suggestion": "Thanks David. What is the zoning classification on the parcel, and are single family homes or duplexes permitted by right?",
-        "default_script": "Thanks David. What is the zoning classification on the parcel, and are single family homes or duplexes permitted by right?"
+        "node": "LANA_FOLLOWUP_FRIDAY",
+        "title": "2. Friday Reconsideration Check-In",
+        "category": "Land Follow-Up",
+        "description": "Checking back in before the weekend on whether the client would reconsider the initial cash offer.",
+        "sample_inbound": "[Prior touch made Monday at $69,000 with no reply by Friday morning]",
+        "default_suggestion": "Hi David, is W Jackson St still available? Would your client reconsider my offer of $69,000?",
+        "default_script": "Hi David, is W Jackson St still available? Would your client reconsider my offer of $69,000?"
     },
     {
         "agent_desk": "LANA",
-        "node": "LANA_QUALIFY_UTILITIES",
-        "title": "3. Utilities at Lot Line",
-        "category": "Land Step 3",
-        "description": "Asking if city water and sewer are stubbed directly at the lot line versus requiring septic or well.",
-        "sample_inbound": "It is zoned R-2 residential, so single family or duplex can be built.",
-        "default_suggestion": "Got it. Are city water and sewer stubbed directly at the lot line, or would a builder need a septic system and well?",
-        "default_script": "Got it. Are city water and sewer stubbed directly at the lot line, or would a builder need a septic system and well?"
-    },
-    {
-        "agent_desk": "LANA",
-        "node": "LANA_QUALIFY_IMPACT_FEES",
-        "title": "4. Impact Fees & Credits",
-        "category": "Land Step 4",
-        "description": "Checking if municipal impact fees have been paid or if demolition credits exist.",
-        "sample_inbound": "Water and sewer are right in the street in front of the lot.",
-        "default_suggestion": "Understood. Do you know if county and city impact fees have already been paid, or if any credits carry over from a prior structure?",
-        "default_script": "Understood. Do you know if county and city impact fees have already been paid, or if any credits carry over from a prior structure?"
+        "node": "LANA_COUNTER_OFFER",
+        "title": "3. Step-Up Counter Offer Negotiation",
+        "category": "Land Negotiation",
+        "description": "Stepping up in a $2k-$3k increment to bridge the gap when the listing agent counters.",
+        "sample_inbound": "Seller won't do $69k. Can your buyer come up to $75k?",
+        "default_suggestion": "I reviewed this with my client. We have a little room to bridge the gap and can come up to $72,000 cash with the same 21-day close. Would that get this across the finish line for your seller?",
+        "default_script": "I reviewed this with my client. We have a little room to bridge the gap and can come up to $72,000 cash with the same 21-day close. Would that get this across the finish line for your seller?"
     },
     {
         "agent_desk": "LANA",
         "node": "LANA_OBJECTION_PRICE_FIRM",
-        "title": "5. Firm Price Objection",
+        "title": "4. Firm Price Objection",
         "category": "Land Objections",
-        "description": "When listing agent states price is firm, holding firm with production builder discipline.",
+        "description": "When listing agent states price is firm, holding firm with builder discipline and a 5-day expiration.",
         "sample_inbound": "The sellers are firm on $115,000. They are not taking discounts.",
-        "default_suggestion": "I respect where your seller wants to be. My client is an active infill builder, so our numbers are tied directly to current build costs and back end resale comps. We are ready to move quickly with zero financing contingencies at $69,000. If anything changes with their timeline, please keep our offer in hand!",
-        "default_script": "I respect where your seller wants to be. My client is an active infill builder, so our numbers are tied directly to current build costs and back end resale comps. We are ready to move quickly with zero financing contingencies at $69,000. If anything changes with their timeline, please keep our offer in hand!"
+        "default_suggestion": "I respect where your seller wants to be. My client is an active infill builder, so our numbers are tied directly to current build costs and back end resale comps. We are ready to move quickly with zero financing contingencies at $69,000 cash with a 21-day close. This offer is valid for 5 business days.",
+        "default_script": "I respect where your seller wants to be. My client is an active infill builder, so our numbers are tied directly to current build costs and back end resale comps. We are ready to move quickly with zero financing contingencies at $69,000 cash with a 21-day close. This offer is valid for 5 business days."
     },
     {
         "agent_desk": "LANA",
         "node": "LANA_OBJECTION_WHY_SO_LOW",
-        "title": "6. The Land Math Drop (Why So Low)",
+        "title": "5. The Land Math Drop (Why So Low)",
         "category": "Land Math Drop",
         "description": "When agent asks why the offer is low, delivering the full residual build-cost math breakdown.",
         "sample_inbound": "Why is your offer so low? That is 40 percent below list price.",
-        "default_suggestion": "Running your numbers through our infill builder calculator: finished new construction in this pocket sells around $460,000. At current structure costs of 165 per sqft for a 2,000 sqft build ($330,000), plus our client's standard 18 percent builder margin and holding fees, that puts our maximum land basis right at $69,000 cash. That is why we are at that number. Would it make sense to send over our full LOI breakdown?",
-        "default_script": "Running your numbers through our infill builder calculator: finished new construction in this pocket sells around $460,000. At current structure costs of 165 per sqft for a 2,000 sqft build ($330,000), plus our client's standard 18 percent builder margin and holding fees, that puts our maximum land basis right at $69,000 cash. That is why we are at that number. Would it make sense to send over our full LOI breakdown?"
+        "default_suggestion": "Running your numbers through our infill builder calculator: finished new construction in this pocket sells around $460,000. At current structure costs of $165 per sqft for a 2,000 sqft build ($330,000), plus our client's standard 18 percent builder margin and holding fees, that puts our maximum land basis right at $69,000 cash. We opened at $69,000 with a 21-day cash close. Would it make sense to send over our contract or full LOI?",
+        "default_script": "Running your numbers through our infill builder calculator: finished new construction in this pocket sells around $460,000. At current structure costs of $165 per sqft for a 2,000 sqft build ($330,000), plus our client's standard 18 percent builder margin and holding fees, that puts our maximum land basis right at $69,000 cash. We opened at $69,000 with a 21-day cash close. Would it make sense to send over our contract or full LOI?"
     },
     {
         "agent_desk": "LANA",
         "node": "LANA_OBJECTION_CLIENT_REAL",
-        "title": "7. Builder Credibility & Proof of Funds",
+        "title": "6. Builder Credibility & Proof of Funds",
         "category": "Builder Credibility",
         "description": "When agent questions if the buyer is real, providing local builder credentials and verified POF.",
         "sample_inbound": "Is your client a real builder or are you wholesalers trying to tie up the land?",
-        "default_suggestion": "Yes, absolutely. My client is a local Florida residential builder actively pouring foundations and completing spec single family homes in Central Florida. We have verified cash proof of funds and close on vacant lots with zero lender red tape. Happy to send our builder package along with the written LOI.",
-        "default_script": "Yes, absolutely. My client is a local Florida residential builder actively pouring foundations and completing spec single family homes in Central Florida. We have verified cash proof of funds and close on vacant lots with zero lender red tape. Happy to send our builder package along with the written LOI."
+        "default_suggestion": "Yes, absolutely. My client is a local residential builder actively pouring foundations and completing spec single family homes in the area. We have verified cash proof of funds and close on vacant lots with zero lender red tape. Happy to send our written contract or LOI to you by text or email.",
+        "default_script": "Yes, absolutely. My client is a local residential builder actively pouring foundations and completing spec single family homes in the area. We have verified cash proof of funds and close on vacant lots with zero lender red tape. Happy to send our written contract or LOI to you by text or email."
     },
     {
         "agent_desk": "LANA",
         "node": "LANA_OBJECTION_SEND_LOI",
-        "title": "8. Dispatch Written LOI to Email",
+        "title": "7. LOI Delivery Channel Selection",
         "category": "LOI Delivery",
-        "description": "When agent invites or requests the written LOI.",
-        "sample_inbound": "Send the formal LOI over to my email david@realty.com so I can show the seller.",
-        "default_suggestion": "Awesome, sending the full written LOI over to david@realty.com right now with proof of funds attached. Our offer stands for 7 business days. Please let me know once you and the seller have a chance to review!",
-        "default_script": "Awesome, sending the full written LOI over to david@realty.com right now with proof of funds attached. Our offer stands for 7 business days. Please let me know once you and the seller have a chance to review!"
+        "description": "When agent asks for the written LOI or contract, offering 1-click delivery by text or email.",
+        "sample_inbound": "Send the formal LOI over so I can show the seller.",
+        "default_suggestion": "Awesome, would you prefer the formal written LOI sent over via text here, or directly to your email?",
+        "default_script": "Awesome, would you prefer the formal written LOI sent over via text here, or directly to your email?"
+    },
+    {
+        "agent_desk": "LANA",
+        "node": "LANA_AGENT_CONSOLIDATION",
+        "title": "8. Multi-Lot Agent Package Offer",
+        "category": "Package Consolidation",
+        "description": "Consolidating multiple listings from the same listing agent into a single combined offer package.",
+        "sample_inbound": "[Agent David has 2 active infill lots: 1420 W Jackson St ($69k) and 1428 W Jackson St ($69k)]",
+        "default_suggestion": "Hi David, my name is Lana. I'm interested in your listings on W Jackson St. I reviewed the numbers — I'll be at $138,000 cash with a 21-day close for the package. If this is something your clients are open to, let me know and I can get contracts sent over.",
+        "default_script": "Hi David, my name is Lana. I'm interested in your listings on W Jackson St. I reviewed the numbers — I'll be at $138,000 cash with a 21-day close for the package. If this is something your clients are open to, let me know and I can get contracts sent over."
     }
 ]
 
