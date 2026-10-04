@@ -33,6 +33,14 @@ from src.lauren_engine import (
     load_fixers, save_fixers, calculate_trojan_horse_mao,
     lauren_engine
 )
+from src.lana_engine import (
+    load_lots, save_lots, calculate_residual_land_value,
+    lana_engine, load_build_costs, passes_infill_filters
+)
+from src.sdf_parser import (
+    load_land_comps, parse_all_sdf_in_dir, ingest_sdf_file_to_hub,
+    get_area_comp_benchmarks
+)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -190,6 +198,54 @@ class PushPhoneRequest(BaseModel):
     address: Optional[str] = None
     fixer_id: Optional[str] = None
 
+class IngestLotRequest(BaseModel):
+    address: str
+    city: Optional[str] = "Orlando"
+    county: Optional[str] = "ORANGE"
+    zip: Optional[str] = ""
+    parcel_id: Optional[str] = ""
+    list_price: Optional[float] = 110000.0
+    lot_acres: Optional[float] = 0.20
+    lot_sqft: Optional[float] = 8712.0
+    days_on_market: Optional[int] = 70
+    zoning: Optional[str] = "Residential"
+    agent_name: Optional[str] = "Listing Agent"
+    agent_phone: Optional[str] = ""
+    agent_email: Optional[str] = ""
+    brokerage: Optional[str] = "Local Realty"
+    remarks: Optional[str] = ""
+    neighborhood_code: Optional[str] = None
+    market_area: Optional[str] = None
+    planned_sqft: Optional[float] = 2000.0
+
+class UnderwriteLotRequest(BaseModel):
+    planned_sqft: Optional[float] = 2000.0
+    finished_newbuild_value: Optional[float] = None
+    builder_profit_pct: Optional[float] = 0.18
+    fees_pct: Optional[float] = 0.04
+
+class SendLotLoiEmailRequest(BaseModel):
+    recipient_email: Optional[str] = None
+    custom_offer: Optional[float] = None
+    close_days: Optional[int] = 14
+
+class SendLotSmsRequest(BaseModel):
+    message: Optional[str] = None
+
+class LotInboundRequest(BaseModel):
+    message: str
+
+class UpdateLotPhoneRequest(BaseModel):
+    phone: str
+
+class ConsolidateAgentLotsRequest(BaseModel):
+    agent_name: str
+    close_days: Optional[int] = 14
+
+class RunSdfParserRequest(BaseModel):
+    directory_or_file: Optional[str] = None
+    county: Optional[str] = None
+
 class ApproveBotRequest(BaseModel):
     agent_id: str
     custom_message: Optional[str] = None
@@ -335,6 +391,33 @@ async def handle_inbound_sms_webhook(request: Request):
                 save_fixers(fixers)
         except Exception as e:
             print(f"[Lauren Inbound Router Error] {e}")
+
+        # 3. Check if sender matches one of Lana's infill lots
+        try:
+            lots = load_lots()
+            matched_lot = None
+            for l in lots:
+                l_phone = re.sub(r"\D", "", l.get("agent_phone") or "")[-10:]
+                if l_phone and l_phone == clean_in_phone:
+                    matched_lot = l
+                    break
+
+            if matched_lot:
+                matched_lot.setdefault("messages", []).append({
+                    "direction": "INBOUND",
+                    "sender": matched_lot.get("agent_name", "Agent"),
+                    "text": message,
+                    "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
+                })
+                matched_lot["last_interaction"] = time.strftime("%Y-%m-%d %H:%M:%S")
+                eval_res = lana_engine.evaluate_inbound(matched_lot, message)
+                if eval_res and eval_res.get("reply_text"):
+                    matched_lot["suggested_reply"] = eval_res.get("reply_text")
+                    matched_lot["current_node"] = eval_res.get("node")
+                    matched_lot["status"] = eval_res.get("status", matched_lot.get("status"))
+                save_lots(lots)
+        except Exception as e:
+            print(f"[Lana Inbound Router Error] {e}")
 
     return {"status": "success", "entry": entry}
 
@@ -549,11 +632,43 @@ def test_send_sms_endpoint(req: TestSmsRequest):
 def simulate_inbound_sms(req: SimulateInboundRequest):
     result = data_manager.record_inbound_sms(phone=req.phone, message=req.message, raw_payload={"simulated": True})
     agent = data_manager.find_agent_by_phone(req.phone)
+
+    clean_in_phone = re.sub(r"\D", "", req.phone)[-10:]
+    fixers = load_fixers()
+    matched_fixer = next((f for f in fixers if re.sub(r"\D", "", f.get("agent_phone") or "")[-10:] == clean_in_phone), None) if clean_in_phone else None
+    if matched_fixer:
+        eval_res = lauren_engine.evaluate_inbound(matched_fixer, req.message)
+        matched_fixer.setdefault("messages", []).append({
+            "direction": "INBOUND",
+            "sender": matched_fixer.get("agent_name", "Agent"),
+            "text": req.message,
+            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
+        })
+        matched_fixer["suggested_reply"] = eval_res.get("reply_text")
+        save_fixers(fixers)
+
+    lots = load_lots()
+    matched_lot = next((l for l in lots if re.sub(r"\D", "", l.get("agent_phone") or "")[-10:] == clean_in_phone), None) if clean_in_phone else None
+    if matched_lot:
+        eval_res = lana_engine.evaluate_inbound(matched_lot, req.message)
+        matched_lot.setdefault("messages", []).append({
+            "direction": "INBOUND",
+            "sender": matched_lot.get("agent_name", "Agent"),
+            "text": req.message,
+            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
+        })
+        matched_lot["suggested_reply"] = eval_res.get("reply_text")
+        matched_lot["current_node"] = eval_res.get("node")
+        matched_lot["status"] = eval_res.get("status", matched_lot.get("status"))
+        save_lots(lots)
+
     return {
         "status": "success",
         "message": f"Inbound SMS simulated from {req.phone}!",
-        "matched": bool(agent),
+        "matched": bool(agent or matched_fixer or matched_lot),
         "agent": agent,
+        "matched_fixer": matched_fixer,
+        "matched_lot": matched_lot,
         "log": result.get("log"),
         "bot_result": result.get("bot_result")
     }
@@ -1102,6 +1217,350 @@ def delete_fixer_endpoint(fixer_id: str):
         raise HTTPException(status_code=404, detail="Fixer not found")
     save_fixers(fixers)
     return {"status": "success", "message": f"Fixer {fixer_id} removed"}
+
+# -------------------------------------------------------------
+# Lana Desk Endpoints (On-Market Infill Land Specialist)
+# -------------------------------------------------------------
+
+@app.get("/api/lana/lots")
+def get_lana_lots_endpoint(county: Optional[str] = None):
+    lots = load_lots()
+    if county and county != "ALL":
+        lots = [l for l in lots if (l.get("county") or "").upper() == county.upper()]
+    
+    total_count = len(lots)
+    qualified_count = len([l for l in lots if l.get("qualifies_infill")])
+    lois_sent_count = len([l for l in lots if l.get("loi_sent") or l.get("status") in ["LOI_OFFER_SENT", "STANDING_LOI_SENT"]])
+    engaged_count = len([l for l in lots if len([m for m in l.get("messages", []) if m.get("direction") == "INBOUND"]) > 0])
+    target_offer_vol = sum(float(l.get("underwriting", {}).get("target_offer") or 0.0) for l in lots)
+    
+    return {
+        "status": "success",
+        "lots": lots,
+        "metrics": {
+            "total_count": total_count,
+            "qualified_count": qualified_count,
+            "lois_sent_count": lois_sent_count,
+            "engaged_count": engaged_count,
+            "target_offer_volume": round(target_offer_vol, 2)
+        }
+    }
+
+@app.post("/api/lana/lots")
+def ingest_lana_lot_endpoint(req: IngestLotRequest):
+    lots = load_lots()
+    clean_addr = req.address.strip().lower()
+    existing = next((l for l in lots if (l.get("address") or "").strip().lower() == clean_addr), None)
+    if existing:
+        return {"status": "exists", "lot": existing, "message": "Lot already exists on Lana's desk"}
+    
+    lot_state = lana_engine.get_initial_lot_state(req.dict())
+    lots.insert(0, lot_state)
+    save_lots(lots)
+    return {"status": "success", "lot": lot_state, "total_lots": len(lots)}
+
+@app.post("/api/lana/lots/upload-csv")
+async def upload_lana_lots_csv_endpoint(file: UploadFile = File(...)):
+    lots = load_lots()
+    content = await file.read()
+    text = content.decode("utf-8", errors="ignore")
+    import csv, io
+    reader = csv.DictReader(io.StringIO(text))
+    added = 0
+    for row in reader:
+        addr = row.get("address") or row.get("Property Address") or row.get("Street Address") or row.get("ADDRESS") or ""
+        if not addr: continue
+        clean_addr = addr.strip().lower()
+        if any((l.get("address") or "").strip().lower() == clean_addr for l in lots):
+            continue
+        
+        prc_raw = str(row.get("price") or row.get("list_price") or row.get("LIST_PRICE") or row.get("Price") or 100000).replace("$","").replace(",","")
+        try: prc = float(prc_raw)
+        except Exception: prc = 100000.0
+
+        lot_data = {
+            "address": addr,
+            "city": row.get("city") or row.get("City") or "Orlando",
+            "county": row.get("county") or row.get("County") or "ORANGE",
+            "zip": row.get("zip") or row.get("Zip") or "",
+            "list_price": prc,
+            "days_on_market": int(row.get("days_on_market") or row.get("dom") or row.get("DOM") or 70),
+            "lot_acres": float(row.get("lot_acres") or row.get("acres") or row.get("Acres") or 0.20),
+            "agent_name": row.get("agent_name") or row.get("Agent") or row.get("Listing Agent") or "Listing Agent",
+            "agent_phone": row.get("agent_phone") or row.get("Phone") or row.get("Agent Phone") or "",
+            "agent_email": row.get("agent_email") or row.get("Email") or row.get("Agent Email") or "",
+            "remarks": row.get("remarks") or row.get("Description") or ""
+        }
+        new_lot = lana_engine.get_initial_lot_state(lot_data)
+        lots.append(new_lot)
+        added += 1
+
+    save_lots(lots)
+    return {"status": "success", "added_count": added, "total_lots": len(lots)}
+
+@app.get("/api/lana/lots/{lot_id}")
+def get_lana_lot_endpoint(lot_id: str):
+    lots = load_lots()
+    lot = next((l for l in lots if l.get("id") == lot_id), None)
+    if not lot:
+        raise HTTPException(status_code=404, detail="Lot not found")
+    return {"status": "success", "lot": lot}
+
+@app.post("/api/lana/lots/{lot_id}/underwrite")
+def underwrite_lana_lot_endpoint(lot_id: str, req: UnderwriteLotRequest):
+    lots = load_lots()
+    lot = next((l for l in lots if l.get("id") == lot_id), None)
+    if not lot:
+        raise HTTPException(status_code=404, detail="Lot not found")
+    
+    uw = calculate_residual_land_value(
+        list_price=float(lot.get("list_price") or 100000.0),
+        county=lot.get("county", "ORANGE"),
+        neighborhood_code=lot.get("neighborhood_code"),
+        market_area=lot.get("market_area"),
+        planned_sqft=float(req.planned_sqft or 2000.0),
+        finished_newbuild_value=req.finished_newbuild_value,
+        builder_profit_pct=float(req.builder_profit_pct or 0.18),
+        fees_pct=float(req.fees_pct or 0.04)
+    )
+    lot["underwriting"] = uw
+    lot["planned_sqft"] = req.planned_sqft
+    save_lots(lots)
+    return {"status": "success", "underwriting": uw, "lot": lot}
+
+@app.post("/api/lana/lots/{lot_id}/send-sms")
+def send_lana_sms_endpoint(lot_id: str, req: SendLotSmsRequest):
+    lots = load_lots()
+    lot = next((l for l in lots if l.get("id") == lot_id), None)
+    if not lot:
+        raise HTTPException(status_code=404, detail="Lot not found")
+    
+    phone = (lot.get("agent_phone") or "").strip()
+    if not phone:
+        raise HTTPException(status_code=400, detail="No agent phone on file for this lot")
+    
+    msg_to_send = req.message or lot.get("suggested_reply") or lana_engine.generate_opener_sms(lot)
+    sms_res = send_sms(phone=phone, message=msg_to_send, agent_id=lot_id, metadata={"desk": "LANA"})
+    
+    lot.setdefault("messages", []).append({
+        "direction": "OUTBOUND",
+        "sender": "Lana",
+        "text": msg_to_send,
+        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
+    })
+    lot["last_outbound_date"] = time.strftime("%Y-%m-%d %H:%M:%S")
+    if "offer" in msg_to_send.lower() or "loi" in msg_to_send.lower():
+        lot["status"] = "LOI_OFFER_SENT"
+        lot["loi_sent"] = True
+    else:
+        lot["status"] = "OUTREACH_SENT"
+    
+    save_lots(lots)
+    return {"status": "success", "sms_res": sms_res, "lot": lot}
+
+@app.post("/api/lana/lots/{lot_id}/send-loi-email")
+def send_lana_loi_email_endpoint(lot_id: str, req: SendLotLoiEmailRequest):
+    lots = load_lots()
+    lot = next((l for l in lots if l.get("id") == lot_id), None)
+    if not lot:
+        raise HTTPException(status_code=404, detail="Lot not found")
+    
+    agent_email = req.recipient_email or lot.get("agent_email")
+    if not agent_email:
+        raise HTTPException(status_code=400, detail="No agent email on file for written LOI dispatch")
+    
+    uw = lot.get("underwriting") or {}
+    offer_val = float(req.custom_offer or uw.get("target_offer") or (lot.get("list_price", 100000.0) * 0.60))
+    addr = lot.get("address", "Property")
+    agent_name = lot.get("agent_name", "Listing Agent")
+    close_days = req.close_days or 14
+    
+    finished_val = float(uw.get("finished_newbuild_value") or 450000.0)
+    build_cost_psf = float(uw.get("build_cost_psf") or 165.0)
+    planned_sqft = float(uw.get("planned_sqft") or 2000.0)
+    total_build_cost = float(uw.get("total_build_cost") or (build_cost_psf * planned_sqft))
+    builder_margin_pct = float(uw.get("builder_profit_pct") or 18.0)
+    max_payable = float(uw.get("max_payable") or offer_val)
+
+    subject = f"Official Builder Cash Offer & Written LOI: {addr} (Johnathan Roberts / 407 Flips Builder Network)"
+    html = f"""
+    <div style="font-family: Arial, sans-serif; max-width: 650px; margin: 0 auto; color: #1e293b; line-height: 1.6;">
+        <div style="background-color: #0f172a; padding: 22px; border-radius: 12px 12px 0 0; color: #ffffff;">
+            <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #38bdf8; font-weight: bold;">
+                PEAK INVESTMENTS &bull; 407 FLIPS INFILL BUILDER NETWORK
+            </div>
+            <h2 style="margin: 6px 0 0 0; font-size: 20px; font-weight: bold; color: #f8fafc;">
+                Letter of Intent: Cash Infill Land Acquisition
+            </h2>
+        </div>
+        <div style="padding: 24px; border: 1px solid #e2e8f0; border-top: none; border-radius: 0 0 12px 12px; background: #ffffff;">
+            <p>Dear {agent_name},</p>
+            <p>Thank you for connecting with Lana on our acquisitions team regarding <strong>{addr}</strong>. On behalf of Johnathan Roberts and our Florida residential building network, we are pleased to submit this formal <strong>Letter of Intent (LOI)</strong> to purchase the subject vacant parcel under the following terms:</p>
+            
+            <div style="background: #f8fafc; border-left: 4px solid #10b981; padding: 18px; margin: 20px 0; border-radius: 6px;">
+                <p style="margin: 0; font-size: 12px; color: #64748b; font-weight: bold; text-transform: uppercase;">PURCHASE PRICE (NET CASH TO SELLER):</p>
+                <p style="margin: 4px 0; font-size: 28px; font-weight: 800; color: #0f172a;">${offer_val:,.0f} USD</p>
+                <p style="margin: 6px 0 0 0; font-size: 12px; color: #10b981; font-weight: bold;">
+                    &bull; All-Cash Verified Funds &bull; {close_days}-Day Fast Close &bull; Zero Financing Contingency
+                </p>
+            </div>
+
+            <h4 style="margin: 18px 0 8px 0; color: #0f172a; font-size: 14px;">Summary of Terms:</h4>
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 20px;">
+                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">Buyer:</td><td style="padding: 8px 0; font-weight: bold;">Peak Investments LLC / Assigns</td></tr>
+                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">Property:</td><td style="padding: 8px 0; font-weight: bold;">{addr}</td></tr>
+                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">Earnest Money:</td><td style="padding: 8px 0; font-weight: bold;">$2,500 deposited with Florida Title Company upon contract</td></tr>
+                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">Feasibility / Study:</td><td style="padding: 8px 0; font-weight: bold;">7 Business Days (utilities & survey verification)</td></tr>
+                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">Closing Date:</td><td style="padding: 8px 0; font-weight: bold;">{close_days} Days from Effective Date</td></tr>
+                <tr style="border-bottom: 1px solid #f1f5f9;"><td style="padding: 8px 0; color: #64748b;">Commission:</td><td style="padding: 8px 0; font-weight: bold; color: #2563eb;">Full Listing & Cooperating Broker Commission Protected on FAR/BAR VAC-14 Contract</td></tr>
+            </table>
+
+            <h4 style="margin: 18px 0 8px 0; color: #0f172a; font-size: 14px;">Infill Residual Underwriting Basis:</h4>
+            <div style="background: #f1f5f9; padding: 14px; border-radius: 6px; font-size: 12px; color: #475569; margin-bottom: 20px;">
+                Our offer is pegged directly to current Florida construction permit metrics: Finished new construction resale target: <strong>${finished_val:,.0f}</strong>. Structure cost basis: <strong>${build_cost_psf:.0f}/sqft</strong> for a <strong>{planned_sqft:,.0f} sqft</strong> home (<strong>${total_build_cost:,.0f}</strong>), allowing for client's standard <strong>{builder_margin_pct:.0f}%</strong> builder margin and holding/closing fees, supporting a maximum allowable land basis of <strong>${max_payable:,.0f}</strong>.
+            </div>
+
+            <p style="font-size: 12px; color: #64748b;">This Letter of Intent shall remain open for acceptance for 7 business days from the date hereof.</p>
+
+            <p style="font-size: 13px; color: #64748b; margin-top: 24px;">
+                Sincerely,<br>
+                <strong>Lana &amp; Johnathan Roberts</strong><br>
+                407 Flips / Peak Investments Builder Network<br>
+                Direct: (407) 815-5043 | Email: john@407flips.com
+            </p>
+        </div>
+    </div>
+    """
+    email_res = send_email(recipient_email=agent_email, subject=subject, html_body=html, agent_id=lot_id)
+
+    phone = (lot.get("agent_phone") or "").strip()
+    sms_res = None
+    if phone:
+        agent_first = agent_name.split()[0].title()
+        sms_text = (
+            f"Hi {agent_first}, Lana here. Just emailed our formal written LOI at ${offer_val:,.0f} cash "
+            f"for {addr} with full commission protected. If circumstances or timelines change, our offer stands!"
+        )
+        sms_res = send_sms(phone=phone, message=sms_text, agent_id=lot_id)
+        lot.setdefault("messages", []).append({
+            "direction": "OUTBOUND",
+            "sender": "Lana",
+            "text": sms_text,
+            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
+        })
+
+    lot["loi_sent"] = True
+    lot["status"] = "STANDING_LOI_SENT"
+    lot["last_outbound_date"] = time.strftime("%Y-%m-%d %H:%M:%S")
+    save_lots(lots)
+
+    return {"status": "success", "email_res": email_res, "sms_res": sms_res, "lot": lot}
+
+@app.post("/api/lana/lots/{lot_id}/inbound")
+def evaluate_lana_inbound_endpoint(lot_id: str, req: LotInboundRequest):
+    lots = load_lots()
+    lot = next((l for l in lots if l.get("id") == lot_id), None)
+    if not lot:
+        raise HTTPException(status_code=404, detail="Lot not found")
+    
+    lot.setdefault("messages", []).append({
+        "direction": "INBOUND",
+        "sender": lot.get("agent_name", "Agent"),
+        "text": req.message,
+        "timestamp": time.strftime("%Y-%m-%d %H:%M:%S")
+    })
+    
+    eval_res = lana_engine.evaluate_inbound(lot, req.message)
+    lot["suggested_reply"] = eval_res.get("reply_text")
+    lot["current_node"] = eval_res.get("node")
+    lot["status"] = eval_res.get("status", lot.get("status"))
+    lot["last_interaction"] = time.strftime("%Y-%m-%d %H:%M:%S")
+    save_lots(lots)
+    return {"status": "success", "eval_result": eval_res, "lot": lot}
+
+@app.post("/api/lana/lots/{lot_id}/phone")
+def update_lana_lot_phone_endpoint(lot_id: str, req: UpdateLotPhoneRequest):
+    lots = load_lots()
+    lot = next((l for l in lots if l.get("id") == lot_id), None)
+    if not lot:
+        raise HTTPException(status_code=404, detail="Lot not found")
+    lot["agent_phone"] = req.phone.strip()
+    save_lots(lots)
+    return {"status": "success", "lot": lot}
+
+@app.delete("/api/lana/lots/{lot_id}")
+def delete_lana_lot_endpoint(lot_id: str):
+    lots = load_lots()
+    initial_len = len(lots)
+    lots = [l for l in lots if l.get("id") != lot_id]
+    if len(lots) == initial_len:
+        raise HTTPException(status_code=404, detail="Lot not found")
+    save_lots(lots)
+    return {"status": "success", "message": f"Lot {lot_id} removed"}
+
+@app.delete("/api/lana/lots")
+@app.post("/api/lana/lots/clear")
+def clear_all_lana_lots_endpoint():
+    save_lots([])
+    return {"status": "success", "message": "All lots cleared from Lana's Desk", "count": 0}
+
+@app.post("/api/lana/run-friday-sequence")
+def run_lana_friday_sequence_endpoint():
+    lots = load_lots()
+    eligible = [l for l in lots if l.get("agent_phone") and l.get("status") in ["QUALIFIED", "LOI_OFFER_SENT", "OBJECTION_FIRM_PRICE", "OUTREACH_SENT"]]
+    drafts = []
+    for l in eligible:
+        msg = lana_engine.generate_friday_followup_sms(l)
+        drafts.append({
+            "lot_id": l.get("id"),
+            "agent_name": l.get("agent_name"),
+            "phone": l.get("agent_phone"),
+            "address": l.get("address"),
+            "message": msg
+        })
+    return {"status": "success", "eligible_count": len(eligible), "drafts": drafts}
+
+@app.post("/api/lana/consolidate-agent")
+def consolidate_agent_lots_endpoint(req: ConsolidateAgentLotsRequest):
+    lots = load_lots()
+    agent_query = req.agent_name.strip().lower()
+    matched = [l for l in lots if agent_query in (l.get("agent_name") or "").lower()]
+    if not matched:
+        return {"status": "not_found", "message": f"No lots found for agent '{req.agent_name}'"}
+    
+    consolidated_msg = lana_engine.generate_consolidated_agent_sms(
+        agent_name=matched[0].get("agent_name", req.agent_name),
+        lots=matched,
+        close_days=req.close_days or 14
+    )
+    return {
+        "status": "success",
+        "agent_name": matched[0].get("agent_name"),
+        "lot_count": len(matched),
+        "consolidated_message": consolidated_msg,
+        "lots": matched
+    }
+
+@app.post("/api/lana/run-sdf-parser")
+def run_sdf_parser_endpoint(req: RunSdfParserRequest):
+    target = req.directory_or_file or DEFAULT_DOWNLOADS_DIR
+    if os.path.isdir(target):
+        res = parse_all_sdf_in_dir(target)
+    elif os.path.isfile(target):
+        res = ingest_sdf_file_to_hub(target, county_name=req.county)
+    else:
+        raise HTTPException(status_code=400, detail=f"Target path not found: {target}")
+    return {"status": "success", "result": res}
+
+@app.get("/api/lana/comps")
+def get_lana_comps_endpoint():
+    comps = load_land_comps()
+    return {"status": "success", "counties": list(comps.keys()), "data": comps}
+
+@app.get("/api/lana/build-costs")
+def get_lana_build_costs_endpoint():
+    costs = load_build_costs()
+    return {"status": "success", "build_costs": costs}
 
 # Mount static frontend
 if os.path.exists(FRONTEND_DIR):

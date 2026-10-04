@@ -1,0 +1,35 @@
+{
+  "desk_name": "Lana",
+  "desk_role": "On-Market Infill Land Specialist",
+  "builder_partner": "Johnathan Roberts",
+  "company_name": "Peak Investments / 407 Flips Builder Network",
+  "openers": {
+    "builder_framing_default": "Hi {agent_name}, Lana here. My client builds new construction in {area} and asked me to reach out regarding {address}. Is the lot buildable as is, and are municipal water and sewer at the lot line? Reply STOP to opt out",
+    "builder_framing_short": "Hi {agent_name}, Lana here. My client builds in {area} and is interested in {address}. Is it buildable as is with utilities at site? Reply STOP to opt out",
+    "builder_framing_permits": "Hi {agent_name}, Lana here with our local builder group in {area}. Quick question on {address}, are utilities stubbed at the street and is the lot ready for permitting? Reply STOP to opt out"
+  },
+  "qualifying_questions": {
+    "QUALIFY_BUILDABLE": "Thanks {agent_name}. What is the zoning classification on the parcel, and are single family homes or duplexes permitted by right?",
+    "QUALIFY_UTILITIES": "Got it. Are city water and sewer stubbed directly at the lot line, or would a builder need a septic system and well?",
+    "QUALIFY_SETBACKS_HOA": "Helpful to know. Are you aware of any setbacks, conservation easements, or HOA architectural guidelines on {address}?",
+    "QUALIFY_IMPACT_FEES": "Understood. Do you know if county and city impact fees have already been paid, or if any credits carry over from a prior structure?",
+    "QUALIFY_SURVEY_WETLANDS": "Makes sense. Is there an active boundary survey or environmental wetland delineation on file for the lot?"
+  },
+  "offers": {
+    "sms_doorbell_loi": "Hi {agent_name}, Lana here. My client builds in {area}. We would offer ${offer} cash for {address}, close in {close_days} days. Can I send a full LOI to your email?",
+    "sms_doorbell_emdash": "Hi {agent_name}, Lana here. My client builds in {area} — we'd offer ${offer} cash for {address}, close in {close_days} days. Can I send a full LOI to your email?",
+    "standing_loi_sms": "Hi {agent_name}, Lana here. Just emailed our formal written LOI at ${offer} cash for {address} with full commission protected. If circumstances or timelines change, our offer stands!"
+  },
+  "objections": {
+    "OBJECTION_PRICE_FIRM": "I respect where your seller wants to be. My client is an active infill builder, so our numbers are tied directly to current build costs and back end resale comps. We are ready to move quickly with zero financing contingencies at ${offer}. If anything changes with their timeline, please keep our offer in hand!",
+    "OBJECTION_OTHER_INTEREST": "Understood, that makes complete sense. A lot of retail buyers struggle to secure construction loans right now. If your current buyer stalls on financing or drops out during feasibility, we can step in as a guaranteed cash close at ${offer}.",
+    "OBJECTION_WHY_SO_LOW": "Running your numbers through our infill builder calculator: finished new construction in this pocket sells around ${finished_value}. At current structure costs of ${build_cost_psf} per sqft for a {planned_sqft} sqft build (${total_build_cost}), plus our client's standard {builder_profit_pct} percent builder margin and holding fees, that puts our maximum land basis right at ${offer} cash. That is why we are at that number. Would it make sense to send over our full LOI breakdown?",
+    "OBJECTION_CLIENT_REAL": "Yes, absolutely. My client is a local Florida residential builder actively pouring foundations and completing spec single family homes in Central Florida. We have verified cash proof of funds and close on vacant lots with zero lender red tape. Happy to send our builder package along with the LOI.",
+    "OBJECTION_SEND_LOI": "Awesome, sending the full written LOI over to {agent_email} right now with proof of funds attached. Our offer stands for 7 business days. Please let me know once you and the seller have a chance to review!"
+  },
+  "followups": {
+    "friday_sequence": "Hi {agent_name}, is {address} still available? Would your seller reconsider ${offer} cash?",
+    "end_of_month_blitz": "Hi {agent_name}, circling back on {address}. Thirty days out, would your seller be open to taking our ${offer} cash offer to get it wrapped up this month?",
+    "agent_consolidation": "Hi {agent_name}, Lana here. My client builds in {area}. We would be at ${offer1} cash for {address1} and ${offer2} for {address2}, close in {close_days} days. Can I send full LOIs to your email?"
+  }
+}

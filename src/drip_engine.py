@@ -21,6 +21,7 @@ from typing import Dict, Any, List, Optional
 from src.storage import data_manager, load_json, save_json
 from src.sms_gateway import send_sms
 from src.lauren_engine import lauren_engine, load_fixers, save_fixers, sanitize_sms_no_hyphens, resolve_spin
+from src.lana_engine import lana_engine, load_lots, save_lots
 from src.bot_engine import load_bot_settings
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -152,6 +153,33 @@ class DripQueueManager:
                         "address": f.get("address") or "the property",
                         "fixer_record": f
                     })
+
+        if self.active_desk in ["LANA", "ALL"]:
+            lots = load_lots()
+            for l in lots:
+                phone = (l.get("agent_phone") or "").strip()
+                status = l.get("status", "QUALIFIED")
+                msgs = l.get("messages", [])
+                is_dead = status in ["DEAD", "CLOSED_PASS"]
+                is_contacted = l.get("last_outbound_date") is not None or len(msgs) > 0
+
+                if county and county != "ALL":
+                    if (l.get("county") or "").upper() != county.upper():
+                        continue
+
+                if not phone or is_dead or is_contacted:
+                    continue
+
+                new_queue.append({
+                    "desk": "LANA",
+                    "id": l.get("id"),
+                    "name": l.get("agent_name") or "Listing Agent",
+                    "phone": phone,
+                    "city": l.get("city") or "Florida",
+                    "county": l.get("county") or "Florida",
+                    "address": l.get("address") or "the lot",
+                    "lot_record": l
+                })
 
         if limit and limit > 0:
             new_queue = new_queue[:limit]
@@ -295,6 +323,27 @@ class DripQueueManager:
 
                     self.sent_count += 1
                     self.last_sent_message = f"[Lauren ➔ {name}] {msg_to_send}"
+
+                elif desk == "LANA":
+                    lots = load_lots()
+                    lot = next((l for l in lots if l.get("id") == target_id), None)
+                    if lot:
+                        msg_to_send = lana_engine.generate_opener_sms(lot)
+                        res = send_sms(phone=phone, message=msg_to_send, agent_id=target_id, metadata={"drip": True, "desk": "LANA"})
+                        
+                        if "messages" not in lot: lot["messages"] = []
+                        lot["messages"].append({
+                            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+                            "direction": "OUTBOUND",
+                            "sender": "Lana (Drip)",
+                            "text": msg_to_send
+                        })
+                        lot["status"] = "OUTREACH_SENT"
+                        lot["last_outbound_date"] = time.strftime("%Y-%m-%d %H:%M:%S")
+                        save_lots(lots)
+
+                    self.sent_count += 1
+                    self.last_sent_message = f"[Lana ➔ {name}] {msg_to_send}"
 
                 self._log_drip_entry(item, msg_to_send, "SENT")
 

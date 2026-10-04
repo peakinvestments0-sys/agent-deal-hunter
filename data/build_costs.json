@@ -1,0 +1,93 @@
+[
+  {
+    "county": "ORANGE",
+    "metro": "Orlando",
+    "build_cost_psf": 165,
+    "source": "Orange County permit data Q3-2026 / FL builder-grade hurricane-code standard",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "SEMINOLE",
+    "metro": "Orlando",
+    "build_cost_psf": 165,
+    "source": "Seminole County building valuation Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "OSCEOLA",
+    "metro": "Orlando",
+    "build_cost_psf": 162,
+    "source": "Osceola County permit valuation baseline Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "LAKE",
+    "metro": "Orlando",
+    "build_cost_psf": 160,
+    "source": "Lake County residential permit baseline Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "HILLSBOROUGH",
+    "metro": "Tampa",
+    "build_cost_psf": 160,
+    "source": "Hillsborough County building department permit valuation Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "PINELLAS",
+    "metro": "Tampa",
+    "build_cost_psf": 165,
+    "source": "Pinellas County coastal infill construction valuation Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "PASCO",
+    "metro": "Tampa",
+    "build_cost_psf": 155,
+    "source": "Pasco County new residential construction index Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "DUVAL",
+    "metro": "Jacksonville",
+    "build_cost_psf": 150,
+    "source": "Duval County building inspection permit average Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "ST JOHNS",
+    "metro": "Jacksonville",
+    "build_cost_psf": 155,
+    "source": "St. Johns County residential growth index Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "CLAY",
+    "metro": "Jacksonville",
+    "build_cost_psf": 145,
+    "source": "Clay County permit data baseline Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "BREVARD",
+    "metro": "Palm Bay - Melbourne",
+    "build_cost_psf": 155,
+    "source": "Brevard County building department permit data Q3-2026",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "SOUTH_ATLANTIC_DEFAULT",
+    "metro": "Regional Baseline",
+    "build_cost_psf": 147,
+    "source": "NAHB 2024 Survey of Construction, spec homes excluding lot",
+    "updated": "2026-10-01"
+  },
+  {
+    "county": "NATIONAL_FALLBACK",
+    "metro": "National Baseline",
+    "build_cost_psf": 162,
+    "source": "NAHB 2024 national average construction cost",
+    "updated": "2026-10-01"
+  }
+]

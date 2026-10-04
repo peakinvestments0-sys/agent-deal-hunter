@@ -534,6 +534,7 @@ async function updateGlobalGoldenCountBadge() {
     
     const brookeCount = savedGoldenDataset.filter(e => e.agent_desk === 'BROOKE' || !e.agent_desk).length;
     const laurenCount = savedGoldenDataset.filter(e => e.agent_desk === 'LAUREN').length;
+    const lanaCount = savedGoldenDataset.filter(e => e.agent_desk === 'LANA').length;
 
     const bHeader = document.getElementById("headerBrookeCountBadge");
     if (bHeader) bHeader.innerText = brookeCount;
@@ -541,11 +542,17 @@ async function updateGlobalGoldenCountBadge() {
     const lHeader = document.getElementById("headerLaurenCountBadge");
     if (lHeader) lHeader.innerText = laurenCount;
 
+    const laHeader = document.getElementById("headerLanaCountBadge");
+    if (laHeader) laHeader.innerText = lanaCount;
+
     const bModal = document.getElementById("modalBrookeCountBadge");
     if (bModal) bModal.innerText = brookeCount;
 
     const lModal = document.getElementById("modalLaurenCountBadge");
     if (lModal) lModal.innerText = laurenCount;
+
+    const laModal = document.getElementById("modalLanaCountBadge");
+    if (laModal) laModal.innerText = lanaCount;
 
     const bDesk = document.getElementById("deskBrookeCountBadge");
     if (bDesk) bDesk.innerText = "10 Stages";
@@ -553,9 +560,12 @@ async function updateGlobalGoldenCountBadge() {
     const lDesk = document.getElementById("deskLaurenCountBadge");
     if (lDesk) lDesk.innerText = "7 Stages";
 
+    const laDesk = document.getElementById("deskLanaCountBadge");
+    if (laDesk) laDesk.innerText = "8 Stages";
+
     const tabBadge = document.getElementById("tabDatasetCount");
     if (tabBadge) {
-      tabBadge.innerText = activeTrainingDesk === 'LAUREN' ? laurenCount : brookeCount;
+      tabBadge.innerText = activeTrainingDesk === 'LANA' ? lanaCount : (activeTrainingDesk === 'LAUREN' ? laurenCount : brookeCount);
     }
   } catch (err) {
     console.error("Failed to update golden badge:", err);
@@ -564,26 +574,41 @@ async function updateGlobalGoldenCountBadge() {
 
 function updateStudioHeader() {
   const isLauren = activeTrainingDesk === 'LAUREN';
-  const btnBrooke = document.getElementById("btnDeskBrooke");
-  const btnLauren = document.getElementById("btnDeskLauren");
+  const isLana = activeTrainingDesk === 'LANA';
+  const btnBrooke = document.getElementById("studioDeskBrooke") || document.getElementById("btnDeskBrooke");
+  const btnLauren = document.getElementById("studioDeskLauren") || document.getElementById("btnDeskLauren");
+  const btnLana = document.getElementById("studioDeskLana");
   const tabScenBtn = document.getElementById("btnTabScenarios");
   const tabDataBtn = document.getElementById("btnTabDataset");
   const tabCustBtn = document.getElementById("btnTabCustom");
 
   const brookeGoldens = savedGoldenDataset.filter(e => e.agent_desk === 'BROOKE' || !e.agent_desk).length;
   const laurenGoldens = savedGoldenDataset.filter(e => e.agent_desk === 'LAUREN').length;
+  const lanaGoldens = savedGoldenDataset.filter(e => e.agent_desk === 'LANA').length;
 
   const bModal = document.getElementById("modalBrookeCountBadge");
   if (bModal) bModal.innerText = brookeGoldens;
   const lModal = document.getElementById("modalLaurenCountBadge");
   if (lModal) lModal.innerText = laurenGoldens;
+  const laModal = document.getElementById("modalLanaCountBadge");
+  if (laModal) laModal.innerText = lanaGoldens;
 
-  if (isLauren) {
+  const inactiveBtnCls = "flex-1 py-2 px-3 rounded-xl text-xs font-medium flex items-center justify-center gap-2 bg-slate-900/60 text-slate-400 hover:text-white border border-slate-800 cursor-pointer transition";
+
+  if (btnBrooke) btnBrooke.className = inactiveBtnCls;
+  if (btnLauren) btnLauren.className = inactiveBtnCls;
+  if (btnLana) btnLana.className = inactiveBtnCls;
+
+  if (isLana) {
+    if (btnLana) {
+      btnLana.className = "flex-1 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/30 border border-emerald-400 cursor-pointer transition";
+    }
+    if (tabScenBtn) tabScenBtn.innerHTML = `📋 Lana Stages (8)`;
+    if (tabDataBtn) tabDataBtn.innerHTML = `📚 Lana Golden Dataset (<span id="tabDatasetCount">${lanaGoldens}</span>)`;
+    if (tabCustBtn) tabCustBtn.innerHTML = `➕ Add Lana Objection`;
+  } else if (isLauren) {
     if (btnLauren) {
       btnLauren.className = "flex-1 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 bg-gradient-to-r from-amber-600 to-yellow-600 text-slate-950 shadow-lg shadow-amber-600/30 border border-amber-400 cursor-pointer transition";
-    }
-    if (btnBrooke) {
-      btnBrooke.className = "flex-1 py-2 px-3 rounded-xl text-xs font-medium flex items-center justify-center gap-2 bg-slate-900/60 text-slate-400 hover:text-white border border-slate-800 cursor-pointer transition";
     }
     if (tabScenBtn) tabScenBtn.innerHTML = `📋 Lauren Stages (7)`;
     if (tabDataBtn) tabDataBtn.innerHTML = `📚 Lauren Golden Dataset (<span id="tabDatasetCount">${laurenGoldens}</span>)`;
@@ -591,9 +616,6 @@ function updateStudioHeader() {
   } else {
     if (btnBrooke) {
       btnBrooke.className = "flex-1 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/30 border border-indigo-400 cursor-pointer transition";
-    }
-    if (btnLauren) {
-      btnLauren.className = "flex-1 py-2 px-3 rounded-xl text-xs font-medium flex items-center justify-center gap-2 bg-slate-900/60 text-slate-400 hover:text-white border border-slate-800 cursor-pointer transition";
     }
     if (tabScenBtn) tabScenBtn.innerHTML = `📋 Brooke Stages (10)`;
     if (tabDataBtn) tabDataBtn.innerHTML = `📚 Brooke Golden Dataset (<span id="tabDatasetCount">${brookeGoldens}</span>)`;
@@ -605,8 +627,18 @@ function updateCustomScenarioDropdown() {
   const select = document.getElementById("customScenarioNode");
   if (!select) return;
 
-  const isLauren = activeTrainingDesk === "LAUREN";
-  if (isLauren) {
+  if (activeTrainingDesk === "LANA") {
+    select.innerHTML = `
+      <option value="LANA_OPENING_HOOK">1. Infill Builder Opening Hook</option>
+      <option value="LANA_ASK_BUILDABLE">2. Buildable Lot & Zoning Verification</option>
+      <option value="LANA_ASK_UTILITIES">3. Utilities Check (Water / Sewer / Septic)</option>
+      <option value="LANA_DOORBELL_LOI">4. SMS Doorbell & Written LOI Push</option>
+      <option value="LANA_MATH_DROP">5. Residual Land Math Drop Objection</option>
+      <option value="LANA_FIRM_PRICE">6. Firm Price Pushback (60-Day Backup Cash)</option>
+      <option value="LANA_BUILDER_CREDS">7. Builder Credentials & Track Record</option>
+      <option value="LANA_IDENTITY">8. Identity Inquiry (Local Builder Partner)</option>
+    `;
+  } else if (activeTrainingDesk === "LAUREN") {
     select.innerHTML = `
       <option value="LAUREN_OPENING_HOOK">1. Smart Opening Hook (Flattery & Condition)</option>
       <option value="LAUREN_ASK_REPAIR_SCOPE">2. Repair Scope Extraction (Major Mechanicals)</option>
@@ -683,8 +715,11 @@ function switchTrainingTab(tab) {
   if (tabData) tabData.classList.toggle("hidden", tab !== "dataset");
   if (tabCust) tabCust.classList.toggle("hidden", tab !== "custom");
 
+  const isLana = activeTrainingDesk === "LANA";
   const isLauren = activeTrainingDesk === "LAUREN";
-  const activeBtnClass = isLauren
+  const activeBtnClass = isLana
+    ? "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 transition cursor-pointer"
+    : isLauren
     ? "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 transition cursor-pointer"
     : "px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 transition cursor-pointer";
   const inactiveBtnClass = "px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition cursor-pointer";
@@ -702,8 +737,10 @@ function renderTrainingCategoryChips() {
   const container = document.getElementById("scenarioCategoryChips");
   if (!container) return;
 
+  const isLana = activeTrainingDesk === "LANA";
   const isLauren = activeTrainingDesk === "LAUREN";
   const currentDeskScenarios = trainingScenarios.filter(s => {
+    if (isLana) return s.agent_desk === "LANA";
     if (isLauren) return s.agent_desk === "LAUREN";
     return s.agent_desk === "BROOKE" || !s.agent_desk;
   });
@@ -712,20 +749,22 @@ function renderTrainingCategoryChips() {
 
   const categoryChips = categories.map(cat => {
     const isAct = cat === activeTrainingCategory;
-    const activeColor = isLauren
+    const activeColor = isLana
+      ? "bg-emerald-500/30 text-emerald-200 border border-emerald-500/50 shadow-sm"
+      : isLauren
       ? "bg-amber-500/30 text-amber-200 border border-amber-500/50 shadow-sm"
       : "bg-indigo-500/30 text-indigo-200 border border-indigo-500/50 shadow-sm";
     const cls = isAct
       ? `px-2.5 py-1 rounded-lg text-[11px] font-bold ${activeColor} cursor-pointer`
       : "px-2.5 py-1 rounded-lg text-[11px] font-medium bg-slate-900 text-slate-400 border border-slate-800 hover:text-white cursor-pointer transition";
-    return `<button type="button" onclick="setScenarioCategoryFilter('${escapeHtml(cat)}')" class="${cls}">${cat === 'ALL' ? 'All ' + (isLauren ? 'Trojan Horse' : 'Flowchart') + ' Stages (' + currentDeskScenarios.length + ')' : escapeHtml(cat)}</button>`;
+    return `<button type="button" onclick="setScenarioCategoryFilter('${escapeHtml(cat)}')" class="${cls}">${cat === 'ALL' ? 'All ' + (isLana ? 'Infill Land' : (isLauren ? 'Trojan Horse' : 'Flowchart')) + ' Stages (' + currentDeskScenarios.length + ')' : escapeHtml(cat)}</button>`;
   }).join('');
 
   container.innerHTML = `
     <div class="flex flex-wrap items-center justify-between gap-2 w-full">
       <div class="flex items-center gap-2">
         <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-          ${isLauren ? '🔨 Lauren Stages:' : '🌿 Brooke Stages:'}
+          ${isLana ? '📐 Lana Stages:' : (isLauren ? '🔨 Lauren Stages:' : '🌿 Brooke Stages:')}
         </span>
       </div>
       <div class="flex flex-wrap items-center gap-1.5">${categoryChips}</div>
@@ -766,6 +805,8 @@ function renderTrainingStudioScenarios() {
     filtered = filtered.filter(s => s.agent_desk === "BROOKE" || !s.agent_desk);
   } else if (activeTrainingDesk === "LAUREN") {
     filtered = filtered.filter(s => s.agent_desk === "LAUREN");
+  } else if (activeTrainingDesk === "LANA") {
+    filtered = filtered.filter(s => s.agent_desk === "LANA");
   }
   if (activeTrainingCategory !== "ALL") {
     filtered = filtered.filter(s => s.category === activeTrainingCategory);
@@ -795,11 +836,14 @@ function renderTrainingStudioScenarios() {
     const existingReply = matchingGolden ? matchingGolden.final_approved_text : "";
     const existingInbound = matchingGolden && matchingGolden.agent_inbound ? matchingGolden.agent_inbound : s.sample_inbound;
 
+    const isLana = s.agent_desk === "LANA";
     const isLauren = s.agent_desk === "LAUREN";
-    const deskBadge = isLauren
+    const deskBadge = isLana
+      ? `<span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold">📐 Lana</span>`
+      : isLauren
       ? `<span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold">🔨 Lauren</span>`
       : `<span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 font-bold">🌿 Brooke</span>`;
-    const ruleBadge = isLauren
+    const ruleBadge = (isLauren || isLana)
       ? `<span class="text-[9px] font-mono px-2 py-0.5 rounded bg-rose-500/10 text-rose-300 border border-rose-500/20 font-medium">Rule: Zero hyphens between words</span>`
       : '';
 
@@ -1010,8 +1054,10 @@ async function loadSavedGoldenDataset() {
     savedGoldenDataset = d.examples || [];
     updateGlobalGoldenCountBadge();
 
+    const isLana = activeTrainingDesk === "LANA";
     const isLauren = activeTrainingDesk === "LAUREN";
     const deskDataset = savedGoldenDataset.filter(ex => {
+      if (isLana) return ex.agent_desk === "LANA";
       if (isLauren) return ex.agent_desk === "LAUREN";
       return ex.agent_desk === "BROOKE" || !ex.agent_desk;
     });
@@ -1019,7 +1065,7 @@ async function loadSavedGoldenDataset() {
     if (deskDataset.length === 0) {
       listEl.innerHTML = `
         <div class="text-center py-10 bg-slate-950/40 rounded-2xl border border-slate-800 text-slate-500 text-xs">
-          No golden examples saved for ${isLauren ? "Lauren" : "Brooke"} yet. Use Tab 1 to critique common scenarios!
+          No golden examples saved for ${isLana ? "Lana" : (isLauren ? "Lauren" : "Brooke")} yet. Use Tab 1 to critique common scenarios!
         </div>
       `;
       return;
@@ -4127,44 +4173,57 @@ async function downloadLoiPdfFromAnalyzer() {
 }
 
 // =========================================================================
-// DUAL-DESK ACQUISITION ENGINE: LAUREN'S REDFIN FIXER DESK CONTROLLER
+// TRIPLE-DESK ACQUISITION ENGINE: BROOKE (OFF-MARKET) / LAUREN (FIXERS) / LANA (INFILL LAND)
 // =========================================================================
 
 function switchDesk(desk) {
   currentDesk = desk;
   const btnBrooke = document.getElementById("btnDeskBrooke");
   const btnLauren = document.getElementById("btnDeskLauren");
+  const btnLana = document.getElementById("btnDeskLana");
   const brookeView = document.getElementById("brookeDeskView");
   const laurenView = document.getElementById("laurenDeskView");
+  const lanaView = document.getElementById("lanaDeskView");
   const personaBadge = document.getElementById("activePersonaBadge");
+
+  const unselectedCls = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 text-slate-400 hover:text-white cursor-pointer";
+  if (btnBrooke) btnBrooke.className = unselectedCls;
+  if (btnLauren) btnLauren.className = unselectedCls;
+  if (btnLana) btnLana.className = unselectedCls;
+
+  if (brookeView) brookeView.classList.add("hidden");
+  if (laurenView) laurenView.classList.add("hidden");
+  if (lanaView) lanaView.classList.add("hidden");
 
   if (desk === "BROOKE") {
     if (btnBrooke) {
       btnBrooke.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 cursor-pointer";
     }
-    if (btnLauren) {
-      btnLauren.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 text-slate-400 hover:text-white cursor-pointer";
-    }
     if (brookeView) brookeView.classList.remove("hidden");
-    if (laurenView) laurenView.classList.add("hidden");
     if (personaBadge) {
       personaBadge.className = "px-3 py-1 rounded-xl bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 text-xs font-bold flex items-center gap-1.5";
       personaBadge.innerHTML = `<span>🌿 Brooke</span> <span class="text-slate-400 font-normal">&bull; Off-Market Lead Scout</span>`;
     }
-  } else {
+  } else if (desk === "LAUREN") {
     if (btnLauren) {
       btnLauren.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-amber-600 text-white shadow-lg shadow-amber-600/30 cursor-pointer";
     }
-    if (btnBrooke) {
-      btnBrooke.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 text-slate-400 hover:text-white cursor-pointer";
-    }
     if (laurenView) laurenView.classList.remove("hidden");
-    if (brookeView) brookeView.classList.add("hidden");
     if (personaBadge) {
       personaBadge.className = "px-3 py-1 rounded-xl bg-amber-500/10 text-amber-300 border border-amber-500/30 text-xs font-bold flex items-center gap-1.5";
       personaBadge.innerHTML = `<span>🔨 Lauren</span> <span class="text-slate-400 font-normal">&bull; Trojan Horse Fixer Underwriter</span>`;
     }
     loadFixers();
+  } else if (desk === "LANA") {
+    if (btnLana) {
+      btnLana.className = "px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 cursor-pointer";
+    }
+    if (lanaView) lanaView.classList.remove("hidden");
+    if (personaBadge) {
+      personaBadge.className = "px-3 py-1 rounded-xl bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 text-xs font-bold flex items-center gap-1.5";
+      personaBadge.innerHTML = `<span>📐 Lana</span> <span class="text-slate-400 font-normal">&bull; On-Market Infill Land Specialist</span>`;
+    }
+    loadLots();
   }
 }
 
@@ -5270,11 +5329,11 @@ async function lookupAllFixerPhones() {
 window.lookupAllFixerPhones = lookupAllFixerPhones;
 
 async function startDripQueue(desk) {
-  const pacingEl = document.getElementById(desk === "BROOKE" ? "brookeDripPacing" : "laurenDripPacing");
+  const pacingEl = document.getElementById(desk === "BROOKE" ? "brookeDripPacing" : (desk === "LANA" ? "lanaDripPacing" : "laurenDripPacing"));
   const pacingVal = pacingEl ? pacingEl.value : "60-120";
   const [minDelay, maxDelay] = pacingVal.split('-').map(Number);
 
-  const btn = document.getElementById(desk === "BROOKE" ? "btnStartBrookeDrip" : "btnStartLaurenDrip");
+  const btn = document.getElementById(desk === "BROOKE" ? "btnStartBrookeDrip" : (desk === "LANA" ? "btnStartLanaDrip" : "btnStartLaurenDrip"));
   if (btn) {
     btn.disabled = true;
     btn.innerText = "Starting Queue...";
@@ -5282,6 +5341,10 @@ async function startDripQueue(desk) {
 
   const countyVal = desk === "BROOKE" 
     ? (currentCounty !== "ALL" ? currentCounty : null)
+    : desk === "LANA"
+    ? (document.getElementById("lotCountyFilter") && document.getElementById("lotCountyFilter").value !== "ALL"
+        ? document.getElementById("lotCountyFilter").value
+        : null)
     : (document.getElementById("fixerCountyFilter") && document.getElementById("fixerCountyFilter").value !== "ALL" 
         ? document.getElementById("fixerCountyFilter").value 
         : null);
@@ -5302,6 +5365,7 @@ async function startDripQueue(desk) {
       pollDripStatus();
       setTimeout(async () => {
         if (desk === "BROOKE") await loadAgents();
+        else if (desk === "LANA") await loadLots();
         else await loadFixers();
       }, 1500);
     } else {
@@ -5334,6 +5398,7 @@ async function stopDripQueue() {
     const data = await res.json();
     pollDripStatus();
     if (currentDesk === "BROOKE") await loadAgents();
+    else if (currentDesk === "LANA") await loadLots();
     else await loadFixers();
   } catch (err) {
     console.error("Error stopping drip:", err);
@@ -5365,6 +5430,13 @@ function renderDripStatus(s) {
   const btnStartL = document.getElementById("btnStartLaurenDrip");
   const btnPauseL = document.getElementById("btnPauseLaurenDrip");
   const btnStopL = document.getElementById("btnStopLaurenDrip");
+
+  // Lana Desk Elements
+  const laBadge = document.getElementById("lanaDripStatusBadge");
+  const laSub = document.getElementById("lanaDripSubtitle");
+  const btnStartLa = document.getElementById("btnStartLanaDrip");
+  const btnPauseLa = document.getElementById("btnPauseLanaDrip");
+  const btnStopLa = document.getElementById("btnStopLanaDrip");
 
   const isRunning = s.status === "RUNNING";
   const isPaused = s.status === "PAUSED";
@@ -5417,7 +5489,9 @@ function renderDripStatus(s) {
       badge.innerHTML = "⚪ Idle";
       sub.innerText = deskName === "BROOKE" 
         ? "Paces natural carrier-safe outreach (60-120s random delay) across uncontacted agents in the background."
-        : "Paces Trojan Horse opening hooks (60-120s random delay) across scraped Redfin fixers in the background.";
+        : deskName === "LAUREN"
+        ? "Paces Trojan Horse opening hooks (60-120s random delay) across scraped Redfin fixers in the background."
+        : "Paces builder-framed opening hooks & doorbell texts (60-120s delay) across on-market infill land with zero hyphens.";
       
       btnStart.classList.remove("hidden");
       btnPause.classList.add("hidden");
@@ -5427,10 +5501,1065 @@ function renderDripStatus(s) {
 
   updateDeskUI(bBadge, bSub, btnStartB, btnPauseB, btnStopB, "BROOKE");
   updateDeskUI(lBadge, lSub, btnStartL, btnPauseL, btnStopL, "LAUREN");
+  updateDeskUI(laBadge, laSub, btnStartLa, btnPauseLa, btnStopLa, "LANA");
 }
 
 window.startDripQueue = startDripQueue;
 window.pauseDripQueue = pauseDripQueue;
 window.stopDripQueue = stopDripQueue;
 window.pollDripStatus = pollDripStatus;
+
+// =========================================================================
+// LANA'S ON-MARKET INFILL LAND SPECIALIST DESK CONTROLLER
+// =========================================================================
+
+let allLots = [];
+let lotExpandedCards = new Set();
+let lotExpandedThreads = new Set();
+let currentEditingLotId = null;
+
+async function loadLots() {
+  try {
+    const res = await fetch("/api/lana/lots");
+    if (!res.ok) throw new Error("Failed to load infill lots");
+    allLots = await res.json();
+
+    // Top switcher badge
+    const headerBadge = document.getElementById("headerLanaBadge");
+    if (headerBadge) headerBadge.innerText = allLots.length;
+
+    // Metrics ribbon
+    const statCount = document.getElementById("statLotsCount");
+    if (statCount) statCount.innerText = allLots.length;
+
+    let totalAsking = 0;
+    let totalNewbuild = 0;
+    let totalMaxPayable = 0;
+    let loisCount = 0;
+
+    allLots.forEach(l => {
+      const asking = l.list_price || 0;
+      const uw = l.underwriting || {};
+      const newbuild = uw.finished_newbuild_value || 0;
+      const maxPayable = uw.max_payable || 0;
+      totalAsking += asking;
+      totalNewbuild += newbuild;
+      totalMaxPayable += maxPayable;
+      if (l.loi_sent) loisCount++;
+    });
+
+    const statAvgAsking = document.getElementById("statLotsAvgAsking");
+    if (statAvgAsking) {
+      statAvgAsking.innerText = allLots.length > 0 ? `$${Math.round(totalAsking / allLots.length).toLocaleString()}` : "$0";
+    }
+
+    const statAvgNewbuild = document.getElementById("statLotsAvgNewbuild");
+    if (statAvgNewbuild) {
+      statAvgNewbuild.innerText = allLots.length > 0 ? `$${Math.round(totalNewbuild / allLots.length).toLocaleString()}` : "$0";
+    }
+
+    const statAvgMaxPayable = document.getElementById("statLotsAvgMaxPayable");
+    if (statAvgMaxPayable) {
+      statAvgMaxPayable.innerText = allLots.length > 0 ? `$${Math.round(totalMaxPayable / allLots.length).toLocaleString()}` : "$0";
+    }
+
+    const statLois = document.getElementById("statLotsLoiSent");
+    if (statLois) statLois.innerText = loisCount;
+
+    populateLotFilterDropdowns();
+    filterLotsList();
+  } catch (err) {
+    console.error("Error loading infill lots:", err);
+  }
+}
+
+function populateLotFilterDropdowns() {
+  const countySel = document.getElementById("lotCountyFilter");
+  if (countySel) {
+    const currentCountyVal = countySel.value || "ALL";
+    const counties = [...new Set(allLots.map(l => (l.county || "").toUpperCase().trim()).filter(Boolean))].sort();
+    let countyHtml = `<option value="ALL">All Counties</option>`;
+    counties.forEach(c => {
+      const selected = c === currentCountyVal ? "selected" : "";
+      countyHtml += `<option value="${escapeHtml(c)}" ${selected}>${escapeHtml(c)}</option>`;
+    });
+    countySel.innerHTML = countyHtml;
+  }
+  populateLotCityDropdown();
+}
+
+function populateLotCityDropdown() {
+  const citySel = document.getElementById("lotCityFilter");
+  if (!citySel) return;
+  const countySel = document.getElementById("lotCountyFilter");
+  const selectedCounty = countySel ? countySel.value : "ALL";
+
+  const currentCityVal = citySel.value || "ALL";
+  let filtered = allLots;
+  if (selectedCounty !== "ALL") {
+    filtered = filtered.filter(l => (l.county || "").toUpperCase().trim() === selectedCounty);
+  }
+
+  const cities = [...new Set(filtered.map(l => (l.city || "").trim()).filter(Boolean))].sort();
+  let cityHtml = `<option value="ALL">All Cities</option>`;
+  cities.forEach(c => {
+    const selected = c === currentCityVal ? "selected" : "";
+    cityHtml += `<option value="${escapeHtml(c)}" ${selected}>${escapeHtml(c)}</option>`;
+  });
+  citySel.innerHTML = cityHtml;
+}
+
+function handleLotCountyFilterChange() {
+  populateLotCityDropdown();
+  filterLotsList();
+}
+
+function filterLotsList() {
+  const searchInput = document.getElementById("lotSearchInput");
+  const query = (searchInput ? searchInput.value : "").trim().toLowerCase();
+
+  const contactFilter = document.getElementById("lotContactFilter");
+  const contactVal = contactFilter ? contactFilter.value : "ALL";
+
+  const countyFilter = document.getElementById("lotCountyFilter");
+  const countyVal = countyFilter ? countyFilter.value : "ALL";
+
+  const cityFilter = document.getElementById("lotCityFilter");
+  const cityVal = cityFilter ? cityFilter.value : "ALL";
+
+  const sizeFilter = document.getElementById("lotSizeFilter");
+  const sizeVal = sizeFilter ? sizeFilter.value : "INFILL";
+
+  let filtered = allLots.filter(lot => {
+    if (query) {
+      const match = (lot.address || "").toLowerCase().includes(query) ||
+                    (lot.city || "").toLowerCase().includes(query) ||
+                    (lot.county || "").toLowerCase().includes(query) ||
+                    (lot.parcel_id || "").toLowerCase().includes(query) ||
+                    (lot.agent_name || "").toLowerCase().includes(query) ||
+                    (lot.brokerage || "").toLowerCase().includes(query);
+      if (!match) return false;
+    }
+
+    if (countyVal !== "ALL") {
+      if ((lot.county || "").toUpperCase().trim() !== countyVal) return false;
+    }
+
+    if (cityVal !== "ALL") {
+      if ((lot.city || "").toLowerCase().trim() !== cityVal.toLowerCase().trim()) return false;
+    }
+
+    if (sizeVal === "INFILL") {
+      const acres = lot.lot_acres || 0;
+      if (acres < 0.08 || acres > 0.55) return false;
+    } else if (sizeVal === "SUB_HALF") {
+      if ((lot.lot_acres || 0) > 0.50) return false;
+    } else if (sizeVal === "LARGE") {
+      if ((lot.lot_acres || 0) <= 0.50) return false;
+    }
+
+    if (contactVal === "NEW") {
+      if (lot.doorbell_sent || lot.loi_sent || (lot.messages && lot.messages.length > 0)) return false;
+    } else if (contactVal === "CONTACTED") {
+      if (!lot.doorbell_sent && (!lot.messages || lot.messages.length === 0)) return false;
+    } else if (contactVal === "REPLIED") {
+      const hasInbound = (lot.messages || []).some(m => m.direction === "INBOUND");
+      if (!hasInbound) return false;
+    } else if (contactVal === "LOI_SENT") {
+      if (!lot.loi_sent) return false;
+    } else if (contactVal === "UNDERWRITTEN") {
+      const uw = lot.underwriting || {};
+      if (!uw.passes_send_rule) return false;
+    }
+
+    return true;
+  });
+
+  const countDisplay = document.getElementById("lotCountDisplay");
+  if (countDisplay) {
+    countDisplay.innerText = `Showing ${filtered.length} of ${allLots.length} infill lots`;
+  }
+
+  const filterBadge = document.getElementById("lotFilteredBadge");
+  const isFiltered = query || contactVal !== "ALL" || countyVal !== "ALL" || cityVal !== "ALL" || sizeVal !== "INFILL";
+  if (filterBadge) {
+    filterBadge.classList.toggle("hidden", !isFiltered);
+  }
+
+  const resetBtn = document.getElementById("btnResetLotFilters");
+  if (resetBtn) {
+    resetBtn.classList.toggle("hidden", !isFiltered);
+  }
+
+  renderLots(filtered);
+}
+
+function resetLotFilters() {
+  const s = document.getElementById("lotSearchInput"); if (s) s.value = "";
+  const ct = document.getElementById("lotContactFilter"); if (ct) ct.value = "ALL";
+  const co = document.getElementById("lotCountyFilter"); if (co) co.value = "ALL";
+  const sz = document.getElementById("lotSizeFilter"); if (sz) sz.value = "INFILL";
+  populateLotCityDropdown();
+  filterLotsList();
+}
+
+function toggleLotCard(lotId) {
+  if (lotExpandedCards.has(lotId)) {
+    lotExpandedCards.delete(lotId);
+  } else {
+    lotExpandedCards.add(lotId);
+  }
+  const el = document.getElementById(`lotDetails_${lotId}`);
+  const btn = document.getElementById(`lotToggleBtn_${lotId}`);
+  if (el) el.classList.toggle("hidden", !lotExpandedCards.has(lotId));
+  if (btn) btn.innerHTML = lotExpandedCards.has(lotId) ? "▲ Less" : "▼ Details";
+}
+
+function toggleAllLotCards() {
+  const shouldExpand = lotExpandedCards.size === 0;
+  if (shouldExpand) {
+    allLots.forEach(l => lotExpandedCards.add(l.id));
+  } else {
+    lotExpandedCards.clear();
+  }
+  allLots.forEach(l => {
+    const el = document.getElementById(`lotDetails_${l.id}`);
+    const btn = document.getElementById(`lotToggleBtn_${l.id}`);
+    if (el) el.classList.toggle("hidden", !shouldExpand);
+    if (btn) btn.innerHTML = shouldExpand ? "▲ Less" : "▼ Details";
+  });
+  const topBtn = document.getElementById("btnToggleAllLots");
+  if (topBtn) topBtn.innerHTML = shouldExpand ? "<span>⛶ Collapse All</span>" : "<span>⛶ Expand All</span>";
+}
+
+function toggleLotThread(lotId) {
+  if (lotExpandedThreads.has(lotId)) {
+    lotExpandedThreads.delete(lotId);
+  } else {
+    lotExpandedThreads.add(lotId);
+  }
+  const el = document.getElementById(`lotThread_${lotId}`);
+  if (el) el.classList.toggle("hidden", !lotExpandedThreads.has(lotId));
+}
+
+function renderLots(lots) {
+  const container = document.getElementById("lotsContainer");
+  if (!container) return;
+
+  if (lots.length === 0) {
+    container.innerHTML = `
+      <div class="p-12 text-center bg-slate-900/60 border border-slate-800 rounded-2xl space-y-3">
+        <div class="text-3xl">📐</div>
+        <h3 class="text-base font-bold text-white">No Infill Lots Found</h3>
+        <p class="text-xs text-slate-400 max-w-md mx-auto">
+          No lots match your active filters. Try adjusting your county or size filter, or upload a county MLS/Redfin land CSV to populate Lana's desk.
+        </p>
+        <div class="flex items-center justify-center gap-2 pt-2">
+          <button type="button" onclick="openAddLotModal()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition cursor-pointer">
+            ➕ Add Lot Manually
+          </button>
+          <button type="button" onclick="document.getElementById('lotCsvFileInput').click()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 text-xs font-bold border border-slate-700 transition cursor-pointer">
+            📁 Ingest CSV
+          </button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = lots.map(lot => {
+    const uw = lot.underwriting || {};
+    const asking = lot.list_price || 0;
+    const offerPrice = uw.offer_price || Math.round(asking * 0.60);
+    const maxPayable = uw.max_payable || 0;
+    const passesRule = uw.passes_send_rule !== undefined ? uw.passes_send_rule : (offerPrice <= maxPayable);
+    const finishedValue = uw.finished_newbuild_value || 0;
+    const buildPsf = uw.build_cost_psf || 165;
+    const plannedSqft = uw.planned_sqft || 2000;
+
+    const isExpanded = lotExpandedCards.has(lot.id);
+    const isThreadExpanded = lotExpandedThreads.has(lot.id);
+
+    // Status Pill
+    let statusPill = "";
+    if (lot.loi_sent) {
+      statusPill = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">📄 Standing LOI Sent</span>`;
+    } else if (lot.doorbell_sent) {
+      statusPill = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">📱 Doorbell Sent</span>`;
+    } else if (passesRule) {
+      statusPill = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">✅ 60% Offer ≤ Max Residual</span>`;
+    } else {
+      statusPill = `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40">⚠️ Spread Deficit (Offer > Max)</span>`;
+    }
+
+    const messages = lot.messages || [];
+    const hasReplies = messages.some(m => m.direction === "INBOUND");
+
+    return `
+      <div class="bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 rounded-2xl p-4 sm:p-5 transition shadow-md space-y-4" id="lotCard_${lot.id}">
+        <!-- Top Bar: Address & Badges -->
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div class="space-y-1 min-w-[240px]">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-base font-bold text-white">${escapeHtml(lot.address || 'Vacant Land')}</span>
+              ${statusPill}
+              ${hasReplies ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 animate-pulse">📥 Inbound Reply</span>' : ''}
+            </div>
+            <div class="flex flex-wrap items-center gap-2 text-xs text-slate-400">
+              <span>📍 ${escapeHtml(lot.city || '')}, ${escapeHtml(lot.county || '')} FL ${escapeHtml(lot.zip || '')}</span>
+              <span>&bull;</span>
+              <span>📏 ${lot.lot_acres ? lot.lot_acres + ' AC' : ''} (${(lot.lot_sqft || 0).toLocaleString()} sqft)</span>
+              <span>&bull;</span>
+              <span class="text-amber-300 font-semibold">⏳ ${lot.days_on_market || 0} DOM</span>
+              ${lot.parcel_id ? `<span>&bull;</span> <span class="font-mono text-slate-500 text-[11px]">APN: ${escapeHtml(lot.parcel_id)}</span>` : ''}
+              ${lot.zoning ? `<span>&bull;</span> <span class="text-slate-400">Zoning: ${escapeHtml(lot.zoning)}</span>` : ''}
+            </div>
+          </div>
+
+          <!-- Quick Action Buttons Top Right -->
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <button type="button" id="lotToggleBtn_${lot.id}" onclick="toggleLotCard('${lot.id}')" class="px-2.5 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition cursor-pointer">
+              ${isExpanded ? '▲ Less' : '▼ Details'}
+            </button>
+            <button type="button" onclick="deleteLot('${lot.id}')" class="p-1.5 rounded-xl bg-slate-800/60 hover:bg-rose-500/20 text-slate-400 hover:text-rose-300 transition cursor-pointer" title="Delete Lot">
+              🗑️
+            </button>
+          </div>
+        </div>
+
+        <!-- Underwriting & Price Metrics Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 bg-slate-950/70 p-3 rounded-xl border border-slate-800/80 text-xs font-mono">
+          <div>
+            <div class="text-[10px] text-slate-500 font-sans uppercase">Asking Price</div>
+            <div class="text-sm font-bold text-amber-300 mt-0.5">$${Math.round(asking).toLocaleString()}</div>
+          </div>
+          <div>
+            <div class="text-[10px] text-slate-500 font-sans uppercase">60% Offer Target</div>
+            <div class="text-sm font-bold text-white mt-0.5">$${Math.round(offerPrice).toLocaleString()}</div>
+          </div>
+          <div class="bg-emerald-950/20 border border-emerald-500/20 rounded-lg p-1">
+            <div class="text-[10px] text-emerald-400 font-sans uppercase font-semibold">Max Allowable Basis</div>
+            <div class="text-sm font-black text-emerald-300 mt-0.5">$${Math.round(maxPayable).toLocaleString()}</div>
+          </div>
+          <div>
+            <div class="text-[10px] text-slate-500 font-sans uppercase">New-Build Target</div>
+            <div class="text-xs font-bold text-slate-300 mt-0.5">$${Math.round(finishedValue).toLocaleString()}</div>
+          </div>
+          <div>
+            <div class="text-[10px] text-slate-500 font-sans uppercase">Build $/SqFt</div>
+            <div class="text-xs font-bold text-slate-300 mt-0.5">$${buildPsf}/sqft (${plannedSqft}sf)</div>
+          </div>
+          <div>
+            <div class="text-[10px] text-slate-500 font-sans uppercase">Viability Send Rule</div>
+            <div class="text-xs font-bold ${passesRule ? 'text-emerald-400' : 'text-rose-400'} mt-0.5">
+              ${passesRule ? '✅ VIABLE' : '⚠️ DEFICIT'}
+            </div>
+          </div>
+        </div>
+
+        <!-- Agent Details & Direct Actions Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-1 border-t border-slate-800/60">
+          <div class="flex flex-wrap items-center gap-3 text-xs">
+            <div class="flex items-center gap-1.5">
+              <span class="text-slate-400 font-semibold">Agent:</span>
+              <strong class="text-white">${escapeHtml(lot.agent_name || 'Listing Agent')}</strong>
+              <span class="text-slate-500">(${escapeHtml(lot.brokerage || 'Brokerage')})</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <span class="text-slate-400">Cell:</span>
+              <span class="font-mono ${lot.agent_phone ? 'text-emerald-300 font-bold' : 'text-rose-400 italic'}">
+                ${lot.agent_phone ? escapeHtml(lot.agent_phone) : 'Missing Phone'}
+              </span>
+              <button type="button" onclick="quickEditLotPhone('${lot.id}')" class="text-[10px] text-slate-500 hover:text-emerald-300 px-1" title="Edit Phone Number">✏️</button>
+            </div>
+            ${lot.agent_email ? `
+              <div class="flex items-center gap-1">
+                <span class="text-slate-400">Email:</span>
+                <span class="text-slate-300 font-mono text-[11px]">${escapeHtml(lot.agent_email)}</span>
+              </div>
+            ` : ''}
+          </div>
+
+          <!-- Desk Action Buttons -->
+          <div class="flex items-center gap-2 flex-wrap">
+            <button type="button" onclick="sendLotDoorbell('${lot.id}')" class="px-3.5 py-1.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm" title="Send 140-char SMS Doorbell Hook with zero hyphens">
+              <span>📱 Send Doorbell SMS</span>
+            </button>
+            <button type="button" onclick="sendLotFormalLoiEmail('${lot.id}')" class="px-3.5 py-1.5 rounded-xl bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 border border-cyan-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm" title="Send formal written LOI email with FAR/BAR VAC-14 terms & full commission protected">
+              <span>✉️ Send Written LOI</span>
+            </button>
+            <button type="button" onclick="openUnderwriteLotModal('${lot.id}')" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 text-xs font-semibold transition flex items-center gap-1 cursor-pointer">
+              <span>📐 Underwrite</span>
+            </button>
+            <button type="button" onclick="openLotInboundModal('${lot.id}')" class="px-3 py-1.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 text-xs font-semibold transition flex items-center gap-1 cursor-pointer" title="Simulate agent response to test Lana's objection handler">
+              <span>💬 Test Inbound</span>
+            </button>
+            ${messages.length > 0 ? `
+              <button type="button" onclick="toggleLotThread('${lot.id}')" class="px-2.5 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition cursor-pointer">
+                🧵 Thread (${messages.length})
+              </button>
+            ` : ''}
+          </div>
+        </div>
+
+        <!-- Collapsible Details Section -->
+        <div id="lotDetails_${lot.id}" class="${isExpanded ? '' : 'hidden'} space-y-3 pt-3 border-t border-slate-800 text-xs">
+          ${lot.remarks ? `
+            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
+              <strong class="text-slate-300 block mb-1">Public Remarks &amp; Features:</strong>
+              <p class="text-slate-400 text-[11px] leading-relaxed">${escapeHtml(lot.remarks)}</p>
+            </div>
+          ` : ''}
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-slate-400 bg-slate-950/50 p-3 rounded-xl border border-slate-800/80">
+            <div>
+              <strong class="text-slate-300">Underwriting Rationale:</strong>
+              <p class="mt-1 text-[11px]">
+                Targeting new build resale of <strong>$${Math.round(finishedValue).toLocaleString()}</strong>. Standard structure cost: <strong>$${buildPsf}/sqft</strong> for a <strong>${plannedSqft} sqft</strong> home. Max allowable land basis: <strong>$${Math.round(maxPayable).toLocaleString()}</strong>.
+              </p>
+            </div>
+            <div>
+              <strong class="text-slate-300">Contract Terms on FAR/BAR VAC-14:</strong>
+              <ul class="mt-1 space-y-0.5 text-[11px] list-disc list-inside">
+                <li>$2,500 Earnest Money deposited upon contract</li>
+                <li>7-day feasibility study (survey &amp; utility taps)</li>
+                <li>14-day expedited closing with verified cash funds</li>
+                <li>Full 3% listing agent commission protected</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Collapsible SMS Conversation Thread -->
+        <div id="lotThread_${lot.id}" class="${isThreadExpanded ? '' : 'hidden'} space-y-2 pt-2 border-t border-slate-800">
+          <strong class="text-slate-300 text-xs block">SMS Conversation History:</strong>
+          <div class="space-y-2 max-h-60 overflow-y-auto p-2 rounded-xl bg-slate-950/90 border border-slate-800">
+            ${messages.map(m => {
+              const isOut = m.direction === "OUTBOUND";
+              return `
+                <div class="flex ${isOut ? 'justify-end' : 'justify-start'}">
+                  <div class="max-w-[80%] p-2.5 rounded-xl text-xs ${isOut ? 'bg-emerald-950/60 border border-emerald-500/30 text-emerald-200' : 'bg-slate-800 text-slate-200'}">
+                    <div class="flex items-center justify-between gap-2 text-[10px] text-slate-400 mb-1">
+                      <span class="font-bold">${isOut ? 'Lana (Outbound)' : escapeHtml(lot.agent_name || 'Agent')}</span>
+                      <span>${escapeHtml(m.timestamp || '')}</span>
+                    </div>
+                    <p>${escapeHtml(m.text || '')}</p>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// -------------------------------------------------------------------------
+// UNDERWRITING MODAL HANDLERS
+// -------------------------------------------------------------------------
+
+function openUnderwriteLotModal(lotId) {
+  const lot = allLots.find(l => l.id === lotId);
+  if (!lot) return;
+
+  currentEditingLotId = lotId;
+  const modal = document.getElementById("underwriteLotModal");
+  if (!modal) return;
+
+  const uw = lot.underwriting || {};
+  const asking = lot.list_price || 0;
+  const offerPrice = uw.offer_price || Math.round(asking * 0.60);
+
+  document.getElementById("underwriteLotId").value = lotId;
+  document.getElementById("uwLotAddress").innerText = lot.address || "Vacant Lot";
+  document.getElementById("uwLotDetails").innerText = `${lot.city || ''}, ${lot.county || ''} FL • ${lot.lot_acres || ''} AC`;
+  document.getElementById("uwLotListPrice").innerText = `$${Math.round(asking).toLocaleString()}`;
+  document.getElementById("uwLotOfferPrice").innerText = `$${Math.round(offerPrice).toLocaleString()}`;
+
+  document.getElementById("uwFinishedValue").value = uw.finished_newbuild_value || Math.round(asking * 3.5);
+  document.getElementById("uwPlannedSqft").value = uw.planned_sqft || 2000;
+  document.getElementById("uwBuildCostPsf").value = uw.build_cost_psf || 165;
+  document.getElementById("uwProfitPct").value = uw.builder_profit_pct !== undefined ? uw.builder_profit_pct : 0.18;
+  document.getElementById("uwFeesPct").value = uw.fees_pct !== undefined ? uw.fees_pct : 0.04;
+
+  calculateLotResidualLive();
+  openModal("underwriteLotModal");
+}
+
+function calculateLotResidualLive() {
+  const finishedVal = parseFloat(document.getElementById("uwFinishedValue").value) || 0;
+  const sqft = parseFloat(document.getElementById("uwPlannedSqft").value) || 2000;
+  const buildPsf = parseFloat(document.getElementById("uwBuildCostPsf").value) || 165;
+  const profitPct = parseFloat(document.getElementById("uwProfitPct").value) || 0.18;
+  const feesPct = parseFloat(document.getElementById("uwFeesPct").value) || 0.04;
+
+  const totalBuildCost = buildPsf * sqft;
+  const builderMargin = finishedVal * profitPct;
+  const fees = finishedVal * feesPct;
+  const maxPayable = Math.max(0, finishedVal - totalBuildCost - builderMargin - fees);
+
+  const lot = allLots.find(l => l.id === currentEditingLotId);
+  const asking = lot ? (lot.list_price || 0) : 0;
+  const offerPrice = Math.round(asking * 0.60);
+  const isViable = offerPrice <= maxPayable;
+
+  document.getElementById("calcTotalBuildCost").innerText = `$${Math.round(totalBuildCost).toLocaleString()}`;
+  document.getElementById("calcBuilderMargin").innerText = `$${Math.round(builderMargin).toLocaleString()}`;
+  document.getElementById("calcFees").innerText = `$${Math.round(fees).toLocaleString()}`;
+  document.getElementById("calcMaxPayable").innerText = `$${Math.round(maxPayable).toLocaleString()}`;
+
+  const badge = document.getElementById("uwViabilityBadge");
+  if (badge) {
+    if (isViable) {
+      badge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
+      badge.innerText = `PASS: 60% Offer ($${offerPrice.toLocaleString()}) ≤ Max Payable ($${Math.round(maxPayable).toLocaleString()})`;
+    } else {
+      badge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40";
+      badge.innerText = `DEFICIT: 60% Offer ($${offerPrice.toLocaleString()}) > Max Payable ($${Math.round(maxPayable).toLocaleString()})`;
+    }
+  }
+}
+
+async function saveLotUnderwritingFromModal() {
+  const lotId = document.getElementById("underwriteLotId").value;
+  if (!lotId) return;
+
+  const finishedVal = parseFloat(document.getElementById("uwFinishedValue").value) || 0;
+  const sqft = parseFloat(document.getElementById("uwPlannedSqft").value) || 2000;
+  const profitPct = parseFloat(document.getElementById("uwProfitPct").value) || 0.18;
+  const feesPct = parseFloat(document.getElementById("uwFeesPct").value) || 0.04;
+
+  try {
+    const res = await fetch(`/api/lana/lots/${lotId}/underwrite`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        finished_newbuild_value: finishedVal,
+        planned_sqft: sqft,
+        builder_profit_pct: profitPct,
+        fees_pct: feesPct
+      })
+    });
+    const d = await res.json();
+    if (d.status === "success") {
+      closeModal("underwriteLotModal");
+      await loadLots();
+    } else {
+      alert("Error saving underwriting: " + (d.message || "Unknown error"));
+    }
+  } catch (err) {
+    alert("Error saving underwriting: " + err.message);
+  }
+}
+
+// -------------------------------------------------------------------------
+// SMS DOORBELL & EMAIL FORMAL LOI DISPATCH
+// -------------------------------------------------------------------------
+
+async function sendLotDoorbell(lotId) {
+  const lot = allLots.find(l => l.id === lotId);
+  if (!lot) return;
+
+  if (!lot.agent_phone) {
+    if (confirm("Agent has no phone number on file. Would you like to enter it now?")) {
+      await quickEditLotPhone(lotId);
+    }
+    return;
+  }
+
+  const promptMsg = `Send Lana's Doorbell SMS to ${lot.agent_name || 'Agent'} (${lot.agent_phone}) for ${lot.address}?`;
+  if (!confirm(promptMsg)) return;
+
+  try {
+    const res = await fetch(`/api/lana/lots/${lotId}/send-sms`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({})
+    });
+    const d = await res.json();
+    if (d.status === "success") {
+      alert("✓ Doorbell SMS sent successfully!");
+      await loadLots();
+    } else {
+      alert("Failed to send Doorbell SMS: " + (d.message || "Error"));
+    }
+  } catch (err) {
+    alert("Error sending SMS: " + err.message);
+  }
+}
+
+async function sendLotFormalLoiEmail(lotId) {
+  const lot = allLots.find(l => l.id === lotId);
+  if (!lot) return;
+
+  const emailPrompt = prompt(`Enter listing agent email address for written LOI:`, lot.agent_email || "");
+  if (emailPrompt === null) return;
+  const recipientEmail = emailPrompt.trim();
+  if (!recipientEmail) {
+    alert("Email address is required to dispatch formal LOI.");
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/lana/lots/${lotId}/send-loi-email`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ recipient_email: recipientEmail, close_days: 14 })
+    });
+    const d = await res.json();
+    if (d.status === "success") {
+      alert("✓ Written LOI sent via email and SMS notification dispatched!");
+      await loadLots();
+    } else {
+      alert("Failed to send LOI email: " + (d.message || "Error"));
+    }
+  } catch (err) {
+    alert("Error sending LOI: " + err.message);
+  }
+}
+
+// -------------------------------------------------------------------------
+// INBOUND SIMULATION MODAL
+// -------------------------------------------------------------------------
+
+function openLotInboundModal(lotId) {
+  const lot = allLots.find(l => l.id === lotId);
+  if (!lot) return;
+
+  document.getElementById("lotInboundLotId").value = lotId;
+  document.getElementById("lotInboundSubtitle").innerText = `Testing Lana Engine on ${lot.address || 'Lot'}`;
+  document.getElementById("lotInboundMessage").value = "";
+  document.getElementById("lotInboundResultBox").classList.add("hidden");
+
+  openModal("lotInboundModal");
+}
+
+function setLotInboundPreset(text) {
+  document.getElementById("lotInboundMessage").value = text;
+  submitLotInbound();
+}
+
+async function submitLotInbound() {
+  const lotId = document.getElementById("lotInboundLotId").value;
+  const msg = document.getElementById("lotInboundMessage").value.trim();
+  if (!msg) {
+    alert("Please enter a listing agent message to test.");
+    return;
+  }
+
+  const btn = document.getElementById("btnSubmitLotInbound");
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = "Analyzing...";
+  }
+
+  try {
+    const res = await fetch(`/api/lana/lots/${lotId}/inbound`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message: msg })
+    });
+    const d = await res.json();
+    if (d.status === "success") {
+      const box = document.getElementById("lotInboundResultBox");
+      document.getElementById("lotInboundNodeBadge").innerText = d.node || "RESPONSE";
+      document.getElementById("lotInboundReason").innerText = d.reason || "";
+      document.getElementById("lotInboundSuggestedReply").innerText = d.suggested_reply || "";
+      box.classList.remove("hidden");
+      await loadLots();
+    } else {
+      alert("Evaluation failed: " + (d.message || "Error"));
+    }
+  } catch (err) {
+    alert("Error analyzing inbound: " + err.message);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = "🧠 Analyze with Lana Engine";
+    }
+  }
+}
+
+// -------------------------------------------------------------------------
+// FRIDAY SEQUENCE MODAL
+// -------------------------------------------------------------------------
+
+async function openFridaySequenceModal() {
+  openModal("fridaySequenceModal");
+  const listEl = document.getElementById("fridaySequenceList");
+  listEl.innerHTML = `<div class="text-center py-6 text-slate-500"><span class="inline-block animate-spin mr-2">⏳</span> Scanning lots for Friday follow-ups...</div>`;
+
+  try {
+    const res = await fetch("/api/lana/run-friday-sequence", { method: "POST" });
+    const d = await res.json();
+    const items = d.results || [];
+    if (items.length === 0) {
+      listEl.innerHTML = `<div class="p-6 text-center text-slate-500 bg-slate-950 rounded-xl">No active lots currently need Friday check-ins. Send initial offers first!</div>`;
+      return;
+    }
+
+    listEl.innerHTML = items.map((item, idx) => `
+      <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800 space-y-2">
+        <div class="flex items-center justify-between text-[11px]">
+          <strong class="text-white">${idx + 1}. ${escapeHtml(item.address || 'Lot')}</strong>
+          <span class="text-emerald-400 font-mono font-bold">$${Math.round(item.offer_price || 0).toLocaleString()} Cash</span>
+        </div>
+        <div class="p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-200 text-xs">
+          ${escapeHtml(item.friday_sms || '')}
+        </div>
+      </div>
+    `).join('');
+  } catch (err) {
+    listEl.innerHTML = `<div class="p-4 rounded-xl bg-rose-500/20 text-rose-300">Error: ${escapeHtml(err.message)}</div>`;
+  }
+}
+
+async function runFridaySequence() {
+  openFridaySequenceModal();
+}
+
+// -------------------------------------------------------------------------
+// MULTI-LOT AGENT CONSOLIDATION
+// -------------------------------------------------------------------------
+
+function openConsolidateModal() {
+  openModal("consolidateAgentModal");
+  const listEl = document.getElementById("consolidateAgentList");
+
+  // Group lots by agent_name
+  const agentGroups = {};
+  allLots.forEach(l => {
+    const name = (l.agent_name || "Listing Agent").trim();
+    if (!agentGroups[name]) agentGroups[name] = [];
+    agentGroups[name].push(l);
+  });
+
+  const multiAgents = Object.keys(agentGroups).filter(name => agentGroups[name].length > 1);
+
+  if (multiAgents.length === 0) {
+    listEl.innerHTML = `
+      <div class="p-8 text-center text-slate-500 bg-slate-950 rounded-xl space-y-2">
+        <div class="text-2xl">📑</div>
+        <p>No agents with 2 or more lots detected yet.</p>
+        <p class="text-[11px] text-slate-600">When multiple lots share the same listing agent, Lana bundles them into a portfolio LOI text.</p>
+      </div>
+    `;
+    return;
+  }
+
+  listEl.innerHTML = multiAgents.map(name => {
+    const lots = agentGroups[name];
+    const totalList = lots.reduce((acc, l) => acc + (l.list_price || 0), 0);
+    const totalOffer = lots.reduce((acc, l) => acc + ((l.underwriting && l.underwriting.offer_price) || (l.list_price * 0.60)), 0);
+
+    return `
+      <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h4 class="text-sm font-bold text-white">${escapeHtml(name)}</h4>
+            <span class="text-[11px] text-slate-400">${lots.length} active lots listed • Combined Asking: $${Math.round(totalList).toLocaleString()}</span>
+          </div>
+          <button type="button" onclick="runConsolidateAgent('${escapeHtml(name)}')" class="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition cursor-pointer">
+            📑 Generate Portfolio Offer
+          </button>
+        </div>
+        <div class="space-y-1 text-xs">
+          ${lots.map(l => `
+            <div class="flex items-center justify-between text-slate-300 py-1 border-t border-slate-900">
+              <span>📍 ${escapeHtml(l.address)} (${l.lot_acres || ''} AC)</span>
+              <span class="font-mono text-amber-300">$${Math.round(l.list_price || 0).toLocaleString()}</span>
+            </div>
+          `).join('')}
+        </div>
+        <div class="pt-2 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-emerald-400">
+          <span>Combined 60% Portfolio Cash Offer:</span>
+          <span class="font-mono text-sm">$${Math.round(totalOffer).toLocaleString()}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function runConsolidateAgent(agentName) {
+  try {
+    const res = await fetch("/api/lana/consolidate-agent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ agent_name: agentName, close_days: 14 })
+    });
+    const d = await res.json();
+    if (d.status === "success") {
+      alert(`Consolidated Portfolio SMS Text for ${agentName}:\n\n` + d.sms_text);
+    } else {
+      alert("Error: " + (d.message || "Failed to generate"));
+    }
+  } catch (err) {
+    alert("Error: " + err.message);
+  }
+}
+
+// -------------------------------------------------------------------------
+// ADD LOT MANUALLY & CSV INGEST
+// -------------------------------------------------------------------------
+
+function openAddLotModal() {
+  openModal("addLotModal");
+}
+
+async function submitAddLot() {
+  const address = document.getElementById("addLotAddress").value.trim();
+  if (!address) {
+    alert("Property address is required.");
+    return;
+  }
+
+  const payload = {
+    address: address,
+    city: document.getElementById("addLotCity").value.trim() || "Orlando",
+    county: document.getElementById("addLotCounty").value.trim() || "ORANGE",
+    zip: document.getElementById("addLotZip").value.trim() || "",
+    list_price: parseFloat(document.getElementById("addLotPrice").value) || 110000,
+    lot_acres: parseFloat(document.getElementById("addLotAcres").value) || 0.20,
+    days_on_market: parseInt(document.getElementById("addLotDom").value) || 60,
+    agent_name: document.getElementById("addLotAgentName").value.trim() || "Listing Agent",
+    agent_phone: document.getElementById("addLotAgentPhone").value.trim() || "",
+    agent_email: document.getElementById("addLotAgentEmail").value.trim() || "",
+    brokerage: document.getElementById("addLotBrokerage").value.trim() || "",
+    remarks: document.getElementById("addLotRemarks").value.trim() || ""
+  };
+
+  try {
+    const res = await fetch("/api/lana/lots", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    const d = await res.json();
+    if (d.status === "success") {
+      closeModal("addLotModal");
+      await loadLots();
+      alert("✓ Infill lot added to Lana's Desk!");
+    } else {
+      alert("Failed to add lot: " + (d.message || "Error"));
+    }
+  } catch (err) {
+    alert("Error adding lot: " + err.message);
+  }
+}
+
+async function handleLotCsvUpload(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+
+  const text = await file.text();
+  input.value = "";
+
+  try {
+    const res = await fetch("/api/lana/lots/upload-csv", {
+      method: "POST",
+      headers: { "Content-Type": "text/csv" },
+      body: text
+    });
+    const d = await res.json();
+    if (d.status === "success") {
+      alert(`✓ Ingested ${d.ingested} infill lots into Lana's Desk (${d.filtered_out} filtered out).`);
+      await loadLots();
+    } else {
+      alert("CSV upload failed: " + (d.message || "Error"));
+    }
+  } catch (err) {
+    alert("Error uploading CSV: " + err.message);
+  }
+}
+
+// -------------------------------------------------------------------------
+// PHONE QUICK EDIT & CLEAR DESK
+// -------------------------------------------------------------------------
+
+async function quickEditLotPhone(lotId) {
+  const lot = allLots.find(l => l.id === lotId);
+  const currentPhone = lot ? (lot.agent_phone || "") : "";
+  const newPhone = prompt("Enter listing agent cell phone:", currentPhone);
+  if (newPhone === null) return;
+
+  try {
+    const res = await fetch(`/api/lana/lots/${lotId}/phone`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone: newPhone.trim() })
+    });
+    const d = await res.json();
+    if (d.status === "success") {
+      if (lot) lot.agent_phone = newPhone.trim();
+      filterLotsList();
+    } else {
+      alert("Failed to update phone: " + (d.message || "Error"));
+    }
+  } catch (err) {
+    alert("Error updating phone: " + err.message);
+  }
+}
+
+async function deleteLot(lotId) {
+  if (!confirm("Are you sure you want to remove this lot from Lana's Desk?")) return;
+  try {
+    const res = await fetch(`/api/lana/lots/${lotId}`, { method: "DELETE" });
+    const d = await res.json();
+    if (d.status === "success") {
+      allLots = allLots.filter(l => l.id !== lotId);
+      filterLotsList();
+    }
+  } catch (err) {
+    alert("Error deleting lot: " + err.message);
+  }
+}
+
+async function clearEntireLotDesk() {
+  if (!confirm("⚠️ Are you sure you want to clear ALL lots from Lana's Desk?")) return;
+  try {
+    const res = await fetch("/api/lana/lots/clear", { method: "POST" });
+    const d = await res.json();
+    if (d.status === "success") {
+      allLots = [];
+      filterLotsList();
+      alert("✓ Lana's desk cleared.");
+    }
+  } catch (err) {
+    alert("Error clearing desk: " + err.message);
+  }
+}
+
+// -------------------------------------------------------------------------
+// FLORIDA DOR SDF COMPS & BENCHMARKS
+// -------------------------------------------------------------------------
+
+async function openSdfCompsModal() {
+  openModal("sdfCompsModal");
+  await loadSdfComps();
+}
+
+async function loadSdfComps() {
+  try {
+    const res = await fetch("/api/lana/comps");
+    const d = await res.json();
+
+    const counties = Object.keys(d);
+    document.getElementById("sdfActiveCounties").innerText = counties.length > 0 ? counties.join(", ") : "None";
+
+    let totalVacant = 0;
+    let totalSfh = 0;
+    let totalPsf = 0;
+    let psfCount = 0;
+    let marketAreasHtml = "";
+
+    counties.forEach(countyKey => {
+      const c = d[countyKey];
+      totalVacant += c.total_vacant_sales || 0;
+      totalSfh += c.total_sfh_sales || 0;
+      if (c.median_psf) {
+        totalPsf += c.median_psf;
+        psfCount++;
+      }
+
+      const mktAreas = c.market_areas || {};
+      Object.keys(mktAreas).forEach(mkKey => {
+        const m = mktAreas[mkKey];
+        marketAreasHtml += `
+          <div class="bg-slate-900 p-2.5 rounded-lg border border-slate-800 flex items-center justify-between text-xs">
+            <div>
+              <strong class="text-white">${escapeHtml(countyKey)} • Area ${escapeHtml(mkKey)}</strong>
+              <div class="text-[10px] text-slate-400 mt-0.5">Vacant: ${m.vacant_count || 0} sales • SFH: ${m.sfh_count || 0} comps</div>
+            </div>
+            <div class="text-right font-mono">
+              <div class="text-emerald-300 font-bold">$${Math.round(m.sfh_median_price || 0).toLocaleString()}</div>
+              <div class="text-[10px] text-slate-500">$${Math.round(m.sfh_median_psf || 0)}/sqft</div>
+            </div>
+          </div>
+        `;
+      });
+    });
+
+    document.getElementById("sdfVacantCount").innerText = totalVacant.toLocaleString();
+    document.getElementById("sdfSfhCount").innerText = totalSfh.toLocaleString();
+    document.getElementById("sdfMedianPsf").innerText = psfCount > 0 ? `$${Math.round(totalPsf / psfCount)}/sqft` : "$0";
+
+    const mktContainer = document.getElementById("sdfMarketAreasContainer");
+    if (mktContainer) {
+      mktContainer.innerHTML = marketAreasHtml || `<div class="p-4 text-center text-slate-500">No market areas loaded yet. Run parser below!</div>`;
+    }
+  } catch (err) {
+    console.error("Error loading SDF comps:", err);
+  }
+}
+
+async function runSdfParserFromModal() {
+  const path = document.getElementById("sdfParserPathInput").value.trim();
+  const btn = document.getElementById("btnRunSdfParser");
+  const alertEl = document.getElementById("sdfParserStatusAlert");
+
+  if (btn) {
+    btn.disabled = true;
+    btn.innerText = "Parsing...";
+  }
+
+  try {
+    const res = await fetch("/api/lana/run-sdf-parser", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ directory_or_file: path })
+    });
+    const d = await res.json();
+    if (d.status === "success") {
+      alertEl.className = "text-[11px] p-2 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+      alertEl.innerText = `✓ Successfully parsed county file! Processed ${d.parsed_count} record groups.`;
+      alertEl.classList.remove("hidden");
+      await loadSdfComps();
+    } else {
+      alertEl.className = "text-[11px] p-2 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/30";
+      alertEl.innerText = `Error: ${d.message || 'Parser failed'}`;
+      alertEl.classList.remove("hidden");
+    }
+  } catch (err) {
+    alertEl.className = "text-[11px] p-2 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/30";
+    alertEl.innerText = `Error: ${err.message}`;
+    alertEl.classList.remove("hidden");
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerText = "Run Parser";
+    }
+  }
+}
+
+// Global window registrations
+window.switchDesk = switchDesk;
+window.loadLots = loadLots;
+window.filterLotsList = filterLotsList;
+window.resetLotFilters = resetLotFilters;
+window.handleLotCountyFilterChange = handleLotCountyFilterChange;
+window.toggleLotCard = toggleLotCard;
+window.toggleAllLotCards = toggleAllLotCards;
+window.toggleLotThread = toggleLotThread;
+window.openUnderwriteLotModal = openUnderwriteLotModal;
+window.calculateLotResidualLive = calculateLotResidualLive;
+window.saveLotUnderwritingFromModal = saveLotUnderwritingFromModal;
+window.sendLotDoorbell = sendLotDoorbell;
+window.sendLotFormalLoiEmail = sendLotFormalLoiEmail;
+window.openLotInboundModal = openLotInboundModal;
+window.setLotInboundPreset = setLotInboundPreset;
+window.submitLotInbound = submitLotInbound;
+window.openFridaySequenceModal = openFridaySequenceModal;
+window.runFridaySequence = runFridaySequence;
+window.openConsolidateModal = openConsolidateModal;
+window.runConsolidateAgent = runConsolidateAgent;
+window.openAddLotModal = openAddLotModal;
+window.submitAddLot = submitAddLot;
+window.handleLotCsvUpload = handleLotCsvUpload;
+window.deleteLot = deleteLot;
+window.clearEntireLotDesk = clearEntireLotDesk;
+window.quickEditLotPhone = quickEditLotPhone;
+window.openSdfCompsModal = openSdfCompsModal;
+window.loadSdfComps = loadSdfComps;
+window.runSdfParserFromModal = runSdfParserFromModal;
 

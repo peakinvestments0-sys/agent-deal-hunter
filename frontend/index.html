@@ -96,12 +96,14 @@
         </button>
 
         <!-- Golden Training Studio -->
-        <button type="button" onclick="openBotTrainingModal()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600/30 via-indigo-600/30 to-amber-600/30 hover:from-amber-600/50 hover:to-indigo-600/50 border border-amber-500/40 text-amber-300 text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-md" title="Critique and teach Gemini your authentic investor voice for Brooke and Lauren">
+        <button type="button" onclick="openBotTrainingModal()" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-600/30 via-indigo-600/30 to-amber-600/30 hover:from-amber-600/50 hover:to-indigo-600/50 border border-amber-500/40 text-amber-300 text-xs font-bold transition flex items-center gap-2 cursor-pointer shadow-md" title="Critique and teach Gemini your authentic investor voice for Brooke, Lauren, and Lana">
           <span>🎓 Golden Training Studio</span>
           <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-900/90 border border-slate-700 font-mono font-bold flex items-center gap-1.5">
             <span class="text-indigo-300">🌿 Brooke (<span id="headerBrookeCountBadge">10</span>)</span>
             <span class="text-slate-500">•</span>
             <span class="text-amber-300">🔨 Lauren (<span id="headerLaurenCountBadge">7</span>)</span>
+            <span class="text-slate-500">•</span>
+            <span class="text-emerald-300">📐 Lana (<span id="headerLanaCountBadge">8</span>)</span>
           </span>
         </button>
 
@@ -128,7 +130,7 @@
   <!-- MAIN CONTENT CONTAINER -->
   <main class="max-w-[1720px] mx-auto px-4 sm:px-6 py-6 space-y-6 flex-1 w-full">
 
-    <!-- DUAL-DESK SWITCHER (BROOKE OFF-MARKET VS. LAUREN ON-MARKET REDFIN) -->
+    <!-- TRIPLE-DESK SWITCHER (BROOKE OFF-MARKET VS. LAUREN ON-MARKET FIXERS VS. LANA ON-MARKET INFILL LAND) -->
     <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-900/80 border border-slate-800 p-2 rounded-2xl shadow-md">
       <div class="flex items-center gap-2">
         <button type="button" id="btnDeskBrooke" onclick="switchDesk('BROOKE')" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 bg-indigo-600 text-white shadow-lg shadow-indigo-600/30 cursor-pointer">
@@ -139,10 +141,17 @@
           <span>🔨 Lauren's Redfin Fixers</span>
           <span id="headerLaurenBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-mono font-bold">0</span>
         </button>
+        <button type="button" id="btnDeskLana" onclick="switchDesk('LANA')" class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 text-slate-400 hover:text-white cursor-pointer">
+          <span>📐 Lana's Infill Land</span>
+          <span id="headerLanaBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-bold">0</span>
+        </button>
       </div>
       <div class="flex items-center gap-3 text-xs">
+        <button type="button" onclick="openModal('sdfCompsModal')" class="px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition" title="View Florida Department of Revenue property comp medians and parse county files">
+          <span>📊 Florida DOR Comps</span>
+        </button>
         <button type="button" onclick="openModal('chromeExtensionModal')" class="px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 text-xs font-bold flex items-center gap-1.5 cursor-pointer transition">
-          <span>🧩 Redfin Plugin Setup</span>
+          <span>🧩 Extension Setup</span>
         </button>
         <span id="activePersonaBadge" class="px-3 py-1 rounded-xl bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 text-xs font-bold flex items-center gap-1.5">
           <span>🌿 Brooke</span>
@@ -528,6 +537,196 @@
       </div>
 
     </div><!-- END LAUREN'S DESK VIEW -->
+
+    <!-- LANA'S ON-MARKET INFILL LAND SPECIALIST DESK VIEW -->
+    <div id="lanaDeskView" class="hidden space-y-6">
+
+      <!-- LANA'S METRICS RIBBON -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        <div class="bg-gradient-to-br from-emerald-950/30 to-slate-900/90 border border-emerald-500/40 rounded-2xl p-3.5 shadow-sm">
+          <div class="text-[10px] font-bold text-emerald-300 uppercase tracking-wider flex items-center gap-1">
+            <span>📐 Infill Lots</span>
+          </div>
+          <div class="text-xl font-black text-emerald-300 mt-1" id="statLotsCount">0</div>
+          <div class="text-[10px] text-emerald-300/70 mt-0.5">0.1 - 0.5 Acre Infill</div>
+        </div>
+
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 shadow-sm">
+          <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Average Asking Price</div>
+          <div class="text-xl font-black text-white mt-1" id="statLotsAvgAsking">$0</div>
+          <div class="text-[10px] text-slate-500 mt-0.5">List price baseline</div>
+        </div>
+
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 shadow-sm">
+          <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Avg New-Build Resale</div>
+          <div class="text-xl font-black text-white mt-1" id="statLotsAvgNewbuild">$0</div>
+          <div class="text-[10px] text-slate-500 mt-0.5">DOR comp benchmark</div>
+        </div>
+
+        <div class="bg-gradient-to-br from-teal-950/30 to-slate-900/90 border border-teal-500/30 rounded-2xl p-3.5 shadow-sm">
+          <div class="text-[10px] font-bold text-teal-300 uppercase tracking-wider flex items-center gap-1">
+            <span>💰 Max Payable Basis</span>
+          </div>
+          <div class="text-xl font-black text-teal-400 mt-1" id="statLotsAvgMaxPayable">$0</div>
+          <div class="text-[10px] text-teal-300/70 mt-0.5">Residual Land Formula</div>
+        </div>
+
+        <div class="bg-gradient-to-br from-cyan-950/30 to-slate-900/90 border border-cyan-500/30 rounded-2xl p-3.5 shadow-sm">
+          <div class="text-[10px] font-bold text-cyan-300 uppercase tracking-wider flex items-center gap-1">
+            <span>📄 Formal LOIs Sent</span>
+          </div>
+          <div class="text-xl font-black text-cyan-400 mt-1" id="statLotsLoiSent">0</div>
+          <div class="text-[10px] text-cyan-300/70 mt-0.5">Doorbell + Emailed LOI</div>
+        </div>
+
+        <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-3.5 shadow-sm">
+          <div class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Florida DOR Comps</div>
+          <div class="text-xs font-bold text-emerald-400 mt-2 flex items-center gap-1.5" id="statLotsSdfStatus">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+            <span>Statewide SDF Active</span>
+          </div>
+          <button type="button" onclick="openModal('sdfCompsModal')" class="text-[10px] text-emerald-400 hover:underline mt-1 block cursor-pointer">Benchmarks &amp; Upload &rarr;</button>
+        </div>
+      </div>
+
+      <!-- ⚡ LANA AUTO-DRIP OUTBOUND QUEUE BAR (DOORBELL SMS) -->
+      <div class="bg-gradient-to-r from-emerald-950/70 via-slate-900 to-emerald-950/70 border border-emerald-500/40 rounded-2xl p-4 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5 min-w-0">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-xl flex-shrink-0">
+            📐
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-2">
+              <h4 class="text-sm font-bold text-white flex items-center gap-1.5">
+                <span>Infill Land Auto-Drip Queue (Doorbell SMS)</span>
+                <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Load &amp; Go</span>
+              </h4>
+              <span id="lanaDripStatusBadge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-400 border border-slate-700">
+                ⚪ Idle
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 truncate mt-0.5" id="lanaDripSubtitle">
+              Paces builder-framed opening hooks &amp; doorbell texts (60-120s delay) across on-market infill land with zero hyphens.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 flex-shrink-0 w-full md:w-auto justify-end">
+          <div class="flex items-center gap-1.5 bg-slate-950/80 px-2.5 py-1.5 rounded-xl border border-slate-800 text-xs">
+            <span class="text-slate-400 text-[11px]">Pacing:</span>
+            <select id="lanaDripPacing" class="bg-transparent text-emerald-300 text-xs font-semibold focus:outline-none cursor-pointer">
+              <option value="45-90">45-90s (Fast)</option>
+              <option value="60-120" selected>60-120s (Standard)</option>
+              <option value="90-180">90-180s (Stealth)</option>
+              <option value="120-240">2-4 min (Ultra-Safe)</option>
+            </select>
+          </div>
+
+          <button type="button" id="btnStartLanaDrip" onclick="startDripQueue('LANA')" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-lg shadow-emerald-600/30 cursor-pointer">
+            <span>🚀 Start Load &amp; Go</span>
+          </button>
+
+          <button type="button" id="btnPauseLanaDrip" onclick="pauseDripQueue()" class="hidden px-3 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 text-xs font-bold transition cursor-pointer">
+            <span>⏸️ Pause</span>
+          </button>
+
+          <button type="button" id="btnStopLanaDrip" onclick="stopDripQueue()" class="hidden px-3 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-300 text-xs font-bold transition cursor-pointer">
+            <span>⏹️ Stop</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- FILTER & ACTIONS BAR FOR LOTS -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 space-y-3 shadow-md">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <!-- Left side filters -->
+          <div class="flex flex-wrap items-center gap-2.5 flex-1 min-w-[280px]">
+            <div class="relative w-56 max-w-full">
+              <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-xs">🔍</span>
+              <input type="text" id="lotSearchInput" placeholder="Search address, agent, parcel..." oninput="filterLotsList()" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl pl-8 pr-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+            </div>
+
+            <div class="flex items-center gap-1.5 bg-[#0b1220] px-2.5 py-1.5 rounded-xl border border-slate-700/80">
+              <span class="text-[11px] text-slate-400 font-medium">Status:</span>
+              <select id="lotContactFilter" onchange="filterLotsList()" class="bg-transparent text-emerald-300 text-xs font-semibold focus:outline-none cursor-pointer">
+                <option value="ALL">All Lots</option>
+                <option value="NEW">✨ New / Uncontacted</option>
+                <option value="CONTACTED">💬 Contacted / Doorbell Sent</option>
+                <option value="REPLIED">📥 Inbound Replies</option>
+                <option value="LOI_SENT">📄 Written LOI Sent</option>
+                <option value="UNDERWRITTEN">📐 Passes Residual Underwriting</option>
+              </select>
+            </div>
+
+            <div class="flex items-center gap-1.5 bg-[#0b1220] px-2.5 py-1.5 rounded-xl border border-slate-700/80">
+              <span class="text-[11px] text-slate-400 font-medium">County:</span>
+              <select id="lotCountyFilter" onchange="handleLotCountyFilterChange()" class="bg-transparent text-emerald-300 text-xs font-semibold focus:outline-none cursor-pointer">
+                <option value="ALL">All Counties</option>
+              </select>
+            </div>
+
+            <div class="flex items-center gap-1.5 bg-[#0b1220] px-2.5 py-1.5 rounded-xl border border-slate-700/80">
+              <span class="text-[11px] text-slate-400 font-medium">City:</span>
+              <select id="lotCityFilter" onchange="filterLotsList()" class="bg-transparent text-emerald-300 text-xs font-semibold focus:outline-none cursor-pointer">
+                <option value="ALL">All Cities</option>
+              </select>
+            </div>
+
+            <div class="flex items-center gap-1.5 bg-[#0b1220] px-2.5 py-1.5 rounded-xl border border-slate-700/80">
+              <span class="text-[11px] text-slate-400 font-medium">Size:</span>
+              <select id="lotSizeFilter" onchange="filterLotsList()" class="bg-transparent text-emerald-300 text-xs font-semibold focus:outline-none cursor-pointer">
+                <option value="ALL">All Lot Sizes</option>
+                <option value="INFILL" selected>🎯 Infill (0.1 - 0.5 AC)</option>
+                <option value="SUB_HALF">&le; 0.50 Acre</option>
+                <option value="LARGE">&gt; 0.50 Acre</option>
+              </select>
+            </div>
+
+            <button type="button" id="btnResetLotFilters" onclick="resetLotFilters()" class="hidden px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white text-[11px] font-semibold transition cursor-pointer" title="Reset all filters">
+              ✕ Reset
+            </button>
+          </div>
+
+          <!-- Right side action buttons -->
+          <div class="flex items-center gap-2">
+            <input type="file" id="lotCsvFileInput" accept=".csv,.tsv,.txt" class="hidden" onchange="handleLotCsvUpload(this)">
+            <button type="button" onclick="document.getElementById('lotCsvFileInput').click()" class="px-3.5 py-1.5 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm" title="Upload MLS, Redfin, or LandWatch CSV exports">
+              <span>📁 Ingest CSV</span>
+            </button>
+            <button type="button" onclick="openAddLotModal()" class="px-3.5 py-1.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm">
+              <span>➕ Add Lot</span>
+            </button>
+            <button type="button" onclick="openFridaySequenceModal()" class="px-3.5 py-1.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm" title="Run Friday check-in sequence for rejected lots (60-day cash backup)">
+              <span>📅 Friday Follow-up</span>
+            </button>
+            <button type="button" onclick="openConsolidateModal()" class="px-3.5 py-1.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-sm" title="Consolidate multiple lots with same listing agent into a portfolio offer">
+              <span>📑 Agent Bundle</span>
+            </button>
+            <button type="button" id="btnToggleAllLots" onclick="toggleAllLotCards()" class="px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-emerald-300 text-xs font-semibold border border-slate-700 transition flex items-center gap-1.5 cursor-pointer" title="Expand or collapse all lot cards">
+              <span>⛶ Expand All</span>
+            </button>
+            <button type="button" onclick="loadLots()" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition flex items-center gap-1.5 cursor-pointer">
+              <span>🔄 Reload</span>
+            </button>
+            <button type="button" onclick="clearEntireLotDesk()" class="px-3.5 py-1.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/30 hover:border-rose-500/50 text-rose-300 hover:text-rose-200 text-xs font-bold transition flex items-center gap-1.5 shadow-sm cursor-pointer" title="Clear all listings from Lana's Desk">
+              <span>🗑️ Clear Desk</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Count indicator and active filter info -->
+        <div class="flex items-center justify-between text-xs text-slate-400 pt-1.5 border-t border-slate-800/60">
+          <span id="lotCountDisplay">Loading infill lots...</span>
+          <span id="lotFilteredBadge" class="hidden text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">⚡ Filter Applied</span>
+        </div>
+      </div>
+
+      <!-- LOTS LIST / CARDS CONTAINER -->
+      <div id="lotsContainer" class="space-y-4">
+        <!-- Injected dynamically by app.js -->
+      </div>
+
+    </div><!-- END LANA'S DESK VIEW -->
 
   </main>
 
@@ -1761,7 +1960,7 @@
   <div id="botTrainingModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
     <div class="bg-slate-900 border border-amber-500/30 rounded-2xl w-full max-w-5xl shadow-2xl p-5 space-y-4 my-auto max-h-[92vh] flex flex-col">
       
-      <!-- Modal Header: Unified Golden Training Studio with Both Desks -->
+      <!-- Modal Header: Unified Golden Training Studio with All Desks -->
       <div class="flex items-start justify-between border-b border-slate-800 pb-3 flex-shrink-0">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-xl shadow-inner text-amber-400">
@@ -1774,9 +1973,11 @@
                 <span class="px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">🌿 Brooke (<span id="modalBrookeCountBadge">10</span>)</span>
                 <span class="text-slate-500">•</span>
                 <span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">🔨 Lauren (<span id="modalLaurenCountBadge">7</span>)</span>
+                <span class="text-slate-500">•</span>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">📐 Lana (<span id="modalLanaCountBadge">8</span>)</span>
               </div>
             </div>
-            <p class="text-xs text-slate-400 mt-0.5">Review, test, and critique Gemini voice responses for Brooke (Off Market Leads) and Lauren (On Market Fixers).</p>
+            <p class="text-xs text-slate-400 mt-0.5">Review, test, and critique Gemini voice responses for Brooke (Off Market Leads), Lauren (Fixers), and Lana (Infill Land).</p>
           </div>
         </div>
         <button type="button" onclick="closeModal('botTrainingModal')" class="text-slate-400 hover:text-white text-lg p-1.5 rounded-lg hover:bg-slate-800 transition">✕</button>
@@ -1784,13 +1985,17 @@
 
       <!-- Dedicated Desk Switcher Tabs -->
       <div class="flex items-center gap-2 p-1.5 bg-slate-950 rounded-2xl border border-slate-800 flex-shrink-0">
-        <button type="button" id="btnDeskBrooke" onclick="setStudioDeskFilter('BROOKE')" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/30 border border-indigo-400 cursor-pointer transition">
-          <span>🌿 Brooke (Off Market Deals)</span>
+        <button type="button" id="studioDeskBrooke" onclick="setStudioDeskFilter('BROOKE')" class="flex-1 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/30 border border-indigo-400 cursor-pointer transition">
+          <span>🌿 Brooke (Off Market)</span>
           <span id="deskBrookeCountBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-950 font-mono text-indigo-200 border border-indigo-400/30">10 Stages</span>
         </button>
-        <button type="button" id="btnDeskLauren" onclick="setStudioDeskFilter('LAUREN')" class="flex-1 py-2 px-3 rounded-xl text-xs font-medium flex items-center justify-center gap-2 bg-slate-900/60 text-slate-400 hover:text-white border border-slate-800 cursor-pointer transition">
-          <span>🔨 Lauren (On Market Fixers)</span>
+        <button type="button" id="studioDeskLauren" onclick="setStudioDeskFilter('LAUREN')" class="flex-1 py-2 px-3 rounded-xl text-xs font-medium flex items-center justify-center gap-2 bg-slate-900/60 text-slate-400 hover:text-white border border-slate-800 cursor-pointer transition">
+          <span>🔨 Lauren (Fixers)</span>
           <span id="deskLaurenCountBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 font-mono text-amber-300 border border-amber-500/30">7 Stages</span>
+        </button>
+        <button type="button" id="studioDeskLana" onclick="setStudioDeskFilter('LANA')" class="flex-1 py-2 px-3 rounded-xl text-xs font-medium flex items-center justify-center gap-2 bg-slate-900/60 text-slate-400 hover:text-white border border-slate-800 cursor-pointer transition">
+          <span>📐 Lana (Infill Land)</span>
+          <span id="deskLanaCountBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 font-mono text-emerald-300 border border-emerald-500/30">8 Stages</span>
         </button>
       </div>
 
@@ -2043,6 +2248,386 @@
         </button>
         <button type="button" id="btnSubmitFixerInbound" onclick="submitFixerInbound()" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-lg shadow-indigo-600/30 cursor-pointer flex items-center gap-1.5">
           <span>🧠 Analyze with Lauren Engine</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LANA INFILL RESIDUAL UNDERWRITING DRAWER / MODAL -->
+  <div id="underwriteLotModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-emerald-500/40 rounded-2xl w-full max-w-2xl shadow-2xl p-6 space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 font-bold flex items-center justify-center text-sm border border-emerald-500/30">📐</div>
+          <div>
+            <h3 class="text-sm font-bold text-white">Infill Residual Land Underwriting</h3>
+            <p class="text-[11px] text-slate-400" id="underwriteLotHeaderSub">Adjust construction specs &amp; margin targets</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('underwriteLotModal')" class="text-slate-400 hover:text-white p-1 rounded-lg">✕</button>
+      </div>
+
+      <input type="hidden" id="underwriteLotId">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Lot Summary Box -->
+        <div class="bg-slate-950/80 p-3.5 rounded-xl border border-slate-800 space-y-2 text-xs">
+          <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Lot Overview</div>
+          <div class="font-bold text-white text-sm" id="uwLotAddress">...</div>
+          <div class="text-slate-400" id="uwLotDetails">...</div>
+          <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+            <span class="text-slate-400">Asking List Price:</span>
+            <span class="font-bold text-amber-300 font-mono text-sm" id="uwLotListPrice">$0</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">60% Asking Offer Target:</span>
+            <span class="font-bold text-emerald-400 font-mono text-sm" id="uwLotOfferPrice">$0</span>
+          </div>
+        </div>
+
+        <!-- Underwriting Parameters Form -->
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Finished New-Build Resale Value ($):</label>
+            <input type="number" id="uwFinishedValue" oninput="calculateLotResidualLive()" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500">
+            <span class="text-[10px] text-slate-500" id="uwCompBenchmarkNote">FL DOR Comp Median Benchmark</span>
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Planned Home Size (SqFt):</label>
+            <input type="number" id="uwPlannedSqft" value="2000" oninput="calculateLotResidualLive()" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500">
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-400 mb-1">Build $/SqFt:</label>
+              <input type="number" id="uwBuildCostPsf" value="165" oninput="calculateLotResidualLive()" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2 text-xs text-white font-mono focus:outline-none focus:border-emerald-500">
+            </div>
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-400 mb-1">Builder Profit %:</label>
+              <input type="number" step="0.01" id="uwProfitPct" value="0.18" oninput="calculateLotResidualLive()" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2 text-xs text-white font-mono focus:outline-none focus:border-emerald-500">
+            </div>
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-400 mb-1">Fees / Closing %:</label>
+              <input type="number" step="0.01" id="uwFeesPct" value="0.04" oninput="calculateLotResidualLive()" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2 text-xs text-white font-mono focus:outline-none focus:border-emerald-500">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Calculation Breakdown -->
+      <div class="bg-slate-950/90 border border-slate-800 rounded-xl p-4 space-y-2 text-xs font-mono">
+        <div class="text-[11px] font-semibold text-emerald-400 font-sans uppercase tracking-wider flex items-center justify-between">
+          <span>Formula Breakdown</span>
+          <span id="uwViabilityBadge" class="px-2 py-0.5 rounded text-[10px] font-bold">...</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center pt-2">
+          <div class="bg-slate-900 p-2 rounded-lg border border-slate-800">
+            <div class="text-[10px] text-slate-400 font-sans">Total Build Cost</div>
+            <div class="text-xs font-bold text-white mt-0.5" id="calcTotalBuildCost">$0</div>
+          </div>
+          <div class="bg-slate-900 p-2 rounded-lg border border-slate-800">
+            <div class="text-[10px] text-slate-400 font-sans">Builder Margin</div>
+            <div class="text-xs font-bold text-amber-300 mt-0.5" id="calcBuilderMargin">$0</div>
+          </div>
+          <div class="bg-slate-900 p-2 rounded-lg border border-slate-800">
+            <div class="text-[10px] text-slate-400 font-sans">Fees &amp; Carry</div>
+            <div class="text-xs font-bold text-slate-300 mt-0.5" id="calcFees">$0</div>
+          </div>
+          <div class="bg-slate-900 p-2 rounded-lg border border-emerald-500/30">
+            <div class="text-[10px] text-emerald-400 font-sans font-bold">Max Allowable Land</div>
+            <div class="text-sm font-bold text-emerald-300 mt-0.5" id="calcMaxPayable">$0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+        <button type="button" onclick="closeModal('underwriteLotModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white cursor-pointer">
+          Cancel
+        </button>
+        <button type="button" onclick="saveLotUnderwritingFromModal()" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 cursor-pointer flex items-center gap-1.5">
+          <span>💾 Save &amp; Recalculate Lot</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD INFILL LOT MANUALLY MODAL -->
+  <div id="addLotModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-emerald-500/40 rounded-2xl w-full max-w-xl shadow-2xl p-6 space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 font-bold flex items-center justify-center text-sm border border-emerald-500/30">➕</div>
+          <div>
+            <h3 class="text-sm font-bold text-white">Add Infill Land Listing</h3>
+            <p class="text-[11px] text-slate-400">Manual entry for Lana's Infill Land Desk</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('addLotModal')" class="text-slate-400 hover:text-white p-1 rounded-lg">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Property Address *</label>
+          <input type="text" id="addLotAddress" placeholder="e.g. 1024 18th St" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">City *</label>
+            <input type="text" id="addLotCity" value="Orlando" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">County *</label>
+            <input type="text" id="addLotCounty" value="ORANGE" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">ZIP</label>
+            <input type="text" id="addLotZip" placeholder="32805" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">List Price ($) *</label>
+            <input type="number" id="addLotPrice" value="115000" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Lot Acres *</label>
+            <input type="number" step="0.01" id="addLotAcres" value="0.22" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Days on Market (DOM)</label>
+            <input type="number" id="addLotDom" value="75" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2.5">
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Listing Agent Name</label>
+            <input type="text" id="addLotAgentName" placeholder="Agent Name" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Agent Phone (Cell)</label>
+            <input type="tel" id="addLotAgentPhone" placeholder="(407) 555-0199" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+          </div>
+          <div>
+            <label class="block text-[11px] font-semibold text-slate-400 mb-1">Agent Email (For LOI)</label>
+            <input type="email" id="addLotAgentEmail" placeholder="agent@brokerage.com" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Brokerage</label>
+          <input type="text" id="addLotBrokerage" placeholder="Brokerage Name" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">Remarks / Notes</label>
+          <textarea id="addLotRemarks" rows="2" placeholder="Zoning notes, utilities at street, etc." class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"></textarea>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+        <button type="button" onclick="closeModal('addLotModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white cursor-pointer">
+          Cancel
+        </button>
+        <button type="button" onclick="submitAddLot()" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 cursor-pointer flex items-center gap-1.5">
+          <span>🚀 Add to Lana's Desk</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LANA INBOUND AGENT REPLY SIMULATION MODAL -->
+  <div id="lotInboundModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-emerald-500/40 rounded-2xl w-full max-w-xl shadow-2xl p-6 space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 font-bold flex items-center justify-center text-sm border border-emerald-500/30">💬</div>
+          <div>
+            <h3 class="text-sm font-bold text-white">Simulate Agent Inbound Reply</h3>
+            <p class="text-[11px] text-slate-400" id="lotInboundSubtitle">Test Lana's Infill Land Objection Engine</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('lotInboundModal')" class="text-slate-400 hover:text-white p-1 rounded-lg">✕</button>
+      </div>
+
+      <input type="hidden" id="lotInboundLotId">
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-400 mb-1">What did the listing agent text?</label>
+          <textarea id="lotInboundMessage" rows="3" class="w-full bg-[#0b1220] border border-slate-700/80 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500" placeholder="Type or click a preset below to test instantly..."></textarea>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Quick Inbound Presets (Click to Test Instantly):</label>
+          <div class="flex flex-wrap gap-1.5">
+            <button type="button" onclick="setLotInboundPreset('Seller is firm on price at $130k. We already had offers at 110k and passed.')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-[11px] transition cursor-pointer">
+              🛑 Firm Price Pushback
+            </button>
+            <button type="button" onclick="setLotInboundPreset('Why is your offer so low? Land in this neighborhood is worth way more.')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-[11px] transition cursor-pointer">
+              📉 Why So Low Math Drop
+            </button>
+            <button type="button" onclick="setLotInboundPreset('Are you actual builders or just wholesalers trying to tie up my listing?')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-[11px] transition cursor-pointer">
+              🏗️ Builder Credentials / Wholesaler Vetting
+            </button>
+            <button type="button" onclick="setLotInboundPreset('Who is this and what company do you represent?')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-[11px] transition cursor-pointer">
+              ❓ Identity Inquiry
+            </button>
+          </div>
+        </div>
+
+        <div id="lotInboundResultBox" class="hidden p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
+          <div class="flex items-center justify-between text-[11px]">
+            <span class="font-bold text-emerald-400">🤖 Lana's Engine Analysis:</span>
+            <span id="lotInboundNodeBadge" class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-300">...</span>
+          </div>
+          <p id="lotInboundReason" class="text-slate-400 text-[11px] italic"></p>
+          <div class="p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-200">
+            <strong>Suggested SMS Reply:</strong>
+            <p id="lotInboundSuggestedReply" class="mt-1 font-medium"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+        <button type="button" onclick="closeModal('lotInboundModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white cursor-pointer">
+          Close
+        </button>
+        <button type="button" id="btnSubmitLotInbound" onclick="submitLotInbound()" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-600/30 cursor-pointer flex items-center gap-1.5">
+          <span>🧠 Analyze with Lana Engine</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FRIDAY SEQUENCE MODAL -->
+  <div id="fridaySequenceModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-purple-500/40 rounded-2xl w-full max-w-2xl shadow-2xl p-6 space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-300 font-bold flex items-center justify-center text-sm border border-purple-500/30">📅</div>
+          <div>
+            <h3 class="text-sm font-bold text-white">Friday Follow-Up Sequence</h3>
+            <p class="text-[11px] text-slate-400">Generate 60-day cash backup follow-up texts for rejected or stalled lots</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('fridaySequenceModal')" class="text-slate-400 hover:text-white p-1 rounded-lg">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <p class="text-slate-400">
+          Lana automatically reviews all lots that have an offer on file and prepares personalized Friday check-in texts offering our 60-day cash backup terms:
+        </p>
+
+        <div id="fridaySequenceList" class="space-y-2 max-h-80 overflow-y-auto p-1">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+        <button type="button" onclick="closeModal('fridaySequenceModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white cursor-pointer">
+          Close
+        </button>
+        <button type="button" onclick="runFridaySequence()" class="px-5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg shadow-purple-600/30 cursor-pointer flex items-center gap-1.5">
+          <span>🚀 Generate &amp; Prepare Friday Texts</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MULTI-LOT AGENT CONSOLIDATION MODAL -->
+  <div id="consolidateAgentModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-blue-500/40 rounded-2xl w-full max-w-2xl shadow-2xl p-6 space-y-4 my-auto">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-blue-500/20 text-blue-300 font-bold flex items-center justify-center text-sm border border-blue-500/30">📑</div>
+          <div>
+            <h3 class="text-sm font-bold text-white">Multi-Lot Listing Agent Consolidation</h3>
+            <p class="text-[11px] text-slate-400">Bundle multiple lots from the same agent into a portfolio offer</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('consolidateAgentModal')" class="text-slate-400 hover:text-white p-1 rounded-lg">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div id="consolidateAgentList" class="space-y-2 max-h-80 overflow-y-auto p-1">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end pt-2 border-t border-slate-800">
+        <button type="button" onclick="closeModal('consolidateAgentModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white cursor-pointer">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLORIDA DOR SDF COMPS & BENCHMARKS MODAL -->
+  <div id="sdfCompsModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-emerald-500/40 rounded-2xl w-full max-w-3xl shadow-2xl p-6 space-y-4 my-auto max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3 flex-shrink-0">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 font-bold flex items-center justify-center text-sm border border-emerald-500/30">📊</div>
+          <div>
+            <h3 class="text-sm font-bold text-white">Florida DOR Sales Data File (SDF) Benchmarks</h3>
+            <p class="text-[11px] text-slate-400">Statewide arms-length qualified vacant land sales &amp; single-family comps</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('sdfCompsModal')" class="text-slate-400 hover:text-white p-1 rounded-lg">✕</button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto space-y-4 text-xs">
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 font-mono">
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+            <div class="text-[10px] text-slate-400 font-sans">Active Counties</div>
+            <div class="text-sm font-bold text-emerald-400 mt-1" id="sdfActiveCounties">-</div>
+          </div>
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+            <div class="text-[10px] text-slate-400 font-sans">Vacant Land Sales</div>
+            <div class="text-sm font-bold text-white mt-1" id="sdfVacantCount">-</div>
+          </div>
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+            <div class="text-[10px] text-slate-400 font-sans">New SFH Resale Comps</div>
+            <div class="text-sm font-bold text-white mt-1" id="sdfSfhCount">-</div>
+          </div>
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+            <div class="text-[10px] text-slate-400 font-sans">County Median PSF</div>
+            <div class="text-sm font-bold text-amber-300 mt-1" id="sdfMedianPsf">-</div>
+          </div>
+        </div>
+
+        <!-- Run Parser Box -->
+        <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800 space-y-2">
+          <div class="text-[11px] font-semibold text-emerald-300 uppercase tracking-wider">Parse Florida County File</div>
+          <p class="text-slate-400 text-[11px]">
+            Input any Florida county SDF file path or directory (supports CSV, TXT, ZIP for all 67 counties):
+          </p>
+          <div class="flex gap-2">
+            <input type="text" id="sdfParserPathInput" value="C:\Users\johng\Documents\sdf-downloads\SDF58F202601.csv" class="flex-1 bg-[#0b1220] border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-emerald-500">
+            <button type="button" id="btnRunSdfParser" onclick="runSdfParserFromModal()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition cursor-pointer flex-shrink-0">
+              Run Parser
+            </button>
+          </div>
+          <div id="sdfParserStatusAlert" class="hidden text-[11px] p-2 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"></div>
+        </div>
+
+        <!-- Benchmarks Breakdown -->
+        <div class="space-y-2">
+          <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Market Area Benchmarks</div>
+          <div id="sdfMarketAreasContainer" class="space-y-1.5 max-h-56 overflow-y-auto">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end pt-2 border-t border-slate-800 flex-shrink-0">
+        <button type="button" onclick="closeModal('sdfCompsModal')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:text-white cursor-pointer">
+          Close
         </button>
       </div>
     </div>

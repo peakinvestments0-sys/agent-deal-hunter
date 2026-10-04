@@ -1,0 +1,6535 @@
+{
+  "ORANGE": {
+    "county": "ORANGE",
+    "dor_county_no": "58",
+    "file_source": "SDF58F202601.csv",
+    "total_vacant_sales_found": 2690,
+    "total_improved_sales_found": 25408,
+    "county_benchmarks": {
+      "median_vacant_lot_price": 450000.0,
+      "median_finished_value": 459750.0,
+      "p25_finished_value": 355000.0,
+      "p75_finished_value": 640000.0
+    },
+    "neighborhood_benchmarks": {
+      "06461807": {
+        "median_finished_value": 441000.0,
+        "median_vacant_lot_price": 445450.0,
+        "finished_count": 561,
+        "vacant_count": 198
+      },
+      "07091118": {
+        "median_finished_value": 428150.0,
+        "median_vacant_lot_price": 570000.0,
+        "finished_count": 46,
+        "vacant_count": 3
+      },
+      "07141018": {
+        "median_finished_value": 535000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 11,
+        "vacant_count": 0
+      },
+      "07090918": {
+        "median_finished_value": 375000.0,
+        "median_vacant_lot_price": 484000.0,
+        "finished_count": 13,
+        "vacant_count": 11
+      },
+      "07200908": {
+        "median_finished_value": 635000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 19,
+        "vacant_count": 0
+      },
+      "29140127": {
+        "median_finished_value": 555000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 21,
+        "vacant_count": 0
+      },
+      "34090428": {
+        "median_finished_value": 312000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 85,
+        "vacant_count": 0
+      },
+      "34080328": {
+        "median_finished_value": 275000.0,
+        "median_vacant_lot_price": 90400.0,
+        "finished_count": 171,
+        "vacant_count": 1
+      },
+      "30080529": {
+        "median_finished_value": 765000.0,
+        "median_vacant_lot_price": 1242500.0,
+        "finished_count": 30,
+        "vacant_count": 4
+      },
+      "32071520": {
+        "median_finished_value": 625000.0,
+        "median_vacant_lot_price": 475000.0,
+        "finished_count": 47,
+        "vacant_count": 9
+      },
+      "30980529": {
+        "median_finished_value": 413850.0,
+        "median_vacant_lot_price": 10000.0,
+        "finished_count": 20,
+        "vacant_count": 1
+      },
+      "33031819": {
+        "median_finished_value": 308000.0,
+        "median_vacant_lot_price": 95650.0,
+        "finished_count": 25,
+        "vacant_count": 4
+      },
+      "32231720": {
+        "median_finished_value": 1162500.0,
+        "median_vacant_lot_price": 797500.0,
+        "finished_count": 62,
+        "vacant_count": 2
+      },
+      "01140720": {
+        "median_finished_value": 702850.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 6,
+        "vacant_count": 0
+      },
+      "01090520": {
+        "median_finished_value": 495000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "01141120": {
+        "median_finished_value": 460000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 29,
+        "vacant_count": 0
+      },
+      "01090220": {
+        "median_finished_value": 500000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 33,
+        "vacant_count": 0
+      },
+      "01141220": {
+        "median_finished_value": 599950.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "01130820": {
+        "median_finished_value": 515000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "01183720": {
+        "median_finished_value": 577500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 8,
+        "vacant_count": 0
+      },
+      "01100620": {
+        "median_finished_value": 430000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 6,
+        "vacant_count": 0
+      },
+      "02093521": {
+        "median_finished_value": 485000.0,
+        "median_vacant_lot_price": 15000.0,
+        "finished_count": 5,
+        "vacant_count": 1
+      },
+      "02103421": {
+        "median_finished_value": 405000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 58,
+        "vacant_count": 0
+      },
+      "02494421": {
+        "median_finished_value": 469000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 17,
+        "vacant_count": 0
+      },
+      "02153221": {
+        "median_finished_value": 567500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 26,
+        "vacant_count": 0
+      },
+      "05090422": {
+        "median_finished_value": 472500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 4,
+        "vacant_count": 0
+      },
+      "19250438": {
+        "median_finished_value": 1152500.0,
+        "median_vacant_lot_price": 1200000.0,
+        "finished_count": 36,
+        "vacant_count": 1
+      },
+      "19250737": {
+        "median_finished_value": 1100000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 36,
+        "vacant_count": 0
+      },
+      "28970829": {
+        "median_finished_value": 455000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 43,
+        "vacant_count": 0
+      },
+      "24183839": {
+        "median_finished_value": 521000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 14,
+        "vacant_count": 0
+      },
+      "23271130": {
+        "median_finished_value": 469000.0,
+        "median_vacant_lot_price": 310000.0,
+        "finished_count": 97,
+        "vacant_count": 2
+      },
+      "23192329": {
+        "median_finished_value": 469500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 6,
+        "vacant_count": 0
+      },
+      "23270530": {
+        "median_finished_value": 1157500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 6,
+        "vacant_count": 0
+      },
+      "24082839": {
+        "median_finished_value": 333250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 4,
+        "vacant_count": 0
+      },
+      "23070730": {
+        "median_finished_value": 750450.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "23121829": {
+        "median_finished_value": 660000.0,
+        "median_vacant_lot_price": 325000.0,
+        "finished_count": 37,
+        "vacant_count": 1
+      },
+      "13201330": {
+        "median_finished_value": 702500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 4,
+        "vacant_count": 0
+      },
+      "13472931": {
+        "median_finished_value": 699850.0,
+        "median_vacant_lot_price": 200000.0,
+        "finished_count": 10,
+        "vacant_count": 3
+      },
+      "13151430": {
+        "median_finished_value": 534750.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 8,
+        "vacant_count": 0
+      },
+      "13175530": {
+        "median_finished_value": 396250.0,
+        "median_vacant_lot_price": 577000.0,
+        "finished_count": 12,
+        "vacant_count": 19
+      },
+      "13145130": {
+        "median_finished_value": 345000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 75,
+        "vacant_count": 0
+      },
+      "08100931": {
+        "median_finished_value": 555000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 79,
+        "vacant_count": 0
+      },
+      "04100332": {
+        "median_finished_value": 429900.0,
+        "median_vacant_lot_price": 322500.0,
+        "finished_count": 85,
+        "vacant_count": 2
+      },
+      "04090532": {
+        "median_finished_value": 750000.0,
+        "median_vacant_lot_price": 125000.0,
+        "finished_count": 122,
+        "vacant_count": 192
+      },
+      "20440273": {
+        "median_finished_value": 547000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 79,
+        "vacant_count": 0
+      },
+      "20201547": {
+        "median_finished_value": 355000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 27,
+        "vacant_count": 0
+      },
+      "20201238": {
+        "median_finished_value": 699000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 31,
+        "vacant_count": 0
+      },
+      "12030440": {
+        "median_finished_value": 325000.0,
+        "median_vacant_lot_price": 90000.0,
+        "finished_count": 35,
+        "vacant_count": 16
+      },
+      "12122540": {
+        "median_finished_value": 500000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 49,
+        "vacant_count": 0
+      },
+      "07091018": {
+        "median_finished_value": 426250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 8,
+        "vacant_count": 0
+      },
+      "07092018": {
+        "median_finished_value": 391000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 58,
+        "vacant_count": 0
+      },
+      "07050518": {
+        "median_finished_value": 373950.0,
+        "median_vacant_lot_price": 379000.0,
+        "finished_count": 64,
+        "vacant_count": 7
+      },
+      "07102308": {
+        "median_finished_value": 510000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 15,
+        "vacant_count": 0
+      },
+      "07103818": {
+        "median_finished_value": 326250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "07203918": {
+        "median_finished_value": 825500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 8,
+        "vacant_count": 0
+      },
+      "31014018": {
+        "median_finished_value": 335000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 106,
+        "vacant_count": 0
+      },
+      "31013018": {
+        "median_finished_value": 350000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 73,
+        "vacant_count": 0
+      },
+      "33081629": {
+        "median_finished_value": 315000.0,
+        "median_vacant_lot_price": 271100.0,
+        "finished_count": 96,
+        "vacant_count": 3
+      },
+      "30080129": {
+        "median_finished_value": 325000.0,
+        "median_vacant_lot_price": 170000.0,
+        "finished_count": 72,
+        "vacant_count": 5
+      },
+      "30080629": {
+        "median_finished_value": 410000.0,
+        "median_vacant_lot_price": 280000.0,
+        "finished_count": 37,
+        "vacant_count": 7
+      },
+      "01080920": {
+        "median_finished_value": 540000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 7,
+        "vacant_count": 0
+      },
+      "01080420": {
+        "median_finished_value": 440000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 6,
+        "vacant_count": 0
+      },
+      "02103321": {
+        "median_finished_value": 397500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 34,
+        "vacant_count": 0
+      },
+      "21090237": {
+        "median_finished_value": 740000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 21,
+        "vacant_count": 0
+      },
+      "28150228": {
+        "median_finished_value": 575000.0,
+        "median_vacant_lot_price": 500000.0,
+        "finished_count": 121,
+        "vacant_count": 1
+      },
+      "25981239": {
+        "median_finished_value": 350000.0,
+        "median_vacant_lot_price": 95000.0,
+        "finished_count": 33,
+        "vacant_count": 1
+      },
+      "25080139": {
+        "median_finished_value": 407500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 29,
+        "vacant_count": 0
+      },
+      "28030829": {
+        "median_finished_value": 250000.0,
+        "median_vacant_lot_price": 82750.0,
+        "finished_count": 74,
+        "vacant_count": 22
+      },
+      "13070720": {
+        "median_finished_value": 320000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 55,
+        "vacant_count": 0
+      },
+      "13485030": {
+        "median_finished_value": 306000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 5,
+        "vacant_count": 0
+      },
+      "13091020": {
+        "median_finished_value": 325000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 36,
+        "vacant_count": 0
+      },
+      "13145030": {
+        "median_finished_value": 272000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 30,
+        "vacant_count": 0
+      },
+      "08101031": {
+        "median_finished_value": 382000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 13,
+        "vacant_count": 0
+      },
+      "17200848": {
+        "median_finished_value": 686000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 75,
+        "vacant_count": 0
+      },
+      "06151407": {
+        "median_finished_value": 536250.0,
+        "median_vacant_lot_price": 602500.0,
+        "finished_count": 184,
+        "vacant_count": 50
+      },
+      "07104018": {
+        "median_finished_value": 344000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 16,
+        "vacant_count": 0
+      },
+      "07105618": {
+        "median_finished_value": 343950.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 20,
+        "vacant_count": 0
+      },
+      "07153718": {
+        "median_finished_value": 615000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 7,
+        "vacant_count": 0
+      },
+      "09092228": {
+        "median_finished_value": 354500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 38,
+        "vacant_count": 0
+      },
+      "09090628": {
+        "median_finished_value": 329450.0,
+        "median_vacant_lot_price": 70000.0,
+        "finished_count": 36,
+        "vacant_count": 1
+      },
+      "30230229": {
+        "median_finished_value": 589250.0,
+        "median_vacant_lot_price": 480000.0,
+        "finished_count": 48,
+        "vacant_count": 5
+      },
+      "01080120": {
+        "median_finished_value": 379900.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 15,
+        "vacant_count": 0
+      },
+      "32070320": {
+        "median_finished_value": 415000.0,
+        "median_vacant_lot_price": 325000.0,
+        "finished_count": 39,
+        "vacant_count": 3
+      },
+      "32130220": {
+        "median_finished_value": 575000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 123,
+        "vacant_count": 0
+      },
+      "05160322": {
+        "median_finished_value": 915000.0,
+        "median_vacant_lot_price": 1025000.0,
+        "finished_count": 66,
+        "vacant_count": 7
+      },
+      "29020527": {
+        "median_finished_value": 519000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 7,
+        "vacant_count": 0
+      },
+      "29152037": {
+        "median_finished_value": 561000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 91,
+        "vacant_count": 0
+      },
+      "17200138": {
+        "median_finished_value": 916500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 96,
+        "vacant_count": 0
+      },
+      "28030629": {
+        "median_finished_value": 237500.0,
+        "median_vacant_lot_price": 63900.0,
+        "finished_count": 50,
+        "vacant_count": 6
+      },
+      "25020239": {
+        "median_finished_value": 240000.0,
+        "median_vacant_lot_price": 229000.0,
+        "finished_count": 43,
+        "vacant_count": 4
+      },
+      "13091730": {
+        "median_finished_value": 390000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 45,
+        "vacant_count": 0
+      },
+      "22020347": {
+        "median_finished_value": 815000.0,
+        "median_vacant_lot_price": 900000.0,
+        "finished_count": 17,
+        "vacant_count": 1
+      },
+      "18250438": {
+        "median_finished_value": 875000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 31,
+        "vacant_count": 0
+      },
+      "17211148": {
+        "median_finished_value": 1196000.0,
+        "median_vacant_lot_price": 595000.0,
+        "finished_count": 15,
+        "vacant_count": 1
+      },
+      "11310841": {
+        "median_finished_value": 550000.0,
+        "median_vacant_lot_price": 581000.0,
+        "finished_count": 371,
+        "vacant_count": 27
+      },
+      "07475718": {
+        "median_finished_value": 330000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 17,
+        "vacant_count": 0
+      },
+      "07032418": {
+        "median_finished_value": 225000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 17,
+        "vacant_count": 0
+      },
+      "07095918": {
+        "median_finished_value": 429950.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 4,
+        "vacant_count": 0
+      },
+      "07044118": {
+        "median_finished_value": 334900.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 51,
+        "vacant_count": 0
+      },
+      "07102618": {
+        "median_finished_value": 389450.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 110,
+        "vacant_count": 0
+      },
+      "09101418": {
+        "median_finished_value": 505000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 73,
+        "vacant_count": 0
+      },
+      "09101328": {
+        "median_finished_value": 650000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 13,
+        "vacant_count": 0
+      },
+      "09090328": {
+        "median_finished_value": 399900.0,
+        "median_vacant_lot_price": 458300.0,
+        "finished_count": 5,
+        "vacant_count": 25
+      },
+      "09090528": {
+        "median_finished_value": 406000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 26,
+        "vacant_count": 0
+      },
+      "33122729": {
+        "median_finished_value": 244450.0,
+        "median_vacant_lot_price": 409000.0,
+        "finished_count": 2,
+        "vacant_count": 2
+      },
+      "34980729": {
+        "median_finished_value": 323250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 22,
+        "vacant_count": 0
+      },
+      "02494121": {
+        "median_finished_value": 345650.0,
+        "median_vacant_lot_price": 135000.0,
+        "finished_count": 10,
+        "vacant_count": 6
+      },
+      "02200921": {
+        "median_finished_value": 822500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "02151021": {
+        "median_finished_value": 457500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 8,
+        "vacant_count": 0
+      },
+      "05130322": {
+        "median_finished_value": 895000.0,
+        "median_vacant_lot_price": 248500.0,
+        "finished_count": 15,
+        "vacant_count": 1
+      },
+      "29020127": {
+        "median_finished_value": 695000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 44,
+        "vacant_count": 0
+      },
+      "29020327": {
+        "median_finished_value": 767500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 14,
+        "vacant_count": 0
+      },
+      "29020427": {
+        "median_finished_value": 424900.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 23,
+        "vacant_count": 0
+      },
+      "19250538": {
+        "median_finished_value": 1000000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 61,
+        "vacant_count": 0
+      },
+      "19200228": {
+        "median_finished_value": 1300000.0,
+        "median_vacant_lot_price": 550000.0,
+        "finished_count": 17,
+        "vacant_count": 5
+      },
+      "28030739": {
+        "median_finished_value": 413500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 26,
+        "vacant_count": 0
+      },
+      "28030929": {
+        "median_finished_value": 209000.0,
+        "median_vacant_lot_price": 60000.0,
+        "finished_count": 42,
+        "vacant_count": 1
+      },
+      "23162030": {
+        "median_finished_value": 380000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 18,
+        "vacant_count": 0
+      },
+      "24151030": {
+        "median_finished_value": 405000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 53,
+        "vacant_count": 0
+      },
+      "24113430": {
+        "median_finished_value": 437000.0,
+        "median_vacant_lot_price": 950000.0,
+        "finished_count": 17,
+        "vacant_count": 1
+      },
+      "23072130": {
+        "median_finished_value": 419500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 30,
+        "vacant_count": 0
+      },
+      "10151331": {
+        "median_finished_value": 552000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 57,
+        "vacant_count": 0
+      },
+      "22020147": {
+        "median_finished_value": 690000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 161,
+        "vacant_count": 0
+      },
+      "18190548": {
+        "median_finished_value": 1175000.0,
+        "median_vacant_lot_price": 325000.0,
+        "finished_count": 14,
+        "vacant_count": 2
+      },
+      "06150107": {
+        "median_finished_value": 1355000.0,
+        "median_vacant_lot_price": 400000.0,
+        "finished_count": 8,
+        "vacant_count": 1
+      },
+      "06150207": {
+        "median_finished_value": 610000.0,
+        "median_vacant_lot_price": 180000.0,
+        "finished_count": 3,
+        "vacant_count": 3
+      },
+      "06200107": {
+        "median_finished_value": 875000.0,
+        "median_vacant_lot_price": 135000.0,
+        "finished_count": 11,
+        "vacant_count": 1
+      },
+      "06463108": {
+        "median_finished_value": 510400.0,
+        "median_vacant_lot_price": 430000.0,
+        "finished_count": 98,
+        "vacant_count": 33
+      },
+      "07092708": {
+        "median_finished_value": 442000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 51,
+        "vacant_count": 0
+      },
+      "07050117": {
+        "median_finished_value": 400000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 51,
+        "vacant_count": 0
+      },
+      "07103318": {
+        "median_finished_value": 349500.0,
+        "median_vacant_lot_price": 335050.0,
+        "finished_count": 154,
+        "vacant_count": 22
+      },
+      "07103418": {
+        "median_finished_value": 432500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 30,
+        "vacant_count": 0
+      },
+      "09050228": {
+        "median_finished_value": 352500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "09101528": {
+        "median_finished_value": 496000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 14,
+        "vacant_count": 0
+      },
+      "29140227": {
+        "median_finished_value": 380000.0,
+        "median_vacant_lot_price": 380000.0,
+        "finished_count": 39,
+        "vacant_count": 9
+      },
+      "09040328": {
+        "median_finished_value": 314000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 16,
+        "vacant_count": 0
+      },
+      "34090628": {
+        "median_finished_value": 299900.0,
+        "median_vacant_lot_price": 140000.0,
+        "finished_count": 163,
+        "vacant_count": 1
+      },
+      "32231620": {
+        "median_finished_value": 1100000.0,
+        "median_vacant_lot_price": 835000.0,
+        "finished_count": 110,
+        "vacant_count": 9
+      },
+      "32121020": {
+        "median_finished_value": 1100000.0,
+        "median_vacant_lot_price": 600000.0,
+        "finished_count": 80,
+        "vacant_count": 15
+      },
+      "32231810": {
+        "median_finished_value": 1127500.0,
+        "median_vacant_lot_price": 755000.0,
+        "finished_count": 78,
+        "vacant_count": 7
+      },
+      "02090321": {
+        "median_finished_value": 380000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 55,
+        "vacant_count": 0
+      },
+      "02090221": {
+        "median_finished_value": 410000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 11,
+        "vacant_count": 0
+      },
+      "21440927": {
+        "median_finished_value": 787750.0,
+        "median_vacant_lot_price": 849000.0,
+        "finished_count": 58,
+        "vacant_count": 43
+      },
+      "29020627": {
+        "median_finished_value": 870000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 54,
+        "vacant_count": 0
+      },
+      "29020227": {
+        "median_finished_value": 845000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 64,
+        "vacant_count": 0
+      },
+      "19200328": {
+        "median_finished_value": 755250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 80,
+        "vacant_count": 0
+      },
+      "28032529": {
+        "median_finished_value": 250000.0,
+        "median_vacant_lot_price": 425000.0,
+        "finished_count": 101,
+        "vacant_count": 1
+      },
+      "23182220": {
+        "median_finished_value": 385000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 31,
+        "vacant_count": 0
+      },
+      "24101130": {
+        "median_finished_value": 399000.0,
+        "median_vacant_lot_price": 195000.0,
+        "finished_count": 127,
+        "vacant_count": 1
+      },
+      "23070430": {
+        "median_finished_value": 435000.0,
+        "median_vacant_lot_price": 230000.0,
+        "finished_count": 86,
+        "vacant_count": 11
+      },
+      "23082530": {
+        "median_finished_value": 390000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 16,
+        "vacant_count": 0
+      },
+      "10481621": {
+        "median_finished_value": 380000.0,
+        "median_vacant_lot_price": 357000.0,
+        "finished_count": 81,
+        "vacant_count": 2
+      },
+      "10101031": {
+        "median_finished_value": 420000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 30,
+        "vacant_count": 0
+      },
+      "10090931": {
+        "median_finished_value": 378571.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 67,
+        "vacant_count": 0
+      },
+      "08100832": {
+        "median_finished_value": 450000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 216,
+        "vacant_count": 0
+      },
+      "22030147": {
+        "median_finished_value": 636950.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 26,
+        "vacant_count": 0
+      },
+      "18201348": {
+        "median_finished_value": 1081000.0,
+        "median_vacant_lot_price": 537500.0,
+        "finished_count": 24,
+        "vacant_count": 6
+      },
+      "20150838": {
+        "median_finished_value": 530000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 25,
+        "vacant_count": 0
+      },
+      "12122341": {
+        "median_finished_value": 525000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 34,
+        "vacant_count": 0
+      },
+      "12112131": {
+        "median_finished_value": 528750.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 60,
+        "vacant_count": 0
+      },
+      "07103218": {
+        "median_finished_value": 342500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 14,
+        "vacant_count": 0
+      },
+      "29140327": {
+        "median_finished_value": 537000.0,
+        "median_vacant_lot_price": 171200.0,
+        "finished_count": 66,
+        "vacant_count": 1
+      },
+      "01091821": {
+        "median_finished_value": 365000.0,
+        "median_vacant_lot_price": 400000.0,
+        "finished_count": 7,
+        "vacant_count": 1
+      },
+      "02490621": {
+        "median_finished_value": 1025000.0,
+        "median_vacant_lot_price": 250000.0,
+        "finished_count": 4,
+        "vacant_count": 1
+      },
+      "02150221": {
+        "median_finished_value": 585000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "02090121": {
+        "median_finished_value": 410000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 11,
+        "vacant_count": 0
+      },
+      "23150630": {
+        "median_finished_value": 463000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 4,
+        "vacant_count": 0
+      },
+      "24103730": {
+        "median_finished_value": 606250.0,
+        "median_vacant_lot_price": 230000.0,
+        "finished_count": 14,
+        "vacant_count": 1
+      },
+      "23200330": {
+        "median_finished_value": 842000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 5,
+        "vacant_count": 0
+      },
+      "13151231": {
+        "median_finished_value": 585000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 28,
+        "vacant_count": 0
+      },
+      "08101821": {
+        "median_finished_value": 348250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 66,
+        "vacant_count": 0
+      },
+      "22030247": {
+        "median_finished_value": 735000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "22040147": {
+        "median_finished_value": 550000.0,
+        "median_vacant_lot_price": 664000.0,
+        "finished_count": 340,
+        "vacant_count": 97
+      },
+      "12100640": {
+        "median_finished_value": 325000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 11,
+        "vacant_count": 0
+      },
+      "12080540": {
+        "median_finished_value": 320000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 29,
+        "vacant_count": 0
+      },
+      "12112241": {
+        "median_finished_value": 480000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 30,
+        "vacant_count": 0
+      },
+      "12113341": {
+        "median_finished_value": 357150.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 16,
+        "vacant_count": 0
+      },
+      "06460507": {
+        "median_finished_value": 765000.0,
+        "median_vacant_lot_price": 150000.0,
+        "finished_count": 13,
+        "vacant_count": 5
+      },
+      "06091908": {
+        "median_finished_value": 640000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "07103718": {
+        "median_finished_value": 418000.0,
+        "median_vacant_lot_price": 525000.0,
+        "finished_count": 458,
+        "vacant_count": 121
+      },
+      "29450237": {
+        "median_finished_value": 377500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 4,
+        "vacant_count": 0
+      },
+      "29100927": {
+        "median_finished_value": 565000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "32170920": {
+        "median_finished_value": 1175000.0,
+        "median_vacant_lot_price": 1005000.0,
+        "finished_count": 73,
+        "vacant_count": 5
+      },
+      "02494221": {
+        "median_finished_value": 365000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "01093821": {
+        "median_finished_value": 530000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "02091221": {
+        "median_finished_value": 366250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 66,
+        "vacant_count": 0
+      },
+      "01101921": {
+        "median_finished_value": 400000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 9,
+        "vacant_count": 0
+      },
+      "02101321": {
+        "median_finished_value": 398000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 5,
+        "vacant_count": 0
+      },
+      "02151121": {
+        "median_finished_value": 545000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "04090623": {
+        "median_finished_value": 630000.0,
+        "median_vacant_lot_price": 162000.0,
+        "finished_count": 6,
+        "vacant_count": 3
+      },
+      "18191538": {
+        "median_finished_value": 1060000.0,
+        "median_vacant_lot_price": 520000.0,
+        "finished_count": 57,
+        "vacant_count": 3
+      },
+      "24151239": {
+        "median_finished_value": 500000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 19,
+        "vacant_count": 0
+      },
+      "24082730": {
+        "median_finished_value": 360000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 41,
+        "vacant_count": 0
+      },
+      "24204639": {
+        "median_finished_value": 482500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 12,
+        "vacant_count": 0
+      },
+      "24154330": {
+        "median_finished_value": 490000.0,
+        "median_vacant_lot_price": 380000.0,
+        "finished_count": 21,
+        "vacant_count": 1
+      },
+      "24151330": {
+        "median_finished_value": 1087500.0,
+        "median_vacant_lot_price": 775000.0,
+        "finished_count": 48,
+        "vacant_count": 2
+      },
+      "22040247": {
+        "median_finished_value": 500000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 70,
+        "vacant_count": 0
+      },
+      "15090849": {
+        "median_finished_value": 343000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 94,
+        "vacant_count": 0
+      },
+      "15090749": {
+        "median_finished_value": 400500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 82,
+        "vacant_count": 0
+      },
+      "12400240": {
+        "median_finished_value": 1731250.0,
+        "median_vacant_lot_price": 750000.0,
+        "finished_count": 28,
+        "vacant_count": 5
+      },
+      "97190200": {
+        "median_finished_value": 335000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "06150407": {
+        "median_finished_value": 653650.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "06100307": {
+        "median_finished_value": 405000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 7,
+        "vacant_count": 0
+      },
+      "06052008": {
+        "median_finished_value": 327500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "09090428": {
+        "median_finished_value": 273000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 95,
+        "vacant_count": 0
+      },
+      "32120920": {
+        "median_finished_value": 630000.0,
+        "median_vacant_lot_price": 520000.0,
+        "finished_count": 83,
+        "vacant_count": 8
+      },
+      "02041721": {
+        "median_finished_value": 313900.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 20,
+        "vacant_count": 0
+      },
+      "02040521": {
+        "median_finished_value": 240000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 4,
+        "vacant_count": 0
+      },
+      "02100421": {
+        "median_finished_value": 435800.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "02494321": {
+        "median_finished_value": 312000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "02090421": {
+        "median_finished_value": 443800.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "05491222": {
+        "median_finished_value": 1100000.0,
+        "median_vacant_lot_price": 1220150.0,
+        "finished_count": 7,
+        "vacant_count": 12
+      },
+      "24153630": {
+        "median_finished_value": 494500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 12,
+        "vacant_count": 0
+      },
+      "24123530": {
+        "median_finished_value": 334000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 24,
+        "vacant_count": 0
+      },
+      "10151131": {
+        "median_finished_value": 429500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 49,
+        "vacant_count": 0
+      },
+      "16950248": {
+        "median_finished_value": 1144250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 32,
+        "vacant_count": 0
+      },
+      "12122441": {
+        "median_finished_value": 337000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 13,
+        "vacant_count": 0
+      },
+      "06461607": {
+        "median_finished_value": 731000.0,
+        "median_vacant_lot_price": 662600.0,
+        "finished_count": 39,
+        "vacant_count": 23
+      },
+      "06052108": {
+        "median_finished_value": 260000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 16,
+        "vacant_count": 0
+      },
+      "06052208": {
+        "median_finished_value": 312000.0,
+        "median_vacant_lot_price": 87000.0,
+        "finished_count": 7,
+        "vacant_count": 1
+      },
+      "07485718": {
+        "median_finished_value": 370650.0,
+        "median_vacant_lot_price": 98400.0,
+        "finished_count": 184,
+        "vacant_count": 38
+      },
+      "09090728": {
+        "median_finished_value": 410000.0,
+        "median_vacant_lot_price": 425000.0,
+        "finished_count": 51,
+        "vacant_count": 1
+      },
+      "09091428": {
+        "median_finished_value": 353000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "09090828": {
+        "median_finished_value": 437250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 28,
+        "vacant_count": 0
+      },
+      "09153328": {
+        "median_finished_value": 335000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 7,
+        "vacant_count": 0
+      },
+      "02152521": {
+        "median_finished_value": 526500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "02494021": {
+        "median_finished_value": 482000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 16,
+        "vacant_count": 0
+      },
+      "21440337": {
+        "median_finished_value": 590000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 83,
+        "vacant_count": 0
+      },
+      "18301438": {
+        "median_finished_value": 1295000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 5,
+        "vacant_count": 0
+      },
+      "24152330": {
+        "median_finished_value": 577500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 16,
+        "vacant_count": 0
+      },
+      "18300648": {
+        "median_finished_value": 920000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 21,
+        "vacant_count": 0
+      },
+      "15100549": {
+        "median_finished_value": 360000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 76,
+        "vacant_count": 0
+      },
+      "15100449": {
+        "median_finished_value": 211000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 5,
+        "vacant_count": 0
+      },
+      "11121441": {
+        "median_finished_value": 437500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 44,
+        "vacant_count": 0
+      },
+      "11150141": {
+        "median_finished_value": 564950.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 76,
+        "vacant_count": 0
+      },
+      "07050318": {
+        "median_finished_value": 305000.0,
+        "median_vacant_lot_price": 75000.0,
+        "finished_count": 23,
+        "vacant_count": 7
+      },
+      "07050618": {
+        "median_finished_value": 199500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 4,
+        "vacant_count": 0
+      },
+      "30070429": {
+        "median_finished_value": 505000.0,
+        "median_vacant_lot_price": 425000.0,
+        "finished_count": 268,
+        "vacant_count": 26
+      },
+      "01041520": {
+        "median_finished_value": 290000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "01091620": {
+        "median_finished_value": 402000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 5,
+        "vacant_count": 0
+      },
+      "01041720": {
+        "median_finished_value": 265000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 7,
+        "vacant_count": 0
+      },
+      "02042721": {
+        "median_finished_value": 258000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 7,
+        "vacant_count": 0
+      },
+      "21440137": {
+        "median_finished_value": 599500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 76,
+        "vacant_count": 0
+      },
+      "25080339": {
+        "median_finished_value": 335000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 9,
+        "vacant_count": 0
+      },
+      "12503430": {
+        "median_finished_value": 325000.0,
+        "median_vacant_lot_price": 95000.0,
+        "finished_count": 17,
+        "vacant_count": 3
+      },
+      "17961048": {
+        "median_finished_value": 1188600.0,
+        "median_vacant_lot_price": 1190300.0,
+        "finished_count": 95,
+        "vacant_count": 20
+      },
+      "07050418": {
+        "median_finished_value": 307000.0,
+        "median_vacant_lot_price": 100000.0,
+        "finished_count": 15,
+        "vacant_count": 5
+      },
+      "07090718": {
+        "median_finished_value": 350000.0,
+        "median_vacant_lot_price": 150000.0,
+        "finished_count": 85,
+        "vacant_count": 3
+      },
+      "29101627": {
+        "median_finished_value": 530000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 86,
+        "vacant_count": 0
+      },
+      "01496520": {
+        "median_finished_value": 330000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 8,
+        "vacant_count": 0
+      },
+      "01052820": {
+        "median_finished_value": 230000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "01101020": {
+        "median_finished_value": 438750.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "01091320": {
+        "median_finished_value": 447500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 38,
+        "vacant_count": 0
+      },
+      "01082120": {
+        "median_finished_value": 394950.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 8,
+        "vacant_count": 0
+      },
+      "01102720": {
+        "median_finished_value": 335000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "02093021": {
+        "median_finished_value": 310000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 54,
+        "vacant_count": 0
+      },
+      "02093321": {
+        "median_finished_value": 340000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 6,
+        "vacant_count": 0
+      },
+      "19240937": {
+        "median_finished_value": 1627500.0,
+        "median_vacant_lot_price": 665000.0,
+        "finished_count": 36,
+        "vacant_count": 2
+      },
+      "17140238": {
+        "median_finished_value": 592000.0,
+        "median_vacant_lot_price": 325000.0,
+        "finished_count": 77,
+        "vacant_count": 1
+      },
+      "12184230": {
+        "median_finished_value": 320000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 6,
+        "vacant_count": 0
+      },
+      "12174130": {
+        "median_finished_value": 419000.0,
+        "median_vacant_lot_price": 379900.0,
+        "finished_count": 3,
+        "vacant_count": 6
+      },
+      "13165230": {
+        "median_finished_value": 330000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 49,
+        "vacant_count": 0
+      },
+      "04100432": {
+        "median_finished_value": 402250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 22,
+        "vacant_count": 0
+      },
+      "11200741": {
+        "median_finished_value": 528000.0,
+        "median_vacant_lot_price": 347500.0,
+        "finished_count": 40,
+        "vacant_count": 2
+      },
+      "29031527": {
+        "median_finished_value": 540000.0,
+        "median_vacant_lot_price": 53000.0,
+        "finished_count": 29,
+        "vacant_count": 5
+      },
+      "29031127": {
+        "median_finished_value": 460850.0,
+        "median_vacant_lot_price": 140000.0,
+        "finished_count": 150,
+        "vacant_count": 18
+      },
+      "29100427": {
+        "median_finished_value": 539500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 26,
+        "vacant_count": 0
+      },
+      "32120729": {
+        "median_finished_value": 675000.0,
+        "median_vacant_lot_price": 350000.0,
+        "finished_count": 47,
+        "vacant_count": 4
+      },
+      "01152020": {
+        "median_finished_value": 535000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "01032320": {
+        "median_finished_value": 289000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 13,
+        "vacant_count": 0
+      },
+      "02093221": {
+        "median_finished_value": 355950.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 30,
+        "vacant_count": 0
+      },
+      "24183939": {
+        "median_finished_value": 565000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 15,
+        "vacant_count": 0
+      },
+      "24184039": {
+        "median_finished_value": 549500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 13,
+        "vacant_count": 0
+      },
+      "24182639": {
+        "median_finished_value": 795000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 14,
+        "vacant_count": 0
+      },
+      "13165330": {
+        "median_finished_value": 335250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 26,
+        "vacant_count": 0
+      },
+      "13165430": {
+        "median_finished_value": 425000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 20,
+        "vacant_count": 0
+      },
+      "04090032": {
+        "median_finished_value": 574000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "12132640": {
+        "median_finished_value": 523500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 28,
+        "vacant_count": 0
+      },
+      "07103918": {
+        "median_finished_value": 457500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 18,
+        "vacant_count": 0
+      },
+      "07103518": {
+        "median_finished_value": 375000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 39,
+        "vacant_count": 0
+      },
+      "07104518": {
+        "median_finished_value": 357000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 5,
+        "vacant_count": 0
+      },
+      "35080129": {
+        "median_finished_value": 289900.0,
+        "median_vacant_lot_price": 105000.0,
+        "finished_count": 65,
+        "vacant_count": 3
+      },
+      "31016018": {
+        "median_finished_value": 312450.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 14,
+        "vacant_count": 0
+      },
+      "35081328": {
+        "median_finished_value": 260000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 88,
+        "vacant_count": 0
+      },
+      "27070629": {
+        "median_finished_value": 622500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "27070829": {
+        "median_finished_value": 640000.0,
+        "median_vacant_lot_price": 400000.0,
+        "finished_count": 23,
+        "vacant_count": 1
+      },
+      "30970329": {
+        "median_finished_value": 640000.0,
+        "median_vacant_lot_price": 451000.0,
+        "finished_count": 219,
+        "vacant_count": 13
+      },
+      "01092220": {
+        "median_finished_value": 623500.0,
+        "median_vacant_lot_price": 569000.0,
+        "finished_count": 31,
+        "vacant_count": 24
+      },
+      "01023020": {
+        "median_finished_value": 343650.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "01092420": {
+        "median_finished_value": 328200.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "05090812": {
+        "median_finished_value": 420000.0,
+        "median_vacant_lot_price": 52450.0,
+        "finished_count": 10,
+        "vacant_count": 4
+      },
+      "17080338": {
+        "median_finished_value": 470500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 48,
+        "vacant_count": 0
+      },
+      "24192539": {
+        "median_finished_value": 665000.0,
+        "median_vacant_lot_price": 220000.0,
+        "finished_count": 18,
+        "vacant_count": 1
+      },
+      "24213139": {
+        "median_finished_value": 465000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 9,
+        "vacant_count": 0
+      },
+      "12091230": {
+        "median_finished_value": 364950.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 34,
+        "vacant_count": 0
+      },
+      "12030730": {
+        "median_finished_value": 302000.0,
+        "median_vacant_lot_price": 65000.0,
+        "finished_count": 26,
+        "vacant_count": 3
+      },
+      "12101530": {
+        "median_finished_value": 375000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 39,
+        "vacant_count": 0
+      },
+      "16950148": {
+        "median_finished_value": 895000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 122,
+        "vacant_count": 0
+      },
+      "14100440": {
+        "median_finished_value": 460000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "12132740": {
+        "median_finished_value": 471500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 88,
+        "vacant_count": 0
+      },
+      "07024318": {
+        "median_finished_value": 273000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 22,
+        "vacant_count": 0
+      },
+      "07050718": {
+        "median_finished_value": 390000.0,
+        "median_vacant_lot_price": 160000.0,
+        "finished_count": 7,
+        "vacant_count": 1
+      },
+      "07104218": {
+        "median_finished_value": 335000.0,
+        "median_vacant_lot_price": 584900.0,
+        "finished_count": 112,
+        "vacant_count": 1
+      },
+      "29150627": {
+        "median_finished_value": 634000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 35,
+        "vacant_count": 0
+      },
+      "35080029": {
+        "median_finished_value": 315000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 61,
+        "vacant_count": 0
+      },
+      "31015018": {
+        "median_finished_value": 346500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 20,
+        "vacant_count": 0
+      },
+      "29070628": {
+        "median_finished_value": 377400.0,
+        "median_vacant_lot_price": 190000.0,
+        "finished_count": 74,
+        "vacant_count": 2
+      },
+      "01073120": {
+        "median_finished_value": 350000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 15,
+        "vacant_count": 0
+      },
+      "01053220": {
+        "median_finished_value": 305000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "01082620": {
+        "median_finished_value": 320000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 23,
+        "vacant_count": 0
+      },
+      "01082520": {
+        "median_finished_value": 377000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 12,
+        "vacant_count": 0
+      },
+      "01042920": {
+        "median_finished_value": 281000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "21090137": {
+        "median_finished_value": 1280000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 5,
+        "vacant_count": 0
+      },
+      "24202939": {
+        "median_finished_value": 599000.0,
+        "median_vacant_lot_price": 300000.0,
+        "finished_count": 7,
+        "vacant_count": 1
+      },
+      "24254739": {
+        "median_finished_value": 760650.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 26,
+        "vacant_count": 0
+      },
+      "24073330": {
+        "median_finished_value": 354000.0,
+        "median_vacant_lot_price": 201750.0,
+        "finished_count": 42,
+        "vacant_count": 4
+      },
+      "24203039": {
+        "median_finished_value": 710350.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 12,
+        "vacant_count": 0
+      },
+      "12093930": {
+        "median_finished_value": 340000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "14150149": {
+        "median_finished_value": 420000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 57,
+        "vacant_count": 0
+      },
+      "06461207": {
+        "median_finished_value": 655000.0,
+        "median_vacant_lot_price": 95000.0,
+        "finished_count": 3,
+        "vacant_count": 3
+      },
+      "06052308": {
+        "median_finished_value": 279900.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 13,
+        "vacant_count": 0
+      },
+      "29150427": {
+        "median_finished_value": 537500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 12,
+        "vacant_count": 0
+      },
+      "29031027": {
+        "median_finished_value": 859850.0,
+        "median_vacant_lot_price": 122500.0,
+        "finished_count": 72,
+        "vacant_count": 6
+      },
+      "29070528": {
+        "median_finished_value": 392000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 42,
+        "vacant_count": 0
+      },
+      "01083520": {
+        "median_finished_value": 327000.0,
+        "median_vacant_lot_price": 129750.0,
+        "finished_count": 7,
+        "vacant_count": 2
+      },
+      "02042921": {
+        "median_finished_value": 252500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 36,
+        "vacant_count": 0
+      },
+      "05040122": {
+        "median_finished_value": 320000.0,
+        "median_vacant_lot_price": 95000.0,
+        "finished_count": 8,
+        "vacant_count": 17
+      },
+      "12173630": {
+        "median_finished_value": 350000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 5,
+        "vacant_count": 0
+      },
+      "12053530": {
+        "median_finished_value": 252500.0,
+        "median_vacant_lot_price": 247500.0,
+        "finished_count": 14,
+        "vacant_count": 1
+      },
+      "12174030": {
+        "median_finished_value": 253950.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 6,
+        "vacant_count": 0
+      },
+      "12153430": {
+        "median_finished_value": 327600.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "15200449": {
+        "median_finished_value": 355500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 54,
+        "vacant_count": 0
+      },
+      "15100349": {
+        "median_finished_value": 392500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 80,
+        "vacant_count": 0
+      },
+      "06050907": {
+        "median_finished_value": 340000.0,
+        "median_vacant_lot_price": 50000.0,
+        "finished_count": 19,
+        "vacant_count": 2
+      },
+      "06070607": {
+        "median_finished_value": 350000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "06252508": {
+        "median_finished_value": 1494100.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 4,
+        "vacant_count": 0
+      },
+      "06142608": {
+        "median_finished_value": 853600.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "06202408": {
+        "median_finished_value": 557500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 74,
+        "vacant_count": 0
+      },
+      "09091528": {
+        "median_finished_value": 298750.0,
+        "median_vacant_lot_price": 103000.0,
+        "finished_count": 38,
+        "vacant_count": 3
+      },
+      "29070228": {
+        "median_finished_value": 523500.0,
+        "median_vacant_lot_price": 190000.0,
+        "finished_count": 40,
+        "vacant_count": 1
+      },
+      "35092529": {
+        "median_finished_value": 635000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 57,
+        "vacant_count": 0
+      },
+      "27200720": {
+        "median_finished_value": 775000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 187,
+        "vacant_count": 0
+      },
+      "26080220": {
+        "median_finished_value": 372000.0,
+        "median_vacant_lot_price": 502900.0,
+        "finished_count": 61,
+        "vacant_count": 27
+      },
+      "02102421": {
+        "median_finished_value": 372500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 8,
+        "vacant_count": 0
+      },
+      "02052321": {
+        "median_finished_value": 311500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "02102121": {
+        "median_finished_value": 388000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 7,
+        "vacant_count": 0
+      },
+      "02102221": {
+        "median_finished_value": 372500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "05100222": {
+        "median_finished_value": 467500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 92,
+        "vacant_count": 0
+      },
+      "05100522": {
+        "median_finished_value": 1116250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 4,
+        "vacant_count": 0
+      },
+      "04490123": {
+        "median_finished_value": 470000.0,
+        "median_vacant_lot_price": 21000.0,
+        "finished_count": 3,
+        "vacant_count": 22
+      },
+      "18400738": {
+        "median_finished_value": 2430000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "18240238": {
+        "median_finished_value": 1150000.0,
+        "median_vacant_lot_price": 1000000.0,
+        "finished_count": 86,
+        "vacant_count": 1
+      },
+      "18140138": {
+        "median_finished_value": 555000.0,
+        "median_vacant_lot_price": 850000.0,
+        "finished_count": 23,
+        "vacant_count": 1
+      },
+      "25030239": {
+        "median_finished_value": 304250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 20,
+        "vacant_count": 0
+      },
+      "25030439": {
+        "median_finished_value": 336600.0,
+        "median_vacant_lot_price": 75000.0,
+        "finished_count": 20,
+        "vacant_count": 1
+      },
+      "24100630": {
+        "median_finished_value": 385000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 51,
+        "vacant_count": 0
+      },
+      "24244130": {
+        "median_finished_value": 440000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "24032230": {
+        "median_finished_value": 297000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 24,
+        "vacant_count": 0
+      },
+      "15101549": {
+        "median_finished_value": 245000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 9,
+        "vacant_count": 0
+      },
+      "06100707": {
+        "median_finished_value": 593000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "29070328": {
+        "median_finished_value": 363750.0,
+        "median_vacant_lot_price": 127500.0,
+        "finished_count": 26,
+        "vacant_count": 2
+      },
+      "29070428": {
+        "median_finished_value": 385000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 31,
+        "vacant_count": 0
+      },
+      "09101628": {
+        "median_finished_value": 437500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "35080329": {
+        "median_finished_value": 240000.0,
+        "median_vacant_lot_price": 425000.0,
+        "finished_count": 118,
+        "vacant_count": 1
+      },
+      "27070920": {
+        "median_finished_value": 630000.0,
+        "median_vacant_lot_price": 586500.0,
+        "finished_count": 51,
+        "vacant_count": 7
+      },
+      "02102021": {
+        "median_finished_value": 375000.0,
+        "median_vacant_lot_price": 112500.0,
+        "finished_count": 17,
+        "vacant_count": 3
+      },
+      "02101621": {
+        "median_finished_value": 349000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "03481021": {
+        "median_finished_value": 365000.0,
+        "median_vacant_lot_price": 172000.0,
+        "finished_count": 23,
+        "vacant_count": 5
+      },
+      "02031921": {
+        "median_finished_value": 306000.0,
+        "median_vacant_lot_price": 77500.0,
+        "finished_count": 38,
+        "vacant_count": 1
+      },
+      "24192430": {
+        "median_finished_value": 687500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 8,
+        "vacant_count": 0
+      },
+      "24150430": {
+        "median_finished_value": 514000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 58,
+        "vacant_count": 0
+      },
+      "10481431": {
+        "median_finished_value": 420000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 25,
+        "vacant_count": 0
+      },
+      "22060147": {
+        "median_finished_value": 634550.0,
+        "median_vacant_lot_price": 640000.0,
+        "finished_count": 656,
+        "vacant_count": 201
+      },
+      "12141040": {
+        "median_finished_value": 555000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 33,
+        "vacant_count": 0
+      },
+      "11240341": {
+        "median_finished_value": 990000.0,
+        "median_vacant_lot_price": 875000.0,
+        "finished_count": 8,
+        "vacant_count": 1
+      },
+      "06093408": {
+        "median_finished_value": 689700.0,
+        "median_vacant_lot_price": 786600.0,
+        "finished_count": 68,
+        "vacant_count": 11
+      },
+      "29450127": {
+        "median_finished_value": 316500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 4,
+        "vacant_count": 0
+      },
+      "35081528": {
+        "median_finished_value": 269000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 24,
+        "vacant_count": 0
+      },
+      "02041421": {
+        "median_finished_value": 265000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 9,
+        "vacant_count": 0
+      },
+      "02101521": {
+        "median_finished_value": 335000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "03020621": {
+        "median_finished_value": 210000.0,
+        "median_vacant_lot_price": 45000.0,
+        "finished_count": 1,
+        "vacant_count": 1
+      },
+      "02041821": {
+        "median_finished_value": 270000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "05140622": {
+        "median_finished_value": 750000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "24232139": {
+        "median_finished_value": 837500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 8,
+        "vacant_count": 0
+      },
+      "12151931": {
+        "median_finished_value": 482500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 24,
+        "vacant_count": 0
+      },
+      "12152931": {
+        "median_finished_value": 321500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "12151830": {
+        "median_finished_value": 472500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 72,
+        "vacant_count": 0
+      },
+      "12142840": {
+        "median_finished_value": 479000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 95,
+        "vacant_count": 0
+      },
+      "06093208": {
+        "median_finished_value": 379400.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "07101218": {
+        "median_finished_value": 613500.0,
+        "median_vacant_lot_price": 425000.0,
+        "finished_count": 11,
+        "vacant_count": 1
+      },
+      "29100327": {
+        "median_finished_value": 699500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 148,
+        "vacant_count": 73
+      },
+      "35080229": {
+        "median_finished_value": 222200.0,
+        "median_vacant_lot_price": 235500.0,
+        "finished_count": 66,
+        "vacant_count": 2
+      },
+      "27070529": {
+        "median_finished_value": 495000.0,
+        "median_vacant_lot_price": 440000.0,
+        "finished_count": 146,
+        "vacant_count": 26
+      },
+      "27070429": {
+        "median_finished_value": 539000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 47,
+        "vacant_count": 1
+      },
+      "27150429": {
+        "median_finished_value": 499000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 45,
+        "vacant_count": 0
+      },
+      "03090221": {
+        "median_finished_value": 338000.0,
+        "median_vacant_lot_price": 115000.0,
+        "finished_count": 93,
+        "vacant_count": 3
+      },
+      "03030520": {
+        "median_finished_value": 343000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 9,
+        "vacant_count": 0
+      },
+      "03100120": {
+        "median_finished_value": 325000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 109,
+        "vacant_count": 0
+      },
+      "05091522": {
+        "median_finished_value": 562000.0,
+        "median_vacant_lot_price": 124000.0,
+        "finished_count": 11,
+        "vacant_count": 7
+      },
+      "05151312": {
+        "median_finished_value": 445000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 37,
+        "vacant_count": 0
+      },
+      "22050137": {
+        "median_finished_value": 560800.0,
+        "median_vacant_lot_price": 671400.0,
+        "finished_count": 354,
+        "vacant_count": 71
+      },
+      "18200938": {
+        "median_finished_value": 890000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 18,
+        "vacant_count": 0
+      },
+      "18351038": {
+        "median_finished_value": 1675000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 15,
+        "vacant_count": 0
+      },
+      "24100330": {
+        "median_finished_value": 525000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 9,
+        "vacant_count": 0
+      },
+      "12472031": {
+        "median_finished_value": 487000.0,
+        "median_vacant_lot_price": 539750.0,
+        "finished_count": 347,
+        "vacant_count": 146
+      },
+      "11031340": {
+        "median_finished_value": 716500.0,
+        "median_vacant_lot_price": 120000.0,
+        "finished_count": 240,
+        "vacant_count": 1
+      },
+      "06090107": {
+        "median_finished_value": 464950.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "07096018": {
+        "median_finished_value": 384900.0,
+        "median_vacant_lot_price": 342700.0,
+        "finished_count": 99,
+        "vacant_count": 2
+      },
+      "35030329": {
+        "median_finished_value": 241650.0,
+        "median_vacant_lot_price": 56500.0,
+        "finished_count": 34,
+        "vacant_count": 2
+      },
+      "22010137": {
+        "median_finished_value": 490000.0,
+        "median_vacant_lot_price": 489900.0,
+        "finished_count": 145,
+        "vacant_count": 57
+      },
+      "18350838": {
+        "median_finished_value": 1450000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 81,
+        "vacant_count": 0
+      },
+      "25030639": {
+        "median_finished_value": 274950.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 14,
+        "vacant_count": 0
+      },
+      "25030339": {
+        "median_finished_value": 304000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 12,
+        "vacant_count": 0
+      },
+      "25030839": {
+        "median_finished_value": 365000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 7,
+        "vacant_count": 0
+      },
+      "25030739": {
+        "median_finished_value": 281000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 25,
+        "vacant_count": 0
+      },
+      "24164230": {
+        "median_finished_value": 910000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 8,
+        "vacant_count": 0
+      },
+      "24154430": {
+        "median_finished_value": 630000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 9,
+        "vacant_count": 0
+      },
+      "24091530": {
+        "median_finished_value": 530000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "24154530": {
+        "median_finished_value": 682500.0,
+        "median_vacant_lot_price": 210000.0,
+        "finished_count": 3,
+        "vacant_count": 1
+      },
+      "24151630": {
+        "median_finished_value": 675000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 11,
+        "vacant_count": 0
+      },
+      "15200349": {
+        "median_finished_value": 425000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 62,
+        "vacant_count": 0
+      },
+      "06022808": {
+        "median_finished_value": 427000.0,
+        "median_vacant_lot_price": 40000.0,
+        "finished_count": 12,
+        "vacant_count": 1
+      },
+      "06200218": {
+        "median_finished_value": 627000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 9,
+        "vacant_count": 0
+      },
+      "35230429": {
+        "median_finished_value": 797500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 36,
+        "vacant_count": 0
+      },
+      "35020529": {
+        "median_finished_value": 252000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 22,
+        "vacant_count": 0
+      },
+      "35991029": {
+        "median_finished_value": 240000.0,
+        "median_vacant_lot_price": 70000.0,
+        "finished_count": 5,
+        "vacant_count": 5
+      },
+      "03481121": {
+        "median_finished_value": 820250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "03100721": {
+        "median_finished_value": 307000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 9,
+        "vacant_count": 0
+      },
+      "03100821": {
+        "median_finished_value": 393000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 11,
+        "vacant_count": 0
+      },
+      "03100321": {
+        "median_finished_value": 375000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 31,
+        "vacant_count": 0
+      },
+      "05041822": {
+        "median_finished_value": 238950.0,
+        "median_vacant_lot_price": 22500.0,
+        "finished_count": 6,
+        "vacant_count": 16
+      },
+      "21431037": {
+        "median_finished_value": 485000.0,
+        "median_vacant_lot_price": 905000.0,
+        "finished_count": 114,
+        "vacant_count": 1
+      },
+      "25030539": {
+        "median_finished_value": 319000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 19,
+        "vacant_count": 0
+      },
+      "15100249": {
+        "median_finished_value": 384500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 46,
+        "vacant_count": 0
+      },
+      "11251541": {
+        "median_finished_value": 1575000.0,
+        "median_vacant_lot_price": 782500.0,
+        "finished_count": 6,
+        "vacant_count": 2
+      },
+      "06461307": {
+        "median_finished_value": 257250.0,
+        "median_vacant_lot_price": 50000.0,
+        "finished_count": 14,
+        "vacant_count": 1
+      },
+      "06091007": {
+        "median_finished_value": 514500.0,
+        "median_vacant_lot_price": 57500.0,
+        "finished_count": 2,
+        "vacant_count": 1
+      },
+      "06032708": {
+        "median_finished_value": 612500.0,
+        "median_vacant_lot_price": 120000.0,
+        "finished_count": 2,
+        "vacant_count": 1
+      },
+      "29150727": {
+        "median_finished_value": 516250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 30,
+        "vacant_count": 0
+      },
+      "26070420": {
+        "median_finished_value": 290000.0,
+        "median_vacant_lot_price": 306450.0,
+        "finished_count": 80,
+        "vacant_count": 2
+      },
+      "26481720": {
+        "median_finished_value": 402000.0,
+        "median_vacant_lot_price": 130000.0,
+        "finished_count": 21,
+        "vacant_count": 3
+      },
+      "01053420": {
+        "median_finished_value": 319900.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "03041221": {
+        "median_finished_value": 222000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "03101321": {
+        "median_finished_value": 337500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 18,
+        "vacant_count": 0
+      },
+      "21440237": {
+        "median_finished_value": 450000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 39,
+        "vacant_count": 0
+      },
+      "17140438": {
+        "median_finished_value": 540000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 70,
+        "vacant_count": 0
+      },
+      "25100439": {
+        "median_finished_value": 318000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 19,
+        "vacant_count": 0
+      },
+      "07050818": {
+        "median_finished_value": 266650.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 8,
+        "vacant_count": 0
+      },
+      "07103618": {
+        "median_finished_value": 335000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 22,
+        "vacant_count": 0
+      },
+      "26081620": {
+        "median_finished_value": 300000.0,
+        "median_vacant_lot_price": 77500.0,
+        "finished_count": 23,
+        "vacant_count": 2
+      },
+      "26071120": {
+        "median_finished_value": 339950.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 38,
+        "vacant_count": 0
+      },
+      "26090820": {
+        "median_finished_value": 331500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 30,
+        "vacant_count": 0
+      },
+      "08101621": {
+        "median_finished_value": 453750.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 26,
+        "vacant_count": 0
+      },
+      "02093121": {
+        "median_finished_value": 329500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 6,
+        "vacant_count": 0
+      },
+      "08451821": {
+        "median_finished_value": 660000.0,
+        "median_vacant_lot_price": 236600.0,
+        "finished_count": 11,
+        "vacant_count": 1
+      },
+      "08102021": {
+        "median_finished_value": 525650.0,
+        "median_vacant_lot_price": 465900.0,
+        "finished_count": 76,
+        "vacant_count": 1
+      },
+      "20110437": {
+        "median_finished_value": 766250.0,
+        "median_vacant_lot_price": 737500.0,
+        "finished_count": 34,
+        "vacant_count": 6
+      },
+      "17140538": {
+        "median_finished_value": 570000.0,
+        "median_vacant_lot_price": 425000.0,
+        "finished_count": 84,
+        "vacant_count": 1
+      },
+      "25100339": {
+        "median_finished_value": 275000.0,
+        "median_vacant_lot_price": 85000.0,
+        "finished_count": 15,
+        "vacant_count": 1
+      },
+      "12980130": {
+        "median_finished_value": 300000.0,
+        "median_vacant_lot_price": 87700.0,
+        "finished_count": 3,
+        "vacant_count": 3
+      },
+      "12101630": {
+        "median_finished_value": 387500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 16,
+        "vacant_count": 0
+      },
+      "11240641": {
+        "median_finished_value": 1050000.0,
+        "median_vacant_lot_price": 497500.0,
+        "finished_count": 7,
+        "vacant_count": 2
+      },
+      "06041707": {
+        "median_finished_value": 505000.0,
+        "median_vacant_lot_price": 200000.0,
+        "finished_count": 5,
+        "vacant_count": 2
+      },
+      "27021029": {
+        "median_finished_value": 687500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 26,
+        "vacant_count": 0
+      },
+      "26041320": {
+        "median_finished_value": 235000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "26081520": {
+        "median_finished_value": 331250.0,
+        "median_vacant_lot_price": 65000.0,
+        "finished_count": 6,
+        "vacant_count": 1
+      },
+      "05100912": {
+        "median_finished_value": 357000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "05101112": {
+        "median_finished_value": 392500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 5,
+        "vacant_count": 0
+      },
+      "20110637": {
+        "median_finished_value": 607500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 62,
+        "vacant_count": 0
+      },
+      "19260637": {
+        "median_finished_value": 1360000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 8,
+        "vacant_count": 0
+      },
+      "24071939": {
+        "median_finished_value": 392000.0,
+        "median_vacant_lot_price": 635000.0,
+        "finished_count": 12,
+        "vacant_count": 1
+      },
+      "24070539": {
+        "median_finished_value": 420000.0,
+        "median_vacant_lot_price": 564900.0,
+        "finished_count": 17,
+        "vacant_count": 3
+      },
+      "14090249": {
+        "median_finished_value": 360000.0,
+        "median_vacant_lot_price": 600000.0,
+        "finished_count": 127,
+        "vacant_count": 1
+      },
+      "07050207": {
+        "median_finished_value": 420000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 28,
+        "vacant_count": 0
+      },
+      "31011018": {
+        "median_finished_value": 455000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 11,
+        "vacant_count": 0
+      },
+      "31020219": {
+        "median_finished_value": 295000.0,
+        "median_vacant_lot_price": 60000.0,
+        "finished_count": 37,
+        "vacant_count": 1
+      },
+      "31020119": {
+        "median_finished_value": 340500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "32131319": {
+        "median_finished_value": 585000.0,
+        "median_vacant_lot_price": 280000.0,
+        "finished_count": 91,
+        "vacant_count": 2
+      },
+      "29450327": {
+        "median_finished_value": 290000.0,
+        "median_vacant_lot_price": 175000.0,
+        "finished_count": 5,
+        "vacant_count": 3
+      },
+      "29101327": {
+        "median_finished_value": 340000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "29100527": {
+        "median_finished_value": 640000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 14,
+        "vacant_count": 0
+      },
+      "28030428": {
+        "median_finished_value": 260000.0,
+        "median_vacant_lot_price": 90000.0,
+        "finished_count": 73,
+        "vacant_count": 10
+      },
+      "27160129": {
+        "median_finished_value": 697500.0,
+        "median_vacant_lot_price": 186000.0,
+        "finished_count": 32,
+        "vacant_count": 1
+      },
+      "27160229": {
+        "median_finished_value": 580000.0,
+        "median_vacant_lot_price": 320000.0,
+        "finished_count": 107,
+        "vacant_count": 1
+      },
+      "97050100": {
+        "median_finished_value": 715000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "13140220": {
+        "median_finished_value": 399000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 21,
+        "vacant_count": 0
+      },
+      "13080120": {
+        "median_finished_value": 728100.0,
+        "median_vacant_lot_price": 689050.0,
+        "finished_count": 23,
+        "vacant_count": 24
+      },
+      "26101220": {
+        "median_finished_value": 319000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 14,
+        "vacant_count": 0
+      },
+      "08101721": {
+        "median_finished_value": 369800.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 11,
+        "vacant_count": 0
+      },
+      "08101421": {
+        "median_finished_value": 511500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 46,
+        "vacant_count": 0
+      },
+      "05151412": {
+        "median_finished_value": 475000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 39,
+        "vacant_count": 0
+      },
+      "08101122": {
+        "median_finished_value": 530000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 69,
+        "vacant_count": 0
+      },
+      "18350037": {
+        "median_finished_value": 734550.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 42,
+        "vacant_count": 0
+      },
+      "20110337": {
+        "median_finished_value": 582500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 14,
+        "vacant_count": 0
+      },
+      "20110737": {
+        "median_finished_value": 444950.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 50,
+        "vacant_count": 0
+      },
+      "24070239": {
+        "median_finished_value": 367950.0,
+        "median_vacant_lot_price": 564900.0,
+        "finished_count": 8,
+        "vacant_count": 2
+      },
+      "25100739": {
+        "median_finished_value": 400000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 12,
+        "vacant_count": 0
+      },
+      "25100639": {
+        "median_finished_value": 374250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "14110540": {
+        "median_finished_value": 379000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 53,
+        "vacant_count": 0
+      },
+      "11090541": {
+        "median_finished_value": 493000.0,
+        "median_vacant_lot_price": 180000.0,
+        "finished_count": 23,
+        "vacant_count": 3
+      },
+      "11201641": {
+        "median_finished_value": 991500.0,
+        "median_vacant_lot_price": 650000.0,
+        "finished_count": 2,
+        "vacant_count": 3
+      },
+      "31012018": {
+        "median_finished_value": 485000.0,
+        "median_vacant_lot_price": 160000.0,
+        "finished_count": 13,
+        "vacant_count": 1
+      },
+      "33161919": {
+        "median_finished_value": 344950.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "29051827": {
+        "median_finished_value": 752100.0,
+        "median_vacant_lot_price": 900300.0,
+        "finished_count": 89,
+        "vacant_count": 4
+      },
+      "29101827": {
+        "median_finished_value": 309000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 17,
+        "vacant_count": 0
+      },
+      "28090328": {
+        "median_finished_value": 342000.0,
+        "median_vacant_lot_price": 185000.0,
+        "finished_count": 149,
+        "vacant_count": 1
+      },
+      "35020929": {
+        "median_finished_value": 208500.0,
+        "median_vacant_lot_price": 75000.0,
+        "finished_count": 20,
+        "vacant_count": 9
+      },
+      "20110537": {
+        "median_finished_value": 625000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 41,
+        "vacant_count": 0
+      },
+      "20440373": {
+        "median_finished_value": 440000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 13,
+        "vacant_count": 0
+      },
+      "17510738": {
+        "median_finished_value": 515000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 54,
+        "vacant_count": 0
+      },
+      "25100599": {
+        "median_finished_value": 333000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 71,
+        "vacant_count": 0
+      },
+      "15200249": {
+        "median_finished_value": 450000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 35,
+        "vacant_count": 0
+      },
+      "09462618": {
+        "median_finished_value": 352000.0,
+        "median_vacant_lot_price": 340000.0,
+        "finished_count": 96,
+        "vacant_count": 35
+      },
+      "33101119": {
+        "median_finished_value": 371000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 46,
+        "vacant_count": 0
+      },
+      "29051727": {
+        "median_finished_value": 325000.0,
+        "median_vacant_lot_price": 110000.0,
+        "finished_count": 7,
+        "vacant_count": 3
+      },
+      "29101027": {
+        "median_finished_value": 246000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 11,
+        "vacant_count": 0
+      },
+      "29050827": {
+        "median_finished_value": 225000.0,
+        "median_vacant_lot_price": 139000.0,
+        "finished_count": 29,
+        "vacant_count": 1
+      },
+      "35020829": {
+        "median_finished_value": 285000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 29,
+        "vacant_count": 0
+      },
+      "26080320": {
+        "median_finished_value": 361000.0,
+        "median_vacant_lot_price": 125000.0,
+        "finished_count": 16,
+        "vacant_count": 1
+      },
+      "08101921": {
+        "median_finished_value": 402500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 100,
+        "vacant_count": 0
+      },
+      "20301337": {
+        "median_finished_value": 1400000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 5,
+        "vacant_count": 0
+      },
+      "17140638": {
+        "median_finished_value": 515000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 31,
+        "vacant_count": 0
+      },
+      "06152908": {
+        "median_finished_value": 492500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 18,
+        "vacant_count": 0
+      },
+      "33091019": {
+        "median_finished_value": 297000.0,
+        "median_vacant_lot_price": 57000.0,
+        "finished_count": 57,
+        "vacant_count": 1
+      },
+      "29040227": {
+        "median_finished_value": 645000.0,
+        "median_vacant_lot_price": 197000.0,
+        "finished_count": 55,
+        "vacant_count": 1
+      },
+      "19101728": {
+        "median_finished_value": 317450.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 16,
+        "vacant_count": 0
+      },
+      "19151228": {
+        "median_finished_value": 600000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 19,
+        "vacant_count": 0
+      },
+      "19150228": {
+        "median_finished_value": 1180000.0,
+        "median_vacant_lot_price": 275000.0,
+        "finished_count": 20,
+        "vacant_count": 3
+      },
+      "19101128": {
+        "median_finished_value": 300000.0,
+        "median_vacant_lot_price": 500000.0,
+        "finished_count": 11,
+        "vacant_count": 1
+      },
+      "28030529": {
+        "median_finished_value": 256000.0,
+        "median_vacant_lot_price": 75000.0,
+        "finished_count": 58,
+        "vacant_count": 11
+      },
+      "35020729": {
+        "median_finished_value": 177500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 8,
+        "vacant_count": 0
+      },
+      "03150921": {
+        "median_finished_value": 500000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 13,
+        "vacant_count": 0
+      },
+      "22010337": {
+        "median_finished_value": 573000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 93,
+        "vacant_count": 0
+      },
+      "22010237": {
+        "median_finished_value": 725000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 65,
+        "vacant_count": 0
+      },
+      "15200149": {
+        "median_finished_value": 529000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 263,
+        "vacant_count": 0
+      },
+      "11021240": {
+        "median_finished_value": 430000.0,
+        "median_vacant_lot_price": 406500.0,
+        "finished_count": 178,
+        "vacant_count": 68
+      },
+      "06090208": {
+        "median_finished_value": 442500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 44,
+        "vacant_count": 0
+      },
+      "09022418": {
+        "median_finished_value": 282500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 22,
+        "vacant_count": 0
+      },
+      "33091219": {
+        "median_finished_value": 265000.0,
+        "median_vacant_lot_price": 234500.0,
+        "finished_count": 62,
+        "vacant_count": 2
+      },
+      "33092519": {
+        "median_finished_value": 430000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 13,
+        "vacant_count": 0
+      },
+      "33250719": {
+        "median_finished_value": 406500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 18,
+        "vacant_count": 0
+      },
+      "32131410": {
+        "median_finished_value": 740000.0,
+        "median_vacant_lot_price": 550000.0,
+        "finished_count": 132,
+        "vacant_count": 3
+      },
+      "19150128": {
+        "median_finished_value": 509000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 116,
+        "vacant_count": 0
+      },
+      "28030329": {
+        "median_finished_value": 229950.0,
+        "median_vacant_lot_price": 63000.0,
+        "finished_count": 48,
+        "vacant_count": 9
+      },
+      "97150200": {
+        "median_finished_value": 270000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "10100521": {
+        "median_finished_value": 425000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 20,
+        "vacant_count": 0
+      },
+      "10100821": {
+        "median_finished_value": 362000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "24021230": {
+        "median_finished_value": 350000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 7,
+        "vacant_count": 0
+      },
+      "24151430": {
+        "median_finished_value": 455600.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 18,
+        "vacant_count": 0
+      },
+      "24121830": {
+        "median_finished_value": 450000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 4,
+        "vacant_count": 0
+      },
+      "24021330": {
+        "median_finished_value": 330000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 14,
+        "vacant_count": 0
+      },
+      "11011140": {
+        "median_finished_value": 400000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 32,
+        "vacant_count": 0
+      },
+      "11011040": {
+        "median_finished_value": 505000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 85,
+        "vacant_count": 0
+      },
+      "11150441": {
+        "median_finished_value": 727000.0,
+        "median_vacant_lot_price": 750000.0,
+        "finished_count": 200,
+        "vacant_count": 1
+      },
+      "06063508": {
+        "median_finished_value": 452500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 31,
+        "vacant_count": 0
+      },
+      "06093308": {
+        "median_finished_value": 643750.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 26,
+        "vacant_count": 0
+      },
+      "31017018": {
+        "median_finished_value": 185000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "33100819": {
+        "median_finished_value": 388000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 20,
+        "vacant_count": 0
+      },
+      "29040127": {
+        "median_finished_value": 1154500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 6,
+        "vacant_count": 0
+      },
+      "28030229": {
+        "median_finished_value": 248400.0,
+        "median_vacant_lot_price": 70750.0,
+        "finished_count": 29,
+        "vacant_count": 4
+      },
+      "35020629": {
+        "median_finished_value": 177800.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "97090200": {
+        "median_finished_value": 710000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "27161220": {
+        "median_finished_value": 355000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 25,
+        "vacant_count": 0
+      },
+      "99140000": {
+        "median_finished_value": 310300.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "13140320": {
+        "median_finished_value": 472000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 60,
+        "vacant_count": 0
+      },
+      "05491622": {
+        "median_finished_value": 615000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 55,
+        "vacant_count": 0
+      },
+      "16020939": {
+        "median_finished_value": 285250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 42,
+        "vacant_count": 0
+      },
+      "24141730": {
+        "median_finished_value": 566500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 16,
+        "vacant_count": 0
+      },
+      "07092608": {
+        "median_finished_value": 460000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 11,
+        "vacant_count": 0
+      },
+      "31020319": {
+        "median_finished_value": 358500.0,
+        "median_vacant_lot_price": 115000.0,
+        "finished_count": 18,
+        "vacant_count": 1
+      },
+      "33050519": {
+        "median_finished_value": 300000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 5,
+        "vacant_count": 0
+      },
+      "33202329": {
+        "median_finished_value": 287500.0,
+        "median_vacant_lot_price": 85000.0,
+        "finished_count": 12,
+        "vacant_count": 3
+      },
+      "33020619": {
+        "median_finished_value": 265000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 16,
+        "vacant_count": 0
+      },
+      "32232020": {
+        "median_finished_value": 2150000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "28030429": {
+        "median_finished_value": 290000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 36,
+        "vacant_count": 0
+      },
+      "28031529": {
+        "median_finished_value": 258000.0,
+        "median_vacant_lot_price": 87500.0,
+        "finished_count": 56,
+        "vacant_count": 1
+      },
+      "23101620": {
+        "median_finished_value": 475000.0,
+        "median_vacant_lot_price": 587500.0,
+        "finished_count": 98,
+        "vacant_count": 2
+      },
+      "23170220": {
+        "median_finished_value": 710000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 15,
+        "vacant_count": 0
+      },
+      "10090621": {
+        "median_finished_value": 385000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 7,
+        "vacant_count": 0
+      },
+      "20201638": {
+        "median_finished_value": 375000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 14,
+        "vacant_count": 0
+      },
+      "22070147": {
+        "median_finished_value": 490000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 5,
+        "vacant_count": 0
+      },
+      "14120749": {
+        "median_finished_value": 460000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 38,
+        "vacant_count": 0
+      },
+      "11151741": {
+        "median_finished_value": 895050.0,
+        "median_vacant_lot_price": 759650.0,
+        "finished_count": 232,
+        "vacant_count": 58
+      },
+      "07102718": {
+        "median_finished_value": 283750.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "07092908": {
+        "median_finished_value": 310000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 11,
+        "vacant_count": 0
+      },
+      "07510208": {
+        "median_finished_value": 215000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "07152808": {
+        "median_finished_value": 640000.0,
+        "median_vacant_lot_price": 130000.0,
+        "finished_count": 3,
+        "vacant_count": 1
+      },
+      "33021329": {
+        "median_finished_value": 245000.0,
+        "median_vacant_lot_price": 50000.0,
+        "finished_count": 9,
+        "vacant_count": 1
+      },
+      "23071320": {
+        "median_finished_value": 475000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 35,
+        "vacant_count": 0
+      },
+      "23070120": {
+        "median_finished_value": 410000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 32,
+        "vacant_count": 0
+      },
+      "23091420": {
+        "median_finished_value": 449900.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 23,
+        "vacant_count": 0
+      },
+      "10100721": {
+        "median_finished_value": 375000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 19,
+        "vacant_count": 0
+      },
+      "10150321": {
+        "median_finished_value": 514500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 16,
+        "vacant_count": 0
+      },
+      "10100621": {
+        "median_finished_value": 560000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 4,
+        "vacant_count": 0
+      },
+      "11151641": {
+        "median_finished_value": 740000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "07153518": {
+        "median_finished_value": 1100000.0,
+        "median_vacant_lot_price": 560000.0,
+        "finished_count": 1,
+        "vacant_count": 1
+      },
+      "09102918": {
+        "median_finished_value": 463500.0,
+        "median_vacant_lot_price": 478600.0,
+        "finished_count": 149,
+        "vacant_count": 79
+      },
+      "33092619": {
+        "median_finished_value": 275000.0,
+        "median_vacant_lot_price": 109450.0,
+        "finished_count": 32,
+        "vacant_count": 2
+      },
+      "23131030": {
+        "median_finished_value": 299950.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 56,
+        "vacant_count": 0
+      },
+      "23061220": {
+        "median_finished_value": 349000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 12,
+        "vacant_count": 0
+      },
+      "23071523": {
+        "median_finished_value": 465000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 25,
+        "vacant_count": 0
+      },
+      "10481521": {
+        "median_finished_value": 507500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 23,
+        "vacant_count": 0
+      },
+      "04470243": {
+        "median_finished_value": 335000.0,
+        "median_vacant_lot_price": 82500.0,
+        "finished_count": 2,
+        "vacant_count": 2
+      },
+      "22020247": {
+        "median_finished_value": 600000.0,
+        "median_vacant_lot_price": 735000.0,
+        "finished_count": 53,
+        "vacant_count": 1
+      },
+      "18140338": {
+        "median_finished_value": 505000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 33,
+        "vacant_count": 0
+      },
+      "11020114": {
+        "median_finished_value": 455300.0,
+        "median_vacant_lot_price": 812600.0,
+        "finished_count": 69,
+        "vacant_count": 49
+      },
+      "07102518": {
+        "median_finished_value": 407500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 40,
+        "vacant_count": 0
+      },
+      "07153618": {
+        "median_finished_value": 420000.0,
+        "median_vacant_lot_price": 160000.0,
+        "finished_count": 1,
+        "vacant_count": 1
+      },
+      "09032328": {
+        "median_finished_value": 263250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 2,
+        "vacant_count": 0
+      },
+      "33031729": {
+        "median_finished_value": 267500.0,
+        "median_vacant_lot_price": 42000.0,
+        "finished_count": 16,
+        "vacant_count": 1
+      },
+      "29202127": {
+        "median_finished_value": 870000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 18,
+        "vacant_count": 0
+      },
+      "13070820": {
+        "median_finished_value": 326450.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 86,
+        "vacant_count": 0
+      },
+      "13040920": {
+        "median_finished_value": 249900.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 42,
+        "vacant_count": 0
+      },
+      "04040723": {
+        "median_finished_value": 267500.0,
+        "median_vacant_lot_price": 101250.0,
+        "finished_count": 2,
+        "vacant_count": 8
+      },
+      "20201437": {
+        "median_finished_value": 1080000.0,
+        "median_vacant_lot_price": 1158950.0,
+        "finished_count": 63,
+        "vacant_count": 4
+      },
+      "17211238": {
+        "median_finished_value": 780000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 33,
+        "vacant_count": 0
+      },
+      "25021139": {
+        "median_finished_value": 316000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 9,
+        "vacant_count": 0
+      },
+      "11460940": {
+        "median_finished_value": 875000.0,
+        "median_vacant_lot_price": 200000.0,
+        "finished_count": 4,
+        "vacant_count": 1
+      },
+      "07090818": {
+        "median_finished_value": 575000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 12,
+        "vacant_count": 0
+      },
+      "33032019": {
+        "median_finished_value": 285000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 19,
+        "vacant_count": 0
+      },
+      "29442237": {
+        "median_finished_value": 915000.0,
+        "median_vacant_lot_price": 40000.0,
+        "finished_count": 22,
+        "vacant_count": 1
+      },
+      "29101927": {
+        "median_finished_value": 524750.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 6,
+        "vacant_count": 0
+      },
+      "13040620": {
+        "median_finished_value": 231500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 12,
+        "vacant_count": 0
+      },
+      "08101321": {
+        "median_finished_value": 467500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 60,
+        "vacant_count": 0
+      },
+      "08101221": {
+        "median_finished_value": 590000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 44,
+        "vacant_count": 0
+      },
+      "17510938": {
+        "median_finished_value": 815000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 8,
+        "vacant_count": 0
+      },
+      "14120849": {
+        "median_finished_value": 269900.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 35,
+        "vacant_count": 0
+      },
+      "14120649": {
+        "median_finished_value": 360000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 44,
+        "vacant_count": 0
+      },
+      "07152118": {
+        "median_finished_value": 445000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 9,
+        "vacant_count": 0
+      },
+      "07140808": {
+        "median_finished_value": 545000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 19,
+        "vacant_count": 0
+      },
+      "07092218": {
+        "median_finished_value": 525000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 1,
+        "vacant_count": 0
+      },
+      "07200708": {
+        "median_finished_value": 682500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 4,
+        "vacant_count": 0
+      },
+      "07095808": {
+        "median_finished_value": 706250.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 10,
+        "vacant_count": 0
+      },
+      "31030119": {
+        "median_finished_value": 350000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 24,
+        "vacant_count": 0
+      },
+      "19200427": {
+        "median_finished_value": 755000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 3,
+        "vacant_count": 0
+      },
+      "23070830": {
+        "median_finished_value": 975000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 15,
+        "vacant_count": 0
+      },
+      "23111729": {
+        "median_finished_value": 599950.0,
+        "median_vacant_lot_price": 315000.0,
+        "finished_count": 18,
+        "vacant_count": 1
+      },
+      "23141929": {
+        "median_finished_value": 727000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 12,
+        "vacant_count": 0
+      },
+      "23070930": {
+        "median_finished_value": 401000.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 6,
+        "vacant_count": 0
+      },
+      "13091120": {
+        "median_finished_value": 402500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 18,
+        "vacant_count": 0
+      },
+      "16440648": {
+        "median_finished_value": 721000.0,
+        "median_vacant_lot_price": 27450.0,
+        "finished_count": 5,
+        "vacant_count": 4
+      },
+      "14150349": {
+        "median_finished_value": 396500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 40,
+        "vacant_count": 0
+      }
+    },
+    "market_area_benchmarks": {
+      "06": {
+        "median_finished_value": 489050.0,
+        "median_vacant_lot_price": 450500.0,
+        "finished_count": 1330,
+        "vacant_count": 346
+      },
+      "07": {
+        "median_finished_value": 386250.0,
+        "median_vacant_lot_price": 424100.0,
+        "finished_count": 2068,
+        "vacant_count": 225
+      },
+      "29": {
+        "median_finished_value": 542000.0,
+        "median_vacant_lot_price": 390500.0,
+        "finished_count": 1524,
+        "vacant_count": 131
+      },
+      "34": {
+        "median_finished_value": 290000.0,
+        "median_vacant_lot_price": 115200.0,
+        "finished_count": 441,
+        "vacant_count": 2
+      },
+      "30": {
+        "median_finished_value": 510000.0,
+        "median_vacant_lot_price": 422000.0,
+        "finished_count": 694,
+        "vacant_count": 61
+      },
+      "32": {
+        "median_finished_value": 760000.0,
+        "median_vacant_lot_price": 555000.0,
+        "finished_count": 966,
+        "vacant_count": 67
+      },
+      "33": {
+        "median_finished_value": 305000.0,
+        "median_vacant_lot_price": 122800.0,
+        "finished_count": 450,
+        "vacant_count": 19
+      },
+      "01": {
+        "median_finished_value": 410000.0,
+        "median_vacant_lot_price": 260000.0,
+        "finished_count": 343,
+        "vacant_count": 31
+      },
+      "02": {
+        "median_finished_value": 366000.0,
+        "median_vacant_lot_price": 111250.0,
+        "finished_count": 624,
+        "vacant_count": 12
+      },
+      "05": {
+        "median_finished_value": 525000.0,
+        "median_vacant_lot_price": 100000.0,
+        "finished_count": 361,
+        "vacant_count": 75
+      },
+      "19": {
+        "median_finished_value": 775000.0,
+        "median_vacant_lot_price": 535000.0,
+        "finished_count": 459,
+        "vacant_count": 12
+      },
+      "28": {
+        "median_finished_value": 290000.0,
+        "median_vacant_lot_price": 80000.0,
+        "finished_count": 906,
+        "vacant_count": 67
+      },
+      "24": {
+        "median_finished_value": 459900.0,
+        "median_vacant_lot_price": 380000.0,
+        "finished_count": 866,
+        "vacant_count": 19
+      },
+      "23": {
+        "median_finished_value": 440000.0,
+        "median_vacant_lot_price": 300000.0,
+        "finished_count": 693,
+        "vacant_count": 17
+      },
+      "13": {
+        "median_finished_value": 350000.0,
+        "median_vacant_lot_price": 562800.0,
+        "finished_count": 647,
+        "vacant_count": 23
+      },
+      "08": {
+        "median_finished_value": 461000.0,
+        "median_vacant_lot_price": 351250.0,
+        "finished_count": 817,
+        "vacant_count": 2
+      },
+      "04": {
+        "median_finished_value": 570400.0,
+        "median_vacant_lot_price": 115000.0,
+        "finished_count": 252,
+        "vacant_count": 229
+      },
+      "20": {
+        "median_finished_value": 610000.0,
+        "median_vacant_lot_price": 805000.0,
+        "finished_count": 458,
+        "vacant_count": 10
+      },
+      "12": {
+        "median_finished_value": 455000.0,
+        "median_vacant_lot_price": 515000.0,
+        "finished_count": 1183,
+        "vacant_count": 183
+      },
+      "31": {
+        "median_finished_value": 345000.0,
+        "median_vacant_lot_price": 115000.0,
+        "finished_count": 327,
+        "vacant_count": 3
+      },
+      "21": {
+        "median_finished_value": 573500.0,
+        "median_vacant_lot_price": 855200.0,
+        "finished_count": 396,
+        "vacant_count": 44
+      },
+      "25": {
+        "median_finished_value": 325000.0,
+        "median_vacant_lot_price": 85000.0,
+        "finished_count": 359,
+        "vacant_count": 7
+      },
+      "17": {
+        "median_finished_value": 659450.0,
+        "median_vacant_lot_price": 1158700.0,
+        "finished_count": 686,
+        "vacant_count": 23
+      },
+      "09": {
+        "median_finished_value": 400000.0,
+        "median_vacant_lot_price": 447250.0,
+        "finished_count": 723,
+        "vacant_count": 144
+      },
+      "22": {
+        "median_finished_value": 580000.0,
+        "median_vacant_lot_price": 587500.0,
+        "finished_count": 1987,
+        "vacant_count": 428
+      },
+      "18": {
+        "median_finished_value": 1042500.0,
+        "median_vacant_lot_price": 525000.0,
+        "finished_count": 452,
+        "vacant_count": 13
+      },
+      "11": {
+        "median_finished_value": 580000.0,
+        "median_vacant_lot_price": 546200.0,
+        "finished_count": 1619,
+        "vacant_count": 218
+      },
+      "10": {
+        "median_finished_value": 425000.0,
+        "median_vacant_lot_price": 357000.0,
+        "finished_count": 399,
+        "vacant_count": 2
+      },
+      "15": {
+        "median_finished_value": 410500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 806,
+        "vacant_count": 0
+      },
+      "97": {
+        "median_finished_value": 305000.0,
+        "median_vacant_lot_price": 145000.0,
+        "finished_count": 6,
+        "vacant_count": 1
+      },
+      "16": {
+        "median_finished_value": 795000.0,
+        "median_vacant_lot_price": 27450.0,
+        "finished_count": 201,
+        "vacant_count": 4
+      },
+      "35": {
+        "median_finished_value": 270000.0,
+        "median_vacant_lot_price": 77500.0,
+        "finished_count": 636,
+        "vacant_count": 22
+      },
+      "27": {
+        "median_finished_value": 615000.0,
+        "median_vacant_lot_price": 440000.0,
+        "finished_count": 691,
+        "vacant_count": 37
+      },
+      "14": {
+        "median_finished_value": 381000.0,
+        "median_vacant_lot_price": 600000.0,
+        "finished_count": 404,
+        "vacant_count": 1
+      },
+      "26": {
+        "median_finished_value": 330000.0,
+        "median_vacant_lot_price": 457500.0,
+        "finished_count": 292,
+        "vacant_count": 36
+      },
+      "03": {
+        "median_finished_value": 345000.0,
+        "median_vacant_lot_price": 115000.0,
+        "finished_count": 322,
+        "vacant_count": 9
+      },
+      "90": {
+        "median_finished_value": 763350.0,
+        "median_vacant_lot_price": 500000.0,
+        "finished_count": 18,
+        "vacant_count": 129
+      },
+      "99": {
+        "median_finished_value": 310300.0,
+        "median_vacant_lot_price": 550000.0,
+        "finished_count": 2,
+        "vacant_count": 9
+      }
+    },
+    "sample_vacant_comps": [
+      {
+        "parcel_id": "012127000000056",
+        "sale_price": 45000.0,
+        "sale_year": 2026,
+        "sale_month": 5,
+        "neighborhood_code": "06460107",
+        "market_area": "06",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260306270"
+      },
+      {
+        "parcel_id": "012128912000030",
+        "sale_price": 659600.0,
+        "sale_year": 2026,
+        "sale_month": 9,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260499650"
+      },
+      {
+        "parcel_id": "012128912000070",
+        "sale_price": 531000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260492078"
+      },
+      {
+        "parcel_id": "012128912000080",
+        "sale_price": 570000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260485378"
+      },
+      {
+        "parcel_id": "012229371206171",
+        "sale_price": 998300.0,
+        "sale_year": 2026,
+        "sale_month": 1,
+        "neighborhood_code": "90000006",
+        "market_area": "90",
+        "dor_use_code": "010",
+        "vacant_improved": "V",
+        "clerk_number": "20260026411"
+      },
+      {
+        "parcel_id": "012229417600452",
+        "sale_price": 15000.0,
+        "sale_year": 2025,
+        "sale_month": 10,
+        "neighborhood_code": "30080529",
+        "market_area": "30",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250622665"
+      },
+      {
+        "parcel_id": "012229433202010",
+        "sale_price": 10000.0,
+        "sale_year": 2025,
+        "sale_month": 9,
+        "neighborhood_code": "30980529",
+        "market_area": "30",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250525777"
+      },
+      {
+        "parcel_id": "012229522400411",
+        "sale_price": 1160000.0,
+        "sale_year": 2025,
+        "sale_month": 3,
+        "neighborhood_code": "30080529",
+        "market_area": "30",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20250134131"
+      },
+      {
+        "parcel_id": "012231653412200",
+        "sale_price": 15000.0,
+        "sale_year": 2025,
+        "sale_month": 11,
+        "neighborhood_code": "02093521",
+        "market_area": "02",
+        "dor_use_code": "096",
+        "vacant_improved": "V",
+        "clerk_number": "20250661363"
+      },
+      {
+        "parcel_id": "012327000000062",
+        "sale_price": 850000.0,
+        "sale_year": 2025,
+        "sale_month": 11,
+        "neighborhood_code": "80000018",
+        "market_area": "80",
+        "dor_use_code": "061",
+        "vacant_improved": "V",
+        "clerk_number": "20250666730"
+      },
+      {
+        "parcel_id": "012328564100100",
+        "sale_price": 740000.0,
+        "sale_year": 2025,
+        "sale_month": 11,
+        "neighborhood_code": "90000009",
+        "market_area": "90",
+        "dor_use_code": "010",
+        "vacant_improved": "V",
+        "clerk_number": "20250696218"
+      },
+      {
+        "parcel_id": "012329210003050",
+        "sale_price": 320000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "23271130",
+        "market_area": "23",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260483064"
+      },
+      {
+        "parcel_id": "012329496009082",
+        "sale_price": 325000.0,
+        "sale_year": 2025,
+        "sale_month": 8,
+        "neighborhood_code": "23121829",
+        "market_area": "23",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20250507242"
+      },
+      {
+        "parcel_id": "012329681604160",
+        "sale_price": 300000.0,
+        "sale_year": 2025,
+        "sale_month": 2,
+        "neighborhood_code": "23271130",
+        "market_area": "23",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250098276"
+      },
+      {
+        "parcel_id": "012330129100130",
+        "sale_price": 200000.0,
+        "sale_year": 2025,
+        "sale_month": 8,
+        "neighborhood_code": "13472931",
+        "market_area": "13",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250498326"
+      },
+      {
+        "parcel_id": "012332759800271",
+        "sale_price": 100000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260437517"
+      },
+      {
+        "parcel_id": "012332760260250",
+        "sale_price": 550000.0,
+        "sale_year": 2026,
+        "sale_month": 5,
+        "neighborhood_code": "04100332",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260280078"
+      },
+      {
+        "parcel_id": "012332760260250",
+        "sale_price": 95000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "04100332",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250354966"
+      },
+      {
+        "parcel_id": "012429851620110",
+        "sale_price": 115000.0,
+        "sale_year": 2026,
+        "sale_month": 6,
+        "neighborhood_code": "12030440",
+        "market_area": "12",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260353939"
+      },
+      {
+        "parcel_id": "012429851630409",
+        "sale_price": 140000.0,
+        "sale_year": 2026,
+        "sale_month": 5,
+        "neighborhood_code": "12030440",
+        "market_area": "12",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260292299"
+      },
+      {
+        "parcel_id": "012429851631002",
+        "sale_price": 365000.0,
+        "sale_year": 2026,
+        "sale_month": 3,
+        "neighborhood_code": "12030440",
+        "market_area": "12",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260168301"
+      },
+      {
+        "parcel_id": "012429851641207",
+        "sale_price": 90000.0,
+        "sale_year": 2026,
+        "sale_month": 6,
+        "neighborhood_code": "12030440",
+        "market_area": "12",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260354318"
+      },
+      {
+        "parcel_id": "012429851650901",
+        "sale_price": 90000.0,
+        "sale_year": 2025,
+        "sale_month": 5,
+        "neighborhood_code": "12030440",
+        "market_area": "12",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250300575"
+      },
+      {
+        "parcel_id": "012429851661102",
+        "sale_price": 85000.0,
+        "sale_year": 2025,
+        "sale_month": 5,
+        "neighborhood_code": "12030440",
+        "market_area": "12",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250289597"
+      },
+      {
+        "parcel_id": "012429851661102",
+        "sale_price": 420000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "12030440",
+        "market_area": "12",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260490420"
+      },
+      {
+        "parcel_id": "012429851681003",
+        "sale_price": 85000.0,
+        "sale_year": 2025,
+        "sale_month": 5,
+        "neighborhood_code": "12030440",
+        "market_area": "12",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250289561"
+      },
+      {
+        "parcel_id": "012429851691501",
+        "sale_price": 145000.0,
+        "sale_year": 2025,
+        "sale_month": 3,
+        "neighborhood_code": "12030440",
+        "market_area": "12",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20250194200"
+      },
+      {
+        "parcel_id": "012429851691503",
+        "sale_price": 70000.0,
+        "sale_year": 2026,
+        "sale_month": 6,
+        "neighborhood_code": "12030440",
+        "market_area": "12",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260354644"
+      },
+      {
+        "parcel_id": "022128167900180",
+        "sale_price": 405000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "07050518",
+        "market_area": "07",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260447231"
+      },
+      {
+        "parcel_id": "022128779300060",
+        "sale_price": 535000.0,
+        "sale_year": 2026,
+        "sale_month": 7,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260407556"
+      },
+      {
+        "parcel_id": "022128779300070",
+        "sale_price": 484000.0,
+        "sale_year": 2026,
+        "sale_month": 7,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260401291"
+      },
+      {
+        "parcel_id": "022128779300080",
+        "sale_price": 464000.0,
+        "sale_year": 2026,
+        "sale_month": 5,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260297870"
+      },
+      {
+        "parcel_id": "022128779300090",
+        "sale_price": 483000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260457346"
+      },
+      {
+        "parcel_id": "022128779300110",
+        "sale_price": 469000.0,
+        "sale_year": 2026,
+        "sale_month": 7,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260379645"
+      },
+      {
+        "parcel_id": "022128779300120",
+        "sale_price": 489000.0,
+        "sale_year": 2026,
+        "sale_month": 6,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260359635"
+      },
+      {
+        "parcel_id": "022128779300200",
+        "sale_price": 466000.0,
+        "sale_year": 2026,
+        "sale_month": 6,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260372679"
+      },
+      {
+        "parcel_id": "022128779300410",
+        "sale_price": 483000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260470049"
+      },
+      {
+        "parcel_id": "022128779300420",
+        "sale_price": 488600.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260488182"
+      },
+      {
+        "parcel_id": "022128779300450",
+        "sale_price": 518200.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260485590"
+      },
+      {
+        "parcel_id": "022128779300700",
+        "sale_price": 490000.0,
+        "sale_year": 2026,
+        "sale_month": 6,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260372686"
+      },
+      {
+        "parcel_id": "022229406802200",
+        "sale_price": 280000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "30080629",
+        "market_area": "30",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250386747"
+      },
+      {
+        "parcel_id": "022229847205220",
+        "sale_price": 150000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "30080129",
+        "market_area": "30",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20250330058"
+      },
+      {
+        "parcel_id": "022332122110090",
+        "sale_price": 40000.0,
+        "sale_year": 2025,
+        "sale_month": 10,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250598472"
+      },
+      {
+        "parcel_id": "022332122110110",
+        "sale_price": 95000.0,
+        "sale_year": 2025,
+        "sale_month": 8,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250483133"
+      },
+      {
+        "parcel_id": "022332122110270",
+        "sale_price": 130000.0,
+        "sale_year": 2025,
+        "sale_month": 10,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250613986"
+      },
+      {
+        "parcel_id": "022332122120070",
+        "sale_price": 100000.0,
+        "sale_year": 2025,
+        "sale_month": 3,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250169243"
+      },
+      {
+        "parcel_id": "022332122120130",
+        "sale_price": 80000.0,
+        "sale_year": 2026,
+        "sale_month": 6,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260322225"
+      },
+      {
+        "parcel_id": "022332122120220",
+        "sale_price": 20000.0,
+        "sale_year": 2025,
+        "sale_month": 7,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250403241"
+      },
+      {
+        "parcel_id": "022332122120220",
+        "sale_price": 42000.0,
+        "sale_year": 2025,
+        "sale_month": 9,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250542976"
+      },
+      {
+        "parcel_id": "022332122120300",
+        "sale_price": 103000.0,
+        "sale_year": 2025,
+        "sale_month": 1,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250066268"
+      },
+      {
+        "parcel_id": "022332122120310",
+        "sale_price": 93000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250357997"
+      },
+      {
+        "parcel_id": "022332122120320",
+        "sale_price": 40000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250330981"
+      },
+      {
+        "parcel_id": "022332122120920",
+        "sale_price": 132000.0,
+        "sale_year": 2025,
+        "sale_month": 7,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250431762"
+      },
+      {
+        "parcel_id": "022332122120990",
+        "sale_price": 125000.0,
+        "sale_year": 2025,
+        "sale_month": 10,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20250640239"
+      },
+      {
+        "parcel_id": "022332122150020",
+        "sale_price": 695000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260487058"
+      },
+      {
+        "parcel_id": "022332122150180",
+        "sale_price": 955000.0,
+        "sale_year": 2026,
+        "sale_month": 7,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260427086"
+      },
+      {
+        "parcel_id": "022332122150420",
+        "sale_price": 100000.0,
+        "sale_year": 2025,
+        "sale_month": 1,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250071914"
+      },
+      {
+        "parcel_id": "022332122150670",
+        "sale_price": 110000.0,
+        "sale_year": 2025,
+        "sale_month": 9,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250562132"
+      },
+      {
+        "parcel_id": "022332122150850",
+        "sale_price": 45000.0,
+        "sale_year": 2026,
+        "sale_month": 3,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260263435"
+      },
+      {
+        "parcel_id": "022332122150980",
+        "sale_price": 150000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250350006"
+      },
+      {
+        "parcel_id": "022332122151070",
+        "sale_price": 50000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250397083"
+      },
+      {
+        "parcel_id": "022332122151080",
+        "sale_price": 80000.0,
+        "sale_year": 2026,
+        "sale_month": 6,
+        "neighborhood_code": "04090532",
+        "market_area": "04",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260327727"
+      },
+      {
+        "parcel_id": "022431000000003",
+        "sale_price": 73700.0,
+        "sale_year": 2025,
+        "sale_month": 7,
+        "neighborhood_code": "90000002",
+        "market_area": "90",
+        "dor_use_code": "099",
+        "vacant_improved": "V",
+        "clerk_number": "20250407388"
+      },
+      {
+        "parcel_id": "022431000000007",
+        "sale_price": 73700.0,
+        "sale_year": 2025,
+        "sale_month": 7,
+        "neighborhood_code": "80000002",
+        "market_area": "80",
+        "dor_use_code": "063",
+        "vacant_improved": "V",
+        "clerk_number": "20250407486"
+      },
+      {
+        "parcel_id": "032027000000004",
+        "sale_price": 500000.0,
+        "sale_year": 2025,
+        "sale_month": 1,
+        "neighborhood_code": "06461607",
+        "market_area": "06",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250053475"
+      },
+      {
+        "parcel_id": "032128000000053",
+        "sale_price": 160000.0,
+        "sale_year": 2025,
+        "sale_month": 9,
+        "neighborhood_code": "07153618",
+        "market_area": "07",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250677696"
+      },
+      {
+        "parcel_id": "032228000000021",
+        "sale_price": 530000.0,
+        "sale_year": 2026,
+        "sale_month": 4,
+        "neighborhood_code": "90000015",
+        "market_area": "90",
+        "dor_use_code": "099",
+        "vacant_improved": "V",
+        "clerk_number": "20260236559"
+      },
+      {
+        "parcel_id": "032229262813040",
+        "sale_price": 1250000.0,
+        "sale_year": 2026,
+        "sale_month": 7,
+        "neighborhood_code": "90000006",
+        "market_area": "90",
+        "dor_use_code": "010",
+        "vacant_improved": "V",
+        "clerk_number": "20260413772"
+      },
+      {
+        "parcel_id": "032229262817070",
+        "sale_price": 122800.0,
+        "sale_year": 2025,
+        "sale_month": 2,
+        "neighborhood_code": "33081629",
+        "market_area": "33",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250088307"
+      },
+      {
+        "parcel_id": "032229522802060",
+        "sale_price": 50000.0,
+        "sale_year": 2025,
+        "sale_month": 8,
+        "neighborhood_code": "30080129",
+        "market_area": "30",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20250507509"
+      },
+      {
+        "parcel_id": "032229847603490",
+        "sale_price": 170000.0,
+        "sale_year": 2026,
+        "sale_month": 4,
+        "neighborhood_code": "30080129",
+        "market_area": "30",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260238615"
+      },
+      {
+        "parcel_id": "032229847603500",
+        "sale_price": 170000.0,
+        "sale_year": 2026,
+        "sale_month": 4,
+        "neighborhood_code": "30080129",
+        "market_area": "30",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260242319"
+      },
+      {
+        "parcel_id": "032229847603512",
+        "sale_price": 348000.0,
+        "sale_year": 2026,
+        "sale_month": 7,
+        "neighborhood_code": "30080129",
+        "market_area": "30",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260387786"
+      },
+      {
+        "parcel_id": "032232790301190",
+        "sale_price": 1030000.0,
+        "sale_year": 2026,
+        "sale_month": 4,
+        "neighborhood_code": "05160322",
+        "market_area": "05",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260197694"
+      },
+      {
+        "parcel_id": "032329018009040",
+        "sale_price": 25000.0,
+        "sale_year": 2025,
+        "sale_month": 7,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250401630"
+      },
+      {
+        "parcel_id": "032329018010210",
+        "sale_price": 70000.0,
+        "sale_year": 2025,
+        "sale_month": 12,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "001",
+        "vacant_improved": "V",
+        "clerk_number": "20250731344"
+      },
+      {
+        "parcel_id": "032329018013200",
+        "sale_price": 82500.0,
+        "sale_year": 2026,
+        "sale_month": 2,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260127292"
+      },
+      {
+        "parcel_id": "032329018014170",
+        "sale_price": 80000.0,
+        "sale_year": 2025,
+        "sale_month": 8,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250481116"
+      },
+      {
+        "parcel_id": "032329018014180",
+        "sale_price": 80000.0,
+        "sale_year": 2025,
+        "sale_month": 8,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250481174"
+      },
+      {
+        "parcel_id": "032329018017070",
+        "sale_price": 160000.0,
+        "sale_year": 2025,
+        "sale_month": 2,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250132578"
+      },
+      {
+        "parcel_id": "032329018027030",
+        "sale_price": 40000.0,
+        "sale_year": 2026,
+        "sale_month": 5,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260297210"
+      },
+      {
+        "parcel_id": "032329018030210",
+        "sale_price": 180000.0,
+        "sale_year": 2026,
+        "sale_month": 5,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260282062"
+      },
+      {
+        "parcel_id": "032329018040190",
+        "sale_price": 100000.0,
+        "sale_year": 2025,
+        "sale_month": 7,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "001",
+        "vacant_improved": "V",
+        "clerk_number": "20250401635"
+      },
+      {
+        "parcel_id": "032329018045070",
+        "sale_price": 83000.0,
+        "sale_year": 2026,
+        "sale_month": 2,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260170401"
+      },
+      {
+        "parcel_id": "032329018052231",
+        "sale_price": 147000.0,
+        "sale_year": 2025,
+        "sale_month": 3,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250150197"
+      },
+      {
+        "parcel_id": "032329018064230",
+        "sale_price": 70000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260492763"
+      },
+      {
+        "parcel_id": "032329018064230",
+        "sale_price": 56000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260489045"
+      },
+      {
+        "parcel_id": "032329018067011",
+        "sale_price": 250000.0,
+        "sale_year": 2025,
+        "sale_month": 10,
+        "neighborhood_code": "90000009",
+        "market_area": "90",
+        "dor_use_code": "010",
+        "vacant_improved": "V",
+        "clerk_number": "20250672148"
+      },
+      {
+        "parcel_id": "032329018070110",
+        "sale_price": 145000.0,
+        "sale_year": 2026,
+        "sale_month": 2,
+        "neighborhood_code": "97090300",
+        "market_area": "97",
+        "dor_use_code": "010",
+        "vacant_improved": "V",
+        "clerk_number": "20260127904"
+      },
+      {
+        "parcel_id": "032329018071010",
+        "sale_price": 175000.0,
+        "sale_year": 2026,
+        "sale_month": 7,
+        "neighborhood_code": "96010200",
+        "market_area": "96",
+        "dor_use_code": "010",
+        "vacant_improved": "V",
+        "clerk_number": "20260398277"
+      },
+      {
+        "parcel_id": "032329018293130",
+        "sale_price": 80000.0,
+        "sale_year": 2025,
+        "sale_month": 7,
+        "neighborhood_code": "25020239",
+        "market_area": "25",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250410276"
+      },
+      {
+        "parcel_id": "032329018296030",
+        "sale_price": 378000.0,
+        "sale_year": 2026,
+        "sale_month": 1,
+        "neighborhood_code": "25020239",
+        "market_area": "25",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260144060"
+      },
+      {
+        "parcel_id": "032329018297140",
+        "sale_price": 385000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "25020239",
+        "market_area": "25",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260440923"
+      },
+      {
+        "parcel_id": "032329018311010",
+        "sale_price": 75000.0,
+        "sale_year": 2026,
+        "sale_month": 2,
+        "neighborhood_code": "25020239",
+        "market_area": "25",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20260114730"
+      },
+      {
+        "parcel_id": "032329140202451",
+        "sale_price": 350000.0,
+        "sale_year": 2026,
+        "sale_month": 6,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260354015"
+      },
+      {
+        "parcel_id": "032329140203080",
+        "sale_price": 335000.0,
+        "sale_year": 2026,
+        "sale_month": 6,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260320582"
+      },
+      {
+        "parcel_id": "032329140203240",
+        "sale_price": 50000.0,
+        "sale_year": 2025,
+        "sale_month": 8,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "000",
+        "vacant_improved": "V",
+        "clerk_number": "20250502579"
+      },
+      {
+        "parcel_id": "032329140203240",
+        "sale_price": 330000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "28030829",
+        "market_area": "28",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260475064"
+      },
+      {
+        "parcel_id": "032431896001010",
+        "sale_price": 466800.0,
+        "sale_year": 2026,
+        "sale_month": 2,
+        "neighborhood_code": "11310841",
+        "market_area": "11",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260140342"
+      },
+      {
+        "parcel_id": "032431896001011",
+        "sale_price": 430500.0,
+        "sale_year": 2026,
+        "sale_month": 5,
+        "neighborhood_code": "11310841",
+        "market_area": "11",
+        "dor_use_code": "000",
+        "vacant_improved": "I",
+        "clerk_number": "20260314558"
+      }
+    ],
+    "sample_improved_comps": [
+      {
+        "parcel_id": "012027000000039",
+        "sale_price": 500000.0,
+        "sale_year": 2026,
+        "sale_month": 7,
+        "neighborhood_code": "06461807",
+        "market_area": "06",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260421831"
+      },
+      {
+        "parcel_id": "012027126600030",
+        "sale_price": 442000.0,
+        "sale_year": 2025,
+        "sale_month": 12,
+        "neighborhood_code": "06461807",
+        "market_area": "06",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250713860"
+      },
+      {
+        "parcel_id": "012128000000006",
+        "sale_price": 476000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250386173"
+      },
+      {
+        "parcel_id": "012128063400080",
+        "sale_price": 390000.0,
+        "sale_year": 2026,
+        "sale_month": 7,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260398978"
+      },
+      {
+        "parcel_id": "012128063400140",
+        "sale_price": 485000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260449739"
+      },
+      {
+        "parcel_id": "012128063400170",
+        "sale_price": 450000.0,
+        "sale_year": 2025,
+        "sale_month": 3,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250192773"
+      },
+      {
+        "parcel_id": "012128063400450",
+        "sale_price": 428800.0,
+        "sale_year": 2025,
+        "sale_month": 8,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250508482"
+      },
+      {
+        "parcel_id": "012128063400470",
+        "sale_price": 420000.0,
+        "sale_year": 2025,
+        "sale_month": 1,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250049176"
+      },
+      {
+        "parcel_id": "012128063400510",
+        "sale_price": 515000.0,
+        "sale_year": 2025,
+        "sale_month": 11,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250672159"
+      },
+      {
+        "parcel_id": "012128063400540",
+        "sale_price": 475000.0,
+        "sale_year": 2025,
+        "sale_month": 10,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250650628"
+      },
+      {
+        "parcel_id": "012128063600240",
+        "sale_price": 510000.0,
+        "sale_year": 2025,
+        "sale_month": 4,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250236248"
+      },
+      {
+        "parcel_id": "012128063600360",
+        "sale_price": 590000.0,
+        "sale_year": 2025,
+        "sale_month": 3,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250194568"
+      },
+      {
+        "parcel_id": "012128064000300",
+        "sale_price": 635000.0,
+        "sale_year": 2026,
+        "sale_month": 9,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260507822"
+      },
+      {
+        "parcel_id": "012128064000420",
+        "sale_price": 600000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250339906"
+      },
+      {
+        "parcel_id": "012128064000540",
+        "sale_price": 491500.0,
+        "sale_year": 2026,
+        "sale_month": 2,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260086119"
+      },
+      {
+        "parcel_id": "012128064400110",
+        "sale_price": 395000.0,
+        "sale_year": 2025,
+        "sale_month": 9,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250653118"
+      },
+      {
+        "parcel_id": "012128064400110",
+        "sale_price": 585000.0,
+        "sale_year": 2026,
+        "sale_month": 4,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260239104"
+      },
+      {
+        "parcel_id": "012128064400430",
+        "sale_price": 535000.0,
+        "sale_year": 2025,
+        "sale_month": 3,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250192051"
+      },
+      {
+        "parcel_id": "012128064700040",
+        "sale_price": 430000.0,
+        "sale_year": 2025,
+        "sale_month": 9,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250565813"
+      },
+      {
+        "parcel_id": "012128064700070",
+        "sale_price": 370000.0,
+        "sale_year": 2026,
+        "sale_month": 4,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260223310"
+      },
+      {
+        "parcel_id": "012128064700140",
+        "sale_price": 390000.0,
+        "sale_year": 2025,
+        "sale_month": 10,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250590777"
+      },
+      {
+        "parcel_id": "012128064800220",
+        "sale_price": 499000.0,
+        "sale_year": 2026,
+        "sale_month": 6,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260319793"
+      },
+      {
+        "parcel_id": "012128119100020",
+        "sale_price": 450000.0,
+        "sale_year": 2026,
+        "sale_month": 3,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260147498"
+      },
+      {
+        "parcel_id": "012128119100110",
+        "sale_price": 399000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260442179"
+      },
+      {
+        "parcel_id": "012128129100190",
+        "sale_price": 580000.0,
+        "sale_year": 2026,
+        "sale_month": 3,
+        "neighborhood_code": "07141018",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260196226"
+      },
+      {
+        "parcel_id": "012128129100200",
+        "sale_price": 530000.0,
+        "sale_year": 2026,
+        "sale_month": 1,
+        "neighborhood_code": "07141018",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260036782"
+      },
+      {
+        "parcel_id": "012128129100340",
+        "sale_price": 415000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "07141018",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250394124"
+      },
+      {
+        "parcel_id": "012128129100350",
+        "sale_price": 535000.0,
+        "sale_year": 2025,
+        "sale_month": 10,
+        "neighborhood_code": "07141018",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250616190"
+      },
+      {
+        "parcel_id": "012128129100410",
+        "sale_price": 593000.0,
+        "sale_year": 2025,
+        "sale_month": 5,
+        "neighborhood_code": "07141018",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250309959"
+      },
+      {
+        "parcel_id": "012128129100520",
+        "sale_price": 590000.0,
+        "sale_year": 2026,
+        "sale_month": 4,
+        "neighborhood_code": "07141018",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260264090"
+      },
+      {
+        "parcel_id": "012128198400020",
+        "sale_price": 132000.0,
+        "sale_year": 2025,
+        "sale_month": 12,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260000586"
+      },
+      {
+        "parcel_id": "012128198400090",
+        "sale_price": 730000.0,
+        "sale_year": 2026,
+        "sale_month": 5,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260304522"
+      },
+      {
+        "parcel_id": "012128203700390",
+        "sale_price": 730000.0,
+        "sale_year": 2026,
+        "sale_month": 5,
+        "neighborhood_code": "07200908",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260279869"
+      },
+      {
+        "parcel_id": "012128203700560",
+        "sale_price": 625000.0,
+        "sale_year": 2026,
+        "sale_month": 1,
+        "neighborhood_code": "07200908",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260047053"
+      },
+      {
+        "parcel_id": "012128203700620",
+        "sale_price": 665000.0,
+        "sale_year": 2026,
+        "sale_month": 7,
+        "neighborhood_code": "07200908",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260432617"
+      },
+      {
+        "parcel_id": "012128203700820",
+        "sale_price": 565000.0,
+        "sale_year": 2026,
+        "sale_month": 1,
+        "neighborhood_code": "07200908",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260039090"
+      },
+      {
+        "parcel_id": "012128203700850",
+        "sale_price": 655000.0,
+        "sale_year": 2025,
+        "sale_month": 4,
+        "neighborhood_code": "07200908",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250264088"
+      },
+      {
+        "parcel_id": "012128549000150",
+        "sale_price": 399900.0,
+        "sale_year": 2025,
+        "sale_month": 7,
+        "neighborhood_code": "07141018",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250461263"
+      },
+      {
+        "parcel_id": "012128549000210",
+        "sale_price": 485000.0,
+        "sale_year": 2025,
+        "sale_month": 3,
+        "neighborhood_code": "07141018",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250204476"
+      },
+      {
+        "parcel_id": "012128549000400",
+        "sale_price": 480000.0,
+        "sale_year": 2026,
+        "sale_month": 7,
+        "neighborhood_code": "07141018",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260428049"
+      },
+      {
+        "parcel_id": "012128847200230",
+        "sale_price": 375000.0,
+        "sale_year": 2025,
+        "sale_month": 1,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250059379"
+      },
+      {
+        "parcel_id": "012128848000100",
+        "sale_price": 585000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "07141018",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260460578"
+      },
+      {
+        "parcel_id": "012128848000230",
+        "sale_price": 560000.0,
+        "sale_year": 2026,
+        "sale_month": 9,
+        "neighborhood_code": "07141018",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260501206"
+      },
+      {
+        "parcel_id": "012128908000120",
+        "sale_price": 387000.0,
+        "sale_year": 2026,
+        "sale_month": 7,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260390412"
+      },
+      {
+        "parcel_id": "012128908000280",
+        "sale_price": 401000.0,
+        "sale_year": 2026,
+        "sale_month": 6,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260339343"
+      },
+      {
+        "parcel_id": "012128908000290",
+        "sale_price": 375000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250351117"
+      },
+      {
+        "parcel_id": "012128908000370",
+        "sale_price": 265000.0,
+        "sale_year": 2025,
+        "sale_month": 9,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250541117"
+      },
+      {
+        "parcel_id": "012128908000370",
+        "sale_price": 420000.0,
+        "sale_year": 2026,
+        "sale_month": 3,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260156654"
+      },
+      {
+        "parcel_id": "012128908000430",
+        "sale_price": 373500.0,
+        "sale_year": 2025,
+        "sale_month": 12,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250721397"
+      },
+      {
+        "parcel_id": "012128908200830",
+        "sale_price": 300000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250370628"
+      },
+      {
+        "parcel_id": "012128908200910",
+        "sale_price": 370000.0,
+        "sale_year": 2025,
+        "sale_month": 8,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250513938"
+      },
+      {
+        "parcel_id": "012128908200960",
+        "sale_price": 435000.0,
+        "sale_year": 2025,
+        "sale_month": 8,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250515979"
+      },
+      {
+        "parcel_id": "012128908401210",
+        "sale_price": 434000.0,
+        "sale_year": 2025,
+        "sale_month": 9,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250561311"
+      },
+      {
+        "parcel_id": "012128908401230",
+        "sale_price": 429800.0,
+        "sale_year": 2026,
+        "sale_month": 2,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260097666"
+      },
+      {
+        "parcel_id": "012128908601810",
+        "sale_price": 430000.0,
+        "sale_year": 2026,
+        "sale_month": 6,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260376623"
+      },
+      {
+        "parcel_id": "012128908601950",
+        "sale_price": 427500.0,
+        "sale_year": 2026,
+        "sale_month": 1,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260057999"
+      },
+      {
+        "parcel_id": "012128908601980",
+        "sale_price": 490000.0,
+        "sale_year": 2026,
+        "sale_month": 7,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260421323"
+      },
+      {
+        "parcel_id": "012128908802160",
+        "sale_price": 360000.0,
+        "sale_year": 2025,
+        "sale_month": 9,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250539959"
+      },
+      {
+        "parcel_id": "012128908802220",
+        "sale_price": 325000.0,
+        "sale_year": 2025,
+        "sale_month": 2,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250085278"
+      },
+      {
+        "parcel_id": "012128908802220",
+        "sale_price": 389000.0,
+        "sale_year": 2025,
+        "sale_month": 3,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250177645"
+      },
+      {
+        "parcel_id": "012128908802390",
+        "sale_price": 335000.0,
+        "sale_year": 2025,
+        "sale_month": 9,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250567709"
+      },
+      {
+        "parcel_id": "012128908802470",
+        "sale_price": 455000.0,
+        "sale_year": 2026,
+        "sale_month": 3,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260192119"
+      },
+      {
+        "parcel_id": "012128909400020",
+        "sale_price": 419000.0,
+        "sale_year": 2025,
+        "sale_month": 2,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250131280"
+      },
+      {
+        "parcel_id": "012128909400110",
+        "sale_price": 435000.0,
+        "sale_year": 2026,
+        "sale_month": 5,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260299170"
+      },
+      {
+        "parcel_id": "012128909400240",
+        "sale_price": 391000.0,
+        "sale_year": 2026,
+        "sale_month": 2,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260108531"
+      },
+      {
+        "parcel_id": "012128909400260",
+        "sale_price": 392000.0,
+        "sale_year": 2026,
+        "sale_month": 3,
+        "neighborhood_code": "07091118",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260149960"
+      },
+      {
+        "parcel_id": "012128910801141",
+        "sale_price": 345000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250357548"
+      },
+      {
+        "parcel_id": "012128910803040",
+        "sale_price": 300000.0,
+        "sale_year": 2025,
+        "sale_month": 3,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250205245"
+      },
+      {
+        "parcel_id": "012128910803050",
+        "sale_price": 375000.0,
+        "sale_year": 2026,
+        "sale_month": 4,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260257796"
+      },
+      {
+        "parcel_id": "012128910803090",
+        "sale_price": 400000.0,
+        "sale_year": 2025,
+        "sale_month": 2,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250083631"
+      },
+      {
+        "parcel_id": "012128910804020",
+        "sale_price": 465000.0,
+        "sale_year": 2026,
+        "sale_month": 7,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260428154"
+      },
+      {
+        "parcel_id": "012128911200070",
+        "sale_price": 640000.0,
+        "sale_year": 2026,
+        "sale_month": 8,
+        "neighborhood_code": "07090918",
+        "market_area": "07",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260454257"
+      },
+      {
+        "parcel_id": "012227717000140",
+        "sale_price": 767000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250349543"
+      },
+      {
+        "parcel_id": "012227717000200",
+        "sale_price": 540000.0,
+        "sale_year": 2025,
+        "sale_month": 8,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250485994"
+      },
+      {
+        "parcel_id": "012227717000200",
+        "sale_price": 610000.0,
+        "sale_year": 2026,
+        "sale_month": 2,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260084551"
+      },
+      {
+        "parcel_id": "012227717000330",
+        "sale_price": 660000.0,
+        "sale_year": 2026,
+        "sale_month": 7,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260375639"
+      },
+      {
+        "parcel_id": "012227717000360",
+        "sale_price": 575000.0,
+        "sale_year": 2025,
+        "sale_month": 7,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250431405"
+      },
+      {
+        "parcel_id": "012227717000660",
+        "sale_price": 460000.0,
+        "sale_year": 2025,
+        "sale_month": 7,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250525890"
+      },
+      {
+        "parcel_id": "012227717000790",
+        "sale_price": 620000.0,
+        "sale_year": 2026,
+        "sale_month": 4,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260199834"
+      },
+      {
+        "parcel_id": "012227717000930",
+        "sale_price": 480000.0,
+        "sale_year": 2025,
+        "sale_month": 1,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250065355"
+      },
+      {
+        "parcel_id": "012227717001050",
+        "sale_price": 577000.0,
+        "sale_year": 2025,
+        "sale_month": 2,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250102356"
+      },
+      {
+        "parcel_id": "012227717001080",
+        "sale_price": 500000.0,
+        "sale_year": 2026,
+        "sale_month": 6,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260336830"
+      },
+      {
+        "parcel_id": "012227717001090",
+        "sale_price": 450000.0,
+        "sale_year": 2026,
+        "sale_month": 2,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260108059"
+      },
+      {
+        "parcel_id": "012227717001260",
+        "sale_price": 700000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250381208"
+      },
+      {
+        "parcel_id": "012227717001300",
+        "sale_price": 850000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250357139"
+      },
+      {
+        "parcel_id": "012227717001470",
+        "sale_price": 532000.0,
+        "sale_year": 2026,
+        "sale_month": 5,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260287682"
+      },
+      {
+        "parcel_id": "012227717101600",
+        "sale_price": 555000.0,
+        "sale_year": 2025,
+        "sale_month": 3,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250142700"
+      },
+      {
+        "parcel_id": "012227717101920",
+        "sale_price": 725000.0,
+        "sale_year": 2025,
+        "sale_month": 6,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250378336"
+      },
+      {
+        "parcel_id": "012227717102160",
+        "sale_price": 620000.0,
+        "sale_year": 2026,
+        "sale_month": 2,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260086624"
+      },
+      {
+        "parcel_id": "012227717102550",
+        "sale_price": 515000.0,
+        "sale_year": 2025,
+        "sale_month": 10,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250584700"
+      },
+      {
+        "parcel_id": "012227717102760",
+        "sale_price": 450000.0,
+        "sale_year": 2026,
+        "sale_month": 3,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260148944"
+      },
+      {
+        "parcel_id": "012227717102910",
+        "sale_price": 499000.0,
+        "sale_year": 2026,
+        "sale_month": 4,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260252750"
+      },
+      {
+        "parcel_id": "012227717103030",
+        "sale_price": 505000.0,
+        "sale_year": 2025,
+        "sale_month": 12,
+        "neighborhood_code": "29140127",
+        "market_area": "29",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260003519"
+      },
+      {
+        "parcel_id": "012228000000004",
+        "sale_price": 350000.0,
+        "sale_year": 2025,
+        "sale_month": 3,
+        "neighborhood_code": "34090428",
+        "market_area": "34",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250205153"
+      },
+      {
+        "parcel_id": "012228000000029",
+        "sale_price": 332000.0,
+        "sale_year": 2025,
+        "sale_month": 5,
+        "neighborhood_code": "34090428",
+        "market_area": "34",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250278240"
+      },
+      {
+        "parcel_id": "012228000000032",
+        "sale_price": 225000.0,
+        "sale_year": 2025,
+        "sale_month": 2,
+        "neighborhood_code": "34090428",
+        "market_area": "34",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250134661"
+      },
+      {
+        "parcel_id": "012228054000200",
+        "sale_price": 345000.0,
+        "sale_year": 2025,
+        "sale_month": 2,
+        "neighborhood_code": "34090428",
+        "market_area": "34",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250136333"
+      },
+      {
+        "parcel_id": "012228054000480",
+        "sale_price": 320000.0,
+        "sale_year": 2025,
+        "sale_month": 2,
+        "neighborhood_code": "34090428",
+        "market_area": "34",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250127782"
+      },
+      {
+        "parcel_id": "012228054000730",
+        "sale_price": 287000.0,
+        "sale_year": 2026,
+        "sale_month": 3,
+        "neighborhood_code": "34090428",
+        "market_area": "34",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20260202927"
+      },
+      {
+        "parcel_id": "012228054001110",
+        "sale_price": 315000.0,
+        "sale_year": 2025,
+        "sale_month": 10,
+        "neighborhood_code": "34090428",
+        "market_area": "34",
+        "dor_use_code": "001",
+        "vacant_improved": "I",
+        "clerk_number": "20250678012"
+      }
+    ],
+    "total_vacant_sales": 2690,
+    "total_sfh_sales": 25408,
+    "market_areas": {
+      "06": {
+        "median_finished_value": 489050.0,
+        "median_vacant_lot_price": 450500.0,
+        "finished_count": 1330,
+        "vacant_count": 346
+      },
+      "07": {
+        "median_finished_value": 386250.0,
+        "median_vacant_lot_price": 424100.0,
+        "finished_count": 2068,
+        "vacant_count": 225
+      },
+      "29": {
+        "median_finished_value": 542000.0,
+        "median_vacant_lot_price": 390500.0,
+        "finished_count": 1524,
+        "vacant_count": 131
+      },
+      "34": {
+        "median_finished_value": 290000.0,
+        "median_vacant_lot_price": 115200.0,
+        "finished_count": 441,
+        "vacant_count": 2
+      },
+      "30": {
+        "median_finished_value": 510000.0,
+        "median_vacant_lot_price": 422000.0,
+        "finished_count": 694,
+        "vacant_count": 61
+      },
+      "32": {
+        "median_finished_value": 760000.0,
+        "median_vacant_lot_price": 555000.0,
+        "finished_count": 966,
+        "vacant_count": 67
+      },
+      "33": {
+        "median_finished_value": 305000.0,
+        "median_vacant_lot_price": 122800.0,
+        "finished_count": 450,
+        "vacant_count": 19
+      },
+      "01": {
+        "median_finished_value": 410000.0,
+        "median_vacant_lot_price": 260000.0,
+        "finished_count": 343,
+        "vacant_count": 31
+      },
+      "02": {
+        "median_finished_value": 366000.0,
+        "median_vacant_lot_price": 111250.0,
+        "finished_count": 624,
+        "vacant_count": 12
+      },
+      "05": {
+        "median_finished_value": 525000.0,
+        "median_vacant_lot_price": 100000.0,
+        "finished_count": 361,
+        "vacant_count": 75
+      },
+      "19": {
+        "median_finished_value": 775000.0,
+        "median_vacant_lot_price": 535000.0,
+        "finished_count": 459,
+        "vacant_count": 12
+      },
+      "28": {
+        "median_finished_value": 290000.0,
+        "median_vacant_lot_price": 80000.0,
+        "finished_count": 906,
+        "vacant_count": 67
+      },
+      "24": {
+        "median_finished_value": 459900.0,
+        "median_vacant_lot_price": 380000.0,
+        "finished_count": 866,
+        "vacant_count": 19
+      },
+      "23": {
+        "median_finished_value": 440000.0,
+        "median_vacant_lot_price": 300000.0,
+        "finished_count": 693,
+        "vacant_count": 17
+      },
+      "13": {
+        "median_finished_value": 350000.0,
+        "median_vacant_lot_price": 562800.0,
+        "finished_count": 647,
+        "vacant_count": 23
+      },
+      "08": {
+        "median_finished_value": 461000.0,
+        "median_vacant_lot_price": 351250.0,
+        "finished_count": 817,
+        "vacant_count": 2
+      },
+      "04": {
+        "median_finished_value": 570400.0,
+        "median_vacant_lot_price": 115000.0,
+        "finished_count": 252,
+        "vacant_count": 229
+      },
+      "20": {
+        "median_finished_value": 610000.0,
+        "median_vacant_lot_price": 805000.0,
+        "finished_count": 458,
+        "vacant_count": 10
+      },
+      "12": {
+        "median_finished_value": 455000.0,
+        "median_vacant_lot_price": 515000.0,
+        "finished_count": 1183,
+        "vacant_count": 183
+      },
+      "31": {
+        "median_finished_value": 345000.0,
+        "median_vacant_lot_price": 115000.0,
+        "finished_count": 327,
+        "vacant_count": 3
+      },
+      "21": {
+        "median_finished_value": 573500.0,
+        "median_vacant_lot_price": 855200.0,
+        "finished_count": 396,
+        "vacant_count": 44
+      },
+      "25": {
+        "median_finished_value": 325000.0,
+        "median_vacant_lot_price": 85000.0,
+        "finished_count": 359,
+        "vacant_count": 7
+      },
+      "17": {
+        "median_finished_value": 659450.0,
+        "median_vacant_lot_price": 1158700.0,
+        "finished_count": 686,
+        "vacant_count": 23
+      },
+      "09": {
+        "median_finished_value": 400000.0,
+        "median_vacant_lot_price": 447250.0,
+        "finished_count": 723,
+        "vacant_count": 144
+      },
+      "22": {
+        "median_finished_value": 580000.0,
+        "median_vacant_lot_price": 587500.0,
+        "finished_count": 1987,
+        "vacant_count": 428
+      },
+      "18": {
+        "median_finished_value": 1042500.0,
+        "median_vacant_lot_price": 525000.0,
+        "finished_count": 452,
+        "vacant_count": 13
+      },
+      "11": {
+        "median_finished_value": 580000.0,
+        "median_vacant_lot_price": 546200.0,
+        "finished_count": 1619,
+        "vacant_count": 218
+      },
+      "10": {
+        "median_finished_value": 425000.0,
+        "median_vacant_lot_price": 357000.0,
+        "finished_count": 399,
+        "vacant_count": 2
+      },
+      "15": {
+        "median_finished_value": 410500.0,
+        "median_vacant_lot_price": 450000.0,
+        "finished_count": 806,
+        "vacant_count": 0
+      },
+      "97": {
+        "median_finished_value": 305000.0,
+        "median_vacant_lot_price": 145000.0,
+        "finished_count": 6,
+        "vacant_count": 1
+      },
+      "16": {
+        "median_finished_value": 795000.0,
+        "median_vacant_lot_price": 27450.0,
+        "finished_count": 201,
+        "vacant_count": 4
+      },
+      "35": {
+        "median_finished_value": 270000.0,
+        "median_vacant_lot_price": 77500.0,
+        "finished_count": 636,
+        "vacant_count": 22
+      },
+      "27": {
+        "median_finished_value": 615000.0,
+        "median_vacant_lot_price": 440000.0,
+        "finished_count": 691,
+        "vacant_count": 37
+      },
+      "14": {
+        "median_finished_value": 381000.0,
+        "median_vacant_lot_price": 600000.0,
+        "finished_count": 404,
+        "vacant_count": 1
+      },
+      "26": {
+        "median_finished_value": 330000.0,
+        "median_vacant_lot_price": 457500.0,
+        "finished_count": 292,
+        "vacant_count": 36
+      },
+      "03": {
+        "median_finished_value": 345000.0,
+        "median_vacant_lot_price": 115000.0,
+        "finished_count": 322,
+        "vacant_count": 9
+      },
+      "90": {
+        "median_finished_value": 763350.0,
+        "median_vacant_lot_price": 500000.0,
+        "finished_count": 18,
+        "vacant_count": 129
+      },
+      "99": {
+        "median_finished_value": 310300.0,
+        "median_vacant_lot_price": 550000.0,
+        "finished_count": 2,
+        "vacant_count": 9
+      }
+    }
+  }
+}

@@ -160,6 +160,32 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("inputAgentName").value = data.agent_name || "";
     document.getElementById("inputAgentPhone").value = data.agent_phone || "";
     document.getElementById("inputBrokerage").value = data.brokerage || "";
+
+    // Auto-detect Land and preselect target desk
+    const deskSelect = document.getElementById("targetDeskSelect");
+    const isLand = (data.property_type && /LAND|LOT/i.test(data.property_type)) ||
+                   (data.remarks && /vacant lot|buildable lot|infill/i.test(data.remarks)) ||
+                   (!data.beds && !data.baths && (data.sqft || 0) > 2000);
+    if (deskSelect) {
+      deskSelect.value = isLand ? "LANA" : "LAUREN";
+      const btnText = document.getElementById("btnPushSingleText") || btnPushSingle;
+      btnText.innerText = isLand ? "🚀 Push Infill Lot to Lana's Desk" : "🚀 Push Fixer to Lauren's Desk";
+    }
+  }
+
+  const targetDeskSelect = document.getElementById("targetDeskSelect");
+  if (targetDeskSelect) {
+    targetDeskSelect.addEventListener("change", () => {
+      const desk = targetDeskSelect.value;
+      const btnText = document.getElementById("btnPushSingleText") || btnPushSingle;
+      if (desk === "LANA") {
+        btnText.innerText = "🚀 Push Infill Lot to Lana's Desk";
+      } else if (desk === "BROOKE") {
+        btnText.innerText = "🚀 Push Agent to Brooke's Desk";
+      } else {
+        btnText.innerText = "🚀 Push Fixer to Lauren's Desk";
+      }
+    });
   }
 
   function renderBulkSearch(listings) {
@@ -185,27 +211,52 @@ document.addEventListener("DOMContentLoaded", async () => {
     currentData.agent_phone = document.getElementById("inputAgentPhone").value.trim() || currentData.agent_phone || "";
     currentData.brokerage = document.getElementById("inputBrokerage").value.trim() || currentData.brokerage || "";
 
+    const targetDesk = document.getElementById("targetDeskSelect") ? document.getElementById("targetDeskSelect").value : "LAUREN";
+
     try {
-      const res = await fetch("http://localhost:8001/api/fixers/ingest", {
+      let url = "http://localhost:8001/api/fixers/ingest";
+      let payload = currentData;
+
+      if (targetDesk === "LANA") {
+        url = "http://localhost:8001/api/lana/lots";
+        payload = {
+          address: currentData.address || "Vacant Lot",
+          city: currentData.city || "Orlando",
+          county: currentData.county || "ORANGE",
+          zip: currentData.zip || "",
+          list_price: currentData.list_price || 110000,
+          lot_acres: currentData.lot_acres || ((currentData.sqft || 8712) / 43560),
+          lot_sqft: currentData.sqft || 8712,
+          days_on_market: currentData.dom || 60,
+          agent_name: currentData.agent_name,
+          agent_phone: currentData.agent_phone,
+          brokerage: currentData.brokerage,
+          remarks: currentData.remarks || ""
+        };
+      }
+
+      const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(currentData)
+        body: JSON.stringify(payload)
       });
       const d = await res.json();
       if (d.status === "success") {
         alertBox.className = "alert alert-success";
-        alertBox.innerHTML = `✓ Pushed to Lauren's Desk!<br><span style="font-size:10px; font-weight:normal;">Offer Target: $${Math.round(d.fixer.underwriting.offer_price).toLocaleString()}</span>`;
+        const deskLabel = targetDesk === "LANA" ? "Lana's Infill Land Desk" : "Lauren's Desk";
+        const offerVal = (d.lot && d.lot.underwriting && d.lot.underwriting.offer_price) || (d.fixer && d.fixer.underwriting && d.fixer.underwriting.offer_price) || 0;
+        alertBox.innerHTML = `✓ Pushed to ${deskLabel}!<br><span style="font-size:10px; font-weight:normal;">Offer Target: $${Math.round(offerVal).toLocaleString()}</span>`;
         alertBox.style.display = "block";
-        btnPushSingle.innerText = "✓ Added to Lauren's Desk";
+        btnPushSingle.innerText = `✓ Added to ${targetDesk === 'LANA' ? "Lana's Desk" : "Lauren's Desk"}`;
       } else {
         showError(d.message || "Failed to push to Deal Hunter.");
         btnPushSingle.disabled = false;
-        btnPushSingle.innerText = "🚀 Push Fixer to Lauren's Desk";
+        btnPushSingle.innerText = "🚀 Push to Desk";
       }
     } catch (err) {
       showError("Connection failed: Make sure Agent Deal Hunter is running on localhost:8001");
       btnPushSingle.disabled = false;
-      btnPushSingle.innerText = "🚀 Push Fixer to Lauren's Desk";
+      btnPushSingle.innerText = "🚀 Push to Desk";
     }
   });
 

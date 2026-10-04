@@ -336,6 +336,87 @@ STANDARD_TRAINING_SCENARIOS = [
         "sample_inbound": "No way, seller turned down 170k last week. That is way too low.",
         "default_suggestion": "Totally understand we have a gap right now. I just emailed our formal written terms as a standing cash offer at $128,000 just in case the seller's circumstances or timeline change down the road, or if anything falls through with another buyer. Our offer stands for 30 days. If anything shifts, John and I are ready to close clean in 14 days!",
         "default_script": "Totally understand we have a gap right now. I just emailed our formal written terms as a standing cash offer at $128,000 just in case the seller's circumstances or timeline change down the road, or if anything falls through with another buyer. Our offer stands for 30 days. If anything shifts, John and I are ready to close clean in 14 days!"
+    },
+    # --- Lana's On-Market Infill Land Scenarios ---
+    {
+        "agent_desk": "LANA",
+        "node": "LANA_OPENING_HOOK",
+        "title": "1. Builder Framing Opener",
+        "category": "Land Step 1",
+        "description": "Reaching out on an on-market vacant residential lot noting client builds in the area and asking if buildable as is with utilities.",
+        "sample_inbound": "[New Infill Lot Scraped: 1420 W Jackson St, Orlando, FL. 0.18 acre, list price $115,000, 72 DOM.]",
+        "default_suggestion": "Hi David, Lana here. My client builds new construction in Orlando and asked me to reach out regarding 1420 W Jackson St. Is the lot buildable as is, and are municipal water and sewer at the lot line? Reply STOP to opt out",
+        "default_script": "Hi David, Lana here. My client builds new construction in Orlando and asked me to reach out regarding 1420 W Jackson St. Is the lot buildable as is, and are municipal water and sewer at the lot line? Reply STOP to opt out"
+    },
+    {
+        "agent_desk": "LANA",
+        "node": "LANA_QUALIFY_BUILDABLE",
+        "title": "2. Lot Buildable & Zoning",
+        "category": "Land Step 2",
+        "description": "Asking about zoning classification and single-family or duplex building rights.",
+        "sample_inbound": "Yes it is buildable, utilities are available in the area.",
+        "default_suggestion": "Thanks David. What is the zoning classification on the parcel, and are single family homes or duplexes permitted by right?",
+        "default_script": "Thanks David. What is the zoning classification on the parcel, and are single family homes or duplexes permitted by right?"
+    },
+    {
+        "agent_desk": "LANA",
+        "node": "LANA_QUALIFY_UTILITIES",
+        "title": "3. Utilities at Lot Line",
+        "category": "Land Step 3",
+        "description": "Asking if city water and sewer are stubbed directly at the lot line versus requiring septic or well.",
+        "sample_inbound": "It is zoned R-2 residential, so single family or duplex can be built.",
+        "default_suggestion": "Got it. Are city water and sewer stubbed directly at the lot line, or would a builder need a septic system and well?",
+        "default_script": "Got it. Are city water and sewer stubbed directly at the lot line, or would a builder need a septic system and well?"
+    },
+    {
+        "agent_desk": "LANA",
+        "node": "LANA_QUALIFY_IMPACT_FEES",
+        "title": "4. Impact Fees & Credits",
+        "category": "Land Step 4",
+        "description": "Checking if municipal impact fees have been paid or if demolition credits exist.",
+        "sample_inbound": "Water and sewer are right in the street in front of the lot.",
+        "default_suggestion": "Understood. Do you know if county and city impact fees have already been paid, or if any credits carry over from a prior structure?",
+        "default_script": "Understood. Do you know if county and city impact fees have already been paid, or if any credits carry over from a prior structure?"
+    },
+    {
+        "agent_desk": "LANA",
+        "node": "LANA_OBJECTION_PRICE_FIRM",
+        "title": "5. Firm Price Objection",
+        "category": "Land Objections",
+        "description": "When listing agent states price is firm, holding firm with production builder discipline.",
+        "sample_inbound": "The sellers are firm on $115,000. They are not taking discounts.",
+        "default_suggestion": "I respect where your seller wants to be. My client is an active infill builder, so our numbers are tied directly to current build costs and back end resale comps. We are ready to move quickly with zero financing contingencies at $69,000. If anything changes with their timeline, please keep our offer in hand!",
+        "default_script": "I respect where your seller wants to be. My client is an active infill builder, so our numbers are tied directly to current build costs and back end resale comps. We are ready to move quickly with zero financing contingencies at $69,000. If anything changes with their timeline, please keep our offer in hand!"
+    },
+    {
+        "agent_desk": "LANA",
+        "node": "LANA_OBJECTION_WHY_SO_LOW",
+        "title": "6. The Land Math Drop (Why So Low)",
+        "category": "Land Math Drop",
+        "description": "When agent asks why the offer is low, delivering the full residual build-cost math breakdown.",
+        "sample_inbound": "Why is your offer so low? That is 40 percent below list price.",
+        "default_suggestion": "Running your numbers through our infill builder calculator: finished new construction in this pocket sells around $460,000. At current structure costs of 165 per sqft for a 2,000 sqft build ($330,000), plus our client's standard 18 percent builder margin and holding fees, that puts our maximum land basis right at $69,000 cash. That is why we are at that number. Would it make sense to send over our full LOI breakdown?",
+        "default_script": "Running your numbers through our infill builder calculator: finished new construction in this pocket sells around $460,000. At current structure costs of 165 per sqft for a 2,000 sqft build ($330,000), plus our client's standard 18 percent builder margin and holding fees, that puts our maximum land basis right at $69,000 cash. That is why we are at that number. Would it make sense to send over our full LOI breakdown?"
+    },
+    {
+        "agent_desk": "LANA",
+        "node": "LANA_OBJECTION_CLIENT_REAL",
+        "title": "7. Builder Credibility & Proof of Funds",
+        "category": "Builder Credibility",
+        "description": "When agent questions if the buyer is real, providing local builder credentials and verified POF.",
+        "sample_inbound": "Is your client a real builder or are you wholesalers trying to tie up the land?",
+        "default_suggestion": "Yes, absolutely. My client is a local Florida residential builder actively pouring foundations and completing spec single family homes in Central Florida. We have verified cash proof of funds and close on vacant lots with zero lender red tape. Happy to send our builder package along with the written LOI.",
+        "default_script": "Yes, absolutely. My client is a local Florida residential builder actively pouring foundations and completing spec single family homes in Central Florida. We have verified cash proof of funds and close on vacant lots with zero lender red tape. Happy to send our builder package along with the written LOI."
+    },
+    {
+        "agent_desk": "LANA",
+        "node": "LANA_OBJECTION_SEND_LOI",
+        "title": "8. Dispatch Written LOI to Email",
+        "category": "LOI Delivery",
+        "description": "When agent invites or requests the written LOI.",
+        "sample_inbound": "Send the formal LOI over to my email david@realty.com so I can show the seller.",
+        "default_suggestion": "Awesome, sending the full written LOI over to david@realty.com right now with proof of funds attached. Our offer stands for 7 business days. Please let me know once you and the seller have a chance to review!",
+        "default_script": "Awesome, sending the full written LOI over to david@realty.com right now with proof of funds attached. Our offer stands for 7 business days. Please let me know once you and the seller have a chance to review!"
     }
 ]
 
@@ -370,6 +451,29 @@ def test_gemini_connection(api_key: str, model: str = "gemini-3.5-flash-lite") -
         return {"status": "error", "message": f"Gemini connection failed: {str(e)}"}
 
 
+# HARD FIREWALL: Cold first-touch openers must ALWAYS send deterministically from approved templates.
+# Never allow Gemini to rewrite cold outbound texts (prevents 'Happy Friday!' or syrupy gratitude fluff).
+COLD_OPENER_NODES = {
+    "OPENING_HOOK",
+    "ENTRY_HOOK",
+    "ENTRY_HOOK_AWAITING_REPLY",
+    "FIRST_TOUCH",
+    "FIRST_TOUCH_ICEBREAKER",
+    "LAUREN_OPENING_HOOK",
+    "LANA_OPENING_HOOK",
+    "LANA_OPENER",
+    "BROOKE_COLD_ICEBREAKER",
+    "BROOKE_FIRST_TOUCH",
+    "icebreaker",
+    "double_comm",
+    "checkin",
+    "backup_offer",
+    "loi_offer",
+    "FOLLOWUP_1",
+    "FOLLOWUP_2"
+}
+
+
 def polish_reply_with_gemini(node: str, template_reply: str, agent: Dict[str, Any], inbound_message: str) -> str:
     """
     Enhances the deterministic flowchart script using Gemini with few-shot golden examples.
@@ -381,25 +485,6 @@ def polish_reply_with_gemini(node: str, template_reply: str, agent: Dict[str, An
     if not api_key or not settings.get("use_gemini_enhancer", True):
         return template_reply
 
-    # HARD FIREWALL: Cold first-touch openers must ALWAYS send deterministically from approved templates.
-    # Never allow Gemini to rewrite cold outbound texts (prevents 'Happy Friday!' or syrupy gratitude fluff).
-    COLD_OPENER_NODES = {
-        "OPENING_HOOK",
-        "ENTRY_HOOK",
-        "ENTRY_HOOK_AWAITING_REPLY",
-        "FIRST_TOUCH",
-        "FIRST_TOUCH_ICEBREAKER",
-        "LAUREN_OPENING_HOOK",
-        "BROOKE_COLD_ICEBREAKER",
-        "BROOKE_FIRST_TOUCH",
-        "icebreaker",
-        "double_comm",
-        "checkin",
-        "backup_offer",
-        "loi_offer",
-        "FOLLOWUP_1",
-        "FOLLOWUP_2"
-    }
     if node in COLD_OPENER_NODES:
         return sanitize_sms_no_hyphens(template_reply)
 
@@ -407,13 +492,16 @@ def polish_reply_with_gemini(node: str, template_reply: str, agent: Dict[str, An
     partner_name = settings.get("partner_name", "Jessica")
     agent_name = agent.get("first_name") or agent.get("full_name") or "there"
 
-    is_lauren = node.startswith("LAUREN_")
-    bot_name = "Lauren" if is_lauren else settings.get("bot_name", "Brooke")
+    is_lana = node.startswith("LANA_") or agent.get("agent_desk") == "LANA"
+    is_lauren = node.startswith("LAUREN_") or agent.get("agent_desk") == "LAUREN"
+    bot_name = "Lana" if is_lana else ("Lauren" if is_lauren else settings.get("bot_name", "Brooke"))
     office_phone = settings.get("office_phone", "(407) 815-5043")
 
     # Grab 6 most relevant golden examples for few-shot prompt for this specific assistant
     all_goldens = load_golden_replies()
-    if is_lauren:
+    if is_lana:
+        goldens = [g for g in all_goldens if g.get("agent_desk") == "LANA"][:6]
+    elif is_lauren:
         goldens = [g for g in all_goldens if g.get("agent_desk") == "LAUREN"][:6]
     else:
         goldens = [g for g in all_goldens if g.get("agent_desk") == "BROOKE" or not g.get("agent_desk")][:6]
