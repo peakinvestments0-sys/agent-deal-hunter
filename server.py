@@ -1441,6 +1441,23 @@ async def upload_lana_lots_csv_endpoint(request: Request, file: Optional[UploadF
             or ""
         ).strip()
 
+        redfin_url = (
+            row.get("URL (SEE https://www.redfin.com/buy-a-home/comparative-market-analysis FOR INFO ON PRICING)")
+            or row.get("url")
+            or row.get("URL")
+            or row.get("redfin_url")
+            or row.get("Redfin URL")
+            or row.get("Listing URL")
+            or ""
+        ).strip()
+        if not redfin_url:
+            for k, v in row.items():
+                if k and "url" in k.lower() and v and str(v).startswith("http"):
+                    redfin_url = str(v).strip()
+                    break
+
+        photo_url = (row.get("photo_url") or row.get("image_url") or "").strip()
+
         lot_data = {
             "address": addr,
             "city": city,
@@ -1453,7 +1470,9 @@ async def upload_lana_lots_csv_endpoint(request: Request, file: Optional[UploadF
             "agent_name": agent_name,
             "agent_phone": agent_phone,
             "agent_email": agent_email,
-            "remarks": remarks
+            "remarks": remarks,
+            "redfin_url": redfin_url,
+            "photo_url": photo_url
         }
 
         passes, filter_reasons = passes_infill_filters(lot_data)
@@ -1693,6 +1712,49 @@ def update_lana_lot_phone_endpoint(lot_id: str, req: UpdateLotPhoneRequest):
     lot["agent_phone"] = req.phone.strip()
     save_lots(lots)
     return {"status": "success", "lot": lot}
+
+@app.post("/api/lana/lots/{lot_id}/lookup-phone")
+def lookup_lana_lot_phone_endpoint(lot_id: str):
+    from src.agent_phone_lookup import lookup_single_lot_contact
+    lots = load_lots()
+    lot = next((l for l in lots if l.get("id") == lot_id), None)
+    if not lot:
+        raise HTTPException(status_code=404, detail="Lot not found")
+    
+    enriched_lot = lookup_single_lot_contact(lot)
+    save_lots(lots)
+    
+    phone = enriched_lot.get("agent_phone")
+    if phone:
+        return {
+            "status": "success",
+            "phone": phone,
+            "photo_url": enriched_lot.get("photo_url"),
+            "agent_name": enriched_lot.get("agent_name"),
+            "brokerage": enriched_lot.get("brokerage"),
+            "lot": enriched_lot
+        }
+    return {
+        "status": "not_found",
+        "message": f"No phone number found online for {enriched_lot.get('agent_name', 'Agent')}",
+        "lot": enriched_lot
+    }
+
+@app.post("/api/lana/lots/lookup-all-phones")
+def lookup_all_lana_lot_phones_endpoint():
+    from src.agent_phone_lookup import batch_lookup_lot_phones
+    lots = load_lots()
+    initial_phones = len([l for l in lots if l.get("agent_phone")])
+    enriched = batch_lookup_lot_phones(lots)
+    new_phones = len([l for l in enriched if l.get("agent_phone")])
+    save_lots(enriched)
+    found_count = new_phones - initial_phones
+    return {
+        "status": "success",
+        "message": f"Lookup complete! Found {found_count} new agent phone numbers ({new_phones} total ready).",
+        "found_count": found_count,
+        "total_with_phone": new_phones
+    }
 
 @app.delete("/api/lana/lots/{lot_id}")
 def delete_lana_lot_endpoint(lot_id: str):

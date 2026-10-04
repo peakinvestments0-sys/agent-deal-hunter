@@ -136,3 +136,44 @@ def batch_lookup_fixer_phones(fixers: List[Dict[str, Any]]) -> List[Dict[str, An
 
     with ThreadPoolExecutor(max_workers=6) as executor:
         return list(executor.map(_enrich_single, fixers))
+
+
+def lookup_single_lot_contact(lot: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Enriches a single infill lot listing:
+    1. Scrapes Redfin listing page if redfin_url exists (gets photo_url, agent_name, brokerage, phone).
+    2. If phone is missing or toll-free, executes web skip-trace via lookup_agent_contact.
+    """
+    from src.ingestion import scrape_redfin_agent_details
+    redfin_url = (lot.get("redfin_url") or "").strip()
+    if redfin_url and (not lot.get("photo_url") or not lot.get("agent_phone")):
+        scraped = scrape_redfin_agent_details(redfin_url)
+        if scraped.get("photo_url") and not lot.get("photo_url"):
+            lot["photo_url"] = scraped["photo_url"]
+        if scraped.get("agent_name") and (not lot.get("agent_name") or lot.get("agent_name") in ["Listing Agent", ""]):
+            lot["agent_name"] = scraped["agent_name"]
+        if scraped.get("brokerage") and (not lot.get("brokerage") or lot.get("brokerage") in ["Local Realty", "Brokerage", ""]):
+            lot["brokerage"] = scraped["brokerage"]
+        if scraped.get("agent_phone") and not lot.get("agent_phone"):
+            lot["agent_phone"] = scraped["agent_phone"]
+            lot["phone_lookup_source"] = "REDFIN_PAGE"
+
+    phone = (lot.get("agent_phone") or "").strip()
+    is_toll_free = any(phone.startswith(tf) for tf in COMMON_TOLL_FREE)
+    if not phone or is_toll_free:
+        name = lot.get("agent_name", "")
+        brokerage = lot.get("brokerage", "")
+        city = lot.get("city", "Florida")
+        address = lot.get("address", "")
+        res = lookup_agent_contact(name, brokerage, city, address)
+        if res.get("phone"):
+            lot["agent_phone"] = res["phone"]
+            lot["phone_lookup_source"] = "WEB_SKIP_TRACE"
+
+    return lot
+
+
+def batch_lookup_lot_phones(lots: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Enriches a list of infill lots with missing agent phones & photos in parallel."""
+    with ThreadPoolExecutor(max_workers=6) as executor:
+        return list(executor.map(lookup_single_lot_contact, lots))

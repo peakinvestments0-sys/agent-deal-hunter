@@ -238,10 +238,16 @@ def calculate_residual_land_value(
         comp_bm = get_area_comp_benchmarks(county, neighborhood_code, market_area)
         finished_newbuild_value = float(comp_bm.get("median_finished_value", 440000.0))
         comp_source = comp_bm.get("source_level", "COUNTY_BASELINE")
-        if comp_bm.get("comps_count", 0) < 3 or comp_source == "COUNTY_BASELINE":
+        if comp_bm.get("comps_count", 0) < 3 or comp_source in ["COUNTY_BASELINE", "DEFAULT"]:
             is_thin_comps = True
     else:
         comp_source = "USER_SPECIFIED"
+
+    # For imported lots where micro-comps are thin, dynamically scale finished new-build
+    # Infill land generally represents 22% - 28% of finished new-build value.
+    if is_thin_comps and list_price > 0:
+        estimated_newbuild = max(finished_newbuild_value, round(list_price * 3.5, -3))
+        finished_newbuild_value = estimated_newbuild
 
     # 3. Builder margin & transaction fees
     builder_profit = finished_newbuild_value * builder_profit_pct
@@ -251,9 +257,11 @@ def calculate_residual_land_value(
     max_payable = max(0.0, finished_newbuild_value - total_build_cost - builder_profit - fees)
 
     # 5. Offer Calculation: Primary vs. Thin-Comp Fallback
-    if force_fallback or (is_thin_comps and comp_source == "DEFAULT"):
+    if force_fallback or is_thin_comps:
         offer_price = round(list_price * 0.60, -2)
         pricing_rule = "FALLBACK_60_PCT"
+        if max_payable < offer_price:
+            max_payable = round(list_price * 0.70, -2)
     else:
         # Primary: (residual max payable) - $10,000 negotiation buffer
         calculated_offer = max(10000.0, max_payable - 10000.0)
@@ -357,6 +365,8 @@ class LanaEngine:
             "agent_email": lot_data.get("agent_email", ""),
             "brokerage": lot_data.get("brokerage", "Local Realty"),
             "remarks": lot_data.get("remarks", ""),
+            "redfin_url": (lot_data.get("redfin_url") or lot_data.get("url") or "").strip(),
+            "photo_url": (lot_data.get("photo_url") or lot_data.get("image_url") or "").strip(),
             "neighborhood_code": nbrhd,
             "market_area": mkt_ar,
             "close_days": int(lot_data.get("close_days") or 21),

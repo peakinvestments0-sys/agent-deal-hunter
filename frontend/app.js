@@ -5795,25 +5795,37 @@ function renderLots(lots) {
 
     const messages = lot.messages || [];
     const hasReplies = messages.some(m => m.direction === "INBOUND");
+    const photoUrl = lot.photo_url || 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80';
 
     return `
       <div class="bg-slate-900/90 border border-slate-800 hover:border-emerald-500/40 rounded-2xl p-4 sm:p-5 transition shadow-md space-y-4" id="lotCard_${lot.id}">
-        <!-- Top Bar: Address & Badges -->
+        <!-- Top Bar: Thumbnail & Address & Badges -->
         <div class="flex flex-wrap items-start justify-between gap-3">
-          <div class="space-y-1 min-w-[240px]">
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="text-base font-bold text-white">${escapeHtml(lot.address || 'Vacant Land')}</span>
-              ${statusPill}
-              ${hasReplies ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 animate-pulse">📥 Inbound Reply</span>' : ''}
+          <div class="flex items-start gap-3 flex-1 min-w-[260px]">
+            <!-- Property Thumbnail -->
+            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-slate-700/80 flex-shrink-0 bg-slate-950 relative shadow-inner">
+              <img src="${escapeHtml(photoUrl)}" alt="${escapeHtml(lot.address || 'Infill Lot')}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=600&q=80'">
+              <div class="absolute bottom-1 right-1 bg-slate-950/80 px-1.5 py-0.5 rounded text-[9px] font-mono text-slate-300">
+                ${lot.days_on_market || 0}d DOM
+              </div>
             </div>
-            <div class="flex flex-wrap items-center gap-2 text-xs text-slate-400">
-              <span>📍 ${escapeHtml(lot.city || '')}, ${escapeHtml(lot.county || '')} FL ${escapeHtml(lot.zip || '')}</span>
-              <span>&bull;</span>
-              <span>📏 ${lot.lot_acres ? lot.lot_acres + ' AC' : ''} (${(lot.lot_sqft || 0).toLocaleString()} sqft)</span>
-              <span>&bull;</span>
-              <span class="text-amber-300 font-semibold">⏳ ${lot.days_on_market || 0} DOM</span>
-              ${lot.parcel_id ? `<span>&bull;</span> <span class="font-mono text-slate-500 text-[11px]">APN: ${escapeHtml(lot.parcel_id)}</span>` : ''}
-              ${lot.zoning ? `<span>&bull;</span> <span class="text-slate-400">Zoning: ${escapeHtml(lot.zoning)}</span>` : ''}
+
+            <div class="space-y-1 flex-1 min-w-0">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-base font-bold text-white">${escapeHtml(lot.address || 'Vacant Land')}</span>
+                ${lot.redfin_url ? `<a href="${escapeHtml(lot.redfin_url)}" target="_blank" onclick="event.stopPropagation()" class="text-xs text-amber-400 hover:text-amber-300 hover:underline inline-flex items-center gap-0.5 font-normal ml-0.5" title="View listing on Redfin"><span>Redfin</span> ↗</a>` : ''}
+                ${statusPill}
+                ${hasReplies ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-purple-500/20 text-purple-300 border border-purple-500/40 animate-pulse">📥 Inbound Reply</span>' : ''}
+              </div>
+              <div class="flex flex-wrap items-center gap-2 text-xs text-slate-400">
+                <span>📍 ${escapeHtml(lot.city || '')}, ${escapeHtml(lot.county || '')} FL ${escapeHtml(lot.zip || '')}</span>
+                <span>&bull;</span>
+                <span>📏 ${lot.lot_acres ? lot.lot_acres + ' AC' : ''} (${(lot.lot_sqft || 0).toLocaleString()} sqft)</span>
+                <span>&bull;</span>
+                <span class="text-amber-300 font-semibold">⏳ ${lot.days_on_market || 0} DOM</span>
+                ${lot.parcel_id ? `<span>&bull;</span> <span class="font-mono text-slate-500 text-[11px]">APN: ${escapeHtml(lot.parcel_id)}</span>` : ''}
+                ${lot.zoning ? `<span>&bull;</span> <span class="text-slate-400">Zoning: ${escapeHtml(lot.zoning)}</span>` : ''}
+              </div>
             </div>
           </div>
 
@@ -5835,7 +5847,7 @@ function renderLots(lots) {
             <div class="text-sm font-bold text-amber-300 mt-0.5">$${Math.round(asking).toLocaleString()}</div>
           </div>
           <div>
-            <div class="text-[10px] text-slate-500 font-sans uppercase">60% Offer Target</div>
+            <div class="text-[10px] text-slate-500 font-sans uppercase">Target Cash Offer</div>
             <div class="text-sm font-bold text-white mt-0.5">$${Math.round(offerPrice).toLocaleString()}</div>
           </div>
           <div class="bg-emerald-950/20 border border-emerald-500/20 rounded-lg p-1">
@@ -5866,12 +5878,28 @@ function renderLots(lots) {
               <strong class="text-white">${escapeHtml(lot.agent_name || 'Listing Agent')}</strong>
               <span class="text-slate-500">(${escapeHtml(lot.brokerage || 'Brokerage')})</span>
             </div>
-            <div class="flex items-center gap-1">
+            <div class="flex items-center gap-1.5">
               <span class="text-slate-400">Cell:</span>
-              <span class="font-mono ${lot.agent_phone ? 'text-emerald-300 font-bold' : 'text-rose-400 italic'}">
-                ${lot.agent_phone ? escapeHtml(lot.agent_phone) : 'Missing Phone'}
-              </span>
-              <button type="button" onclick="quickEditLotPhone('${lot.id}')" class="text-[10px] text-slate-500 hover:text-emerald-300 px-1" title="Edit Phone Number">✏️</button>
+              ${lot.agent_phone ? `
+                <a href="tel:${escapeHtml(lot.agent_phone)}" class="text-emerald-300 font-mono font-bold hover:underline">
+                  ${escapeHtml(lot.agent_phone)}
+                </a>
+                <button type="button" onclick="quickEditLotPhone('${lot.id}')" class="text-[10px] text-slate-500 hover:text-emerald-300 px-1" title="Edit Phone Number">✏️</button>
+                ${lot.phone_lookup_source ? `<span class="text-[9px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700 font-mono">${escapeHtml(lot.phone_lookup_source)}</span>` : ''}
+              ` : `
+                <span class="text-rose-400 italic font-mono text-[11px]">Missing Phone</span>
+                <button type="button" onclick="quickEditLotPhone('${lot.id}')" class="px-2 py-0.5 rounded-md bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-300 text-[10px] font-bold transition flex items-center gap-1 cursor-pointer" title="Manually type agent phone">
+                  <span>📱 + Add</span>
+                </button>
+                <button type="button" id="btn_lookup_lot_${lot.id}" onclick="lookupLotPhone('${lot.id}')" class="px-2 py-0.5 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 text-emerald-300 text-[10px] font-bold transition flex items-center gap-1 cursor-pointer" title="Auto-find phone on Redfin & Google/Realtor.com">
+                  <span>⚡ Find Phone</span>
+                </button>
+                ${lot.agent_name && lot.agent_name !== 'Listing Agent' ? `
+                  <a href="https://www.google.com/search?q=${encodeURIComponent((lot.agent_name || '') + ' ' + (lot.brokerage || '') + ' ' + (lot.city || '') + ' FL realtor phone number')}" target="_blank" class="text-[10px] text-slate-400 hover:text-amber-300 underline" title="Search Google directly">
+                    Google ↗
+                  </a>
+                ` : ''}
+              `}
             </div>
             ${lot.agent_email ? `
               <div class="flex items-center gap-1">
@@ -6434,6 +6462,73 @@ async function quickEditLotPhone(lotId) {
     alert("Error updating phone: " + err.message);
   }
 }
+window.quickEditLotPhone = quickEditLotPhone;
+
+async function lookupLotPhone(lotId) {
+  const lot = (allLots || []).find(l => l.id === lotId);
+  const agentName = lot ? (lot.agent_name || "Agent") : "Agent";
+  const brokerage = lot ? (lot.brokerage || "") : "";
+  const city = lot ? (lot.city || "") : "";
+
+  const btn = document.getElementById(`btn_lookup_lot_${lotId}`);
+  const origHtml = btn ? btn.innerHTML : "";
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<span>⏳ Searching...</span>`;
+  }
+  try {
+    const res = await fetch(`/api/lana/lots/${lotId}/lookup-phone`, { method: "POST" });
+    const d = await res.json();
+    if (d.status === "success" && d.phone) {
+      if (lot) {
+        lot.agent_phone = d.phone;
+        if (d.photo_url) lot.photo_url = d.photo_url;
+        if (d.agent_name && d.agent_name !== "Listing Agent") lot.agent_name = d.agent_name;
+        if (d.brokerage && d.brokerage !== "Local Realty") lot.brokerage = d.brokerage;
+      }
+      filterLotsList();
+    } else {
+      const gUrl = `https://www.google.com/search?q=${encodeURIComponent(agentName + ' ' + brokerage + ' ' + city + ' FL realtor phone number')}`;
+      if (confirm(`🔍 Redfin/Web lookup didn't find a direct number for ${agentName}.\n\nWould you like to open Google Search to grab their cell phone?`)) {
+        window.open(gUrl, '_blank');
+        setTimeout(() => {
+          quickEditLotPhone(lotId);
+        }, 500);
+      }
+    }
+  } catch (err) {
+    alert("Lookup error: " + err.message);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = origHtml;
+    }
+  }
+}
+window.lookupLotPhone = lookupLotPhone;
+
+async function lookupAllLotPhones() {
+  const btn = document.getElementById("btnLookupAllLotPhones");
+  const origHtml = btn ? btn.innerHTML : "";
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<span>⏳ Finding Phones...</span>`;
+  }
+  try {
+    const res = await fetch("/api/lana/lots/lookup-all-phones", { method: "POST" });
+    const d = await res.json();
+    await loadLots();
+    alert(d.message || "Phone lookup complete!");
+  } catch (err) {
+    alert("Batch phone lookup error: " + err.message);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = origHtml;
+    }
+  }
+}
+window.lookupAllLotPhones = lookupAllLotPhones;
 
 async function deleteLot(lotId) {
   if (!confirm("Are you sure you want to remove this lot from Lana's Desk?")) return;

@@ -66,7 +66,7 @@ def save_redfin_cache(cache: Dict[str, Any]):
 
 def scrape_redfin_agent_details(url: str, cache: Optional[Dict[str, Any]] = None) -> Dict[str, str]:
     if not url or not url.startswith("http"):
-        return {"agent_name": "", "agent_phone": "", "brokerage": "", "broker_phone": ""}
+        return {"agent_name": "", "agent_phone": "", "brokerage": "", "broker_phone": "", "photo_url": ""}
     
     if cache is not None and url in cache:
         return cache[url]
@@ -77,7 +77,7 @@ def scrape_redfin_agent_details(url: str, cache: Optional[Dict[str, Any]] = None
     try:
         r = requests.get(url, headers=headers, timeout=12)
         if r.status_code != 200:
-            return {"agent_name": "", "agent_phone": "", "brokerage": "", "broker_phone": ""}
+            return {"agent_name": "", "agent_phone": "", "brokerage": "", "broker_phone": "", "photo_url": ""}
         
         agent_name = ""
         agent_phone = ""
@@ -112,18 +112,23 @@ def scrape_redfin_agent_details(url: str, cache: Optional[Dict[str, Any]] = None
             m_html_name = re.search(r'data-rf-test-id="agentInfoItem-agentDisplay"[^>]*>.*?Listed by <span>([^<]+)</span>', r.text, re.DOTALL)
             if m_html_name:
                 agent_name = m_html_name.group(1).strip()
+
+        # Listing Photo from OpenGraph
+        m_img = re.search(r'<meta\s+(?:property=["\']og:image["\']\s+content=["\']([^"\']+)["\']|content=["\']([^"\']+)["\']\s+property=["\']og:image["\'])', r.text)
+        photo_url = (m_img.group(1) or m_img.group(2) or "").strip() if m_img else ""
         
         res = {
             "agent_name": agent_name.strip(),
             "agent_phone": (agent_phone or broker_phone).strip(),
             "brokerage": broker_name.strip(),
-            "broker_phone": broker_phone.strip()
+            "broker_phone": broker_phone.strip(),
+            "photo_url": photo_url
         }
         if cache is not None:
             cache[url] = res
         return res
     except Exception:
-        return {"agent_name": "", "agent_phone": "", "brokerage": "", "broker_phone": ""}
+        return {"agent_name": "", "agent_phone": "", "brokerage": "", "broker_phone": "", "photo_url": ""}
 
 def is_redfin_csv(file_path: str) -> bool:
     if not os.path.exists(file_path):
