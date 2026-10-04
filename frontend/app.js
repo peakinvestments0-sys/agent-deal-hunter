@@ -5922,12 +5922,12 @@ function renderLots(lots) {
               </p>
             </div>
             <div>
-              <strong class="text-slate-300">Contract Terms on FAR/BAR VAC-14:</strong>
+              <strong class="text-slate-300">Proposed Contract Terms:</strong>
               <ul class="mt-1 space-y-0.5 text-[11px] list-disc list-inside">
                 <li>$2,500 Earnest Money deposited upon contract</li>
-                <li>7-day feasibility study (survey &amp; utility taps)</li>
-                <li>14-day expedited closing with verified cash funds</li>
-                <li>Full 3% listing agent commission protected</li>
+                <li>14-day feasibility study (survey &amp; utility checks)</li>
+                <li>${lot.close_days || 21}-day cash closing with verified funds</li>
+                <li>Full listing agent commission protected</li>
               </ul>
             </div>
           </div>

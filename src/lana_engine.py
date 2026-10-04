@@ -446,13 +446,13 @@ class LanaEngine:
         template = (
             "LOI Terms for {address}: Purchase Price: ${offer:,.0f} Cash. Earnest Money: $2,500. "
             "Feasibility Period: 14 days. Closing: {close_days} days. Full listing commission protected. "
-            "Proof of funds verified. Let me know if you would like me to text or email the formal FAR/BAR contract. Lana"
+            "Proof of funds verified. Let me know if you would like me to text or email the formal contract. Lana"
         )
         rendered = template.format(agent_name=agent_name, address=addr, offer=offer, close_days=effective_close)
         return strip_hyphens_for_sms(rendered)
 
     def generate_loi_email_html(self, lot: Dict[str, Any], close_days: int = 21) -> str:
-        """Generates formal written FAR/BAR VAC-14 LOI terms for Email delivery."""
+        """Generates formal written LOI terms for Email delivery."""
         agent_name = (lot.get("agent_name") or "Listing Agent").title()
         addr = lot.get("address", "Subject Vacant Parcel")
         uw = lot.get("underwriting") or {}
